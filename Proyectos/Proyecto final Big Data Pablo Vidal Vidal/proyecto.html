@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Inversión Doméstica y Mercados Financieros - Pablo Vidal Vidal</title>
+    <style>
+        /* Estilo Dark Mode Profesional - Inspirado en Portada y Apple Dark */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.7;
+            margin: 0;
+            background-color: #1c1c1e; 
+            color: #f5f5f7; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px 0; 
+        }
+
+        .presentation-container {
+            max-width: 920px; 
+            width: 95%;
+            margin: 20px auto;
+            background: #2c2c2e; 
+            padding: 20px 30px 30px 30px; 
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25); 
+            position: relative; 
+        }
+        h1, h2, h3, h4 { color: #ffffff; font-weight: 600; }
+        h1 { text-align: center; font-size: 2.7em; margin-bottom: 0.4em; letter-spacing: -0.02em; }
+        .subtitle { text-align: center; font-size: 1.15em; color: #a0a0a5; margin-bottom: 1.8em; font-weight: 400; }
+        .author-info { text-align: center; font-size: 0.9em; color: #8e8e93; margin-bottom: 3em; font-weight: 400; }
+        .cover-image-container { text-align: center; margin-bottom: 3em; background-color: #000; padding: 20px 0; border-radius: 12px; }
+        .cover-image-container img { max-width: 80%; display: block; margin-left: auto; margin-right: auto; height: auto; max-height: 400px; border-radius: 8px; }
+
+        .slide {
+            display: none; 
+            padding-bottom: 80px; 
+            min-height: 70vh; 
+        }
+        .slide.active {
+            display: block; 
+        }
+
+        nav { background-color: #3a3a3c; padding: 20px 25px; margin-bottom: 35px; border-radius: 12px; }
+        nav h2 { margin-top: 0; font-size: 1.5em; color: #f5f5f7; border-bottom: 1px solid #525254; padding-bottom: 0.5em; margin-bottom: 1em;}
+        nav ul { list-style-type: none; padding: 0; }
+        nav ul li { margin-bottom: 0.7em; }
+        nav ul li a { text-decoration: none; color: #0a84ff; font-weight: 500; cursor: pointer; }
+        nav ul li a:hover { text-decoration: underline; color: #3aa0ff; }
+        nav ul ul { padding-left: 20px; margin-top: 0.5em; }
+        nav ul ul li a { font-weight: 400; color: #5e9cea; }
+
+        .step-section { margin-bottom: 45px; padding-bottom: 35px; border-bottom: 1px solid #424245; }
+        .step-section:last-child { border-bottom: none; }
+        .step-title { font-size: 1.9em; color: #ffffff; margin-top: 1.8em; margin-bottom: 1em; letter-spacing: -0.01em; border-bottom: 2px solid #0a84ff; padding-bottom: 0.4em; }
+        .sub-step-title { font-size: 1.45em; color: #f5f5f7; margin-top: 1.3em; margin-bottom: 0.7em; font-weight: 500; }
+        .objective, .summary-block, .actions-block { background-color: #3a3a3c; border: 1px solid #525254; padding: 20px 25px; margin: 25px 0; border-radius: 12px; color: #e0e0e0; }
+        .objective strong, .summary-block strong, .actions-block strong { font-weight: 600; color: #ffffff; }
+        .objective p:first-child, .summary-block p:first-child, .actions-block p:first-child { margin-top: 0; }
+        .objective p:last-child, .summary-block p:last-child, .actions-block p:last-child { margin-bottom: 0; }
+        .code-block { background-color: #1c1c1e; color: #d1d1d1; padding: 20px; border-radius: 10px; overflow-x: auto; font-family: "SF Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace; font-size: 0.9em; margin: 25px 0; border: 1px solid #4a4a4e; }
+        .code-block pre { margin: 0; }
+        .image-container { text-align: center; margin: 30px 0; }
+        .image-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        .caption { font-style: normal; color: #a0a0a5; text-align: center; display: block; margin-top: 10px; font-size: 0.85em; font-weight: 400; }
+        ul, ol { padding-left: 25px; }
+        li { margin-bottom: 0.7em; }
+        li::marker { color: #a0a0a5; }
+        .emoji { font-size: 1.1em; margin-right: 0.3em; vertical-align: middle; }
+        
+        .navigation-buttons {
+            position: fixed; 
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 920px; 
+            background-color: rgba(44, 44, 46, 0.85); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border-top: 1px solid #525254;
+        }
+        .navigation-buttons button {
+            background-color: #0a84ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        .navigation-buttons button:hover {
+            background-color: #3aa0ff;
+        }
+        .navigation-buttons button:disabled {
+            background-color: #525254;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #slideCounter {
+             color: #a0a0a5; 
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px; 
+            padding-top: 20px;
+            padding-bottom: 80px; 
+            font-size: 0.8em;
+            color: #8e8e93;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Diapositiva 0: Portada -->
+        <div id="slide-0" class="slide">
+            <header>
+                <h1>SIMULADOR DE INVERSIÓN DOMÉSICA<br>Y MERCADOS FINANCIEROS</h1>
+                <p class="subtitle">Un enfoque Big Data para la planificación Domésica con AWS y PowerBI 
+                mediante la proyección de metas financieras alcanzables y simulación de 
+                MonteCarlo en los mercados S&P500 y Bitcoin</p>
+                <div class="cover-image-container">
+                    <img src="imagenes/Portada.jpg" alt="Portada del Proyecto - Casa sobre monedas">
+                </div>
+                <p class="author-info">
+                    Autor: Pablo Vidal Vidal<br>
+                    Reto 5 Big Data & IA<br>
+                    pablo2vbnddaw@gmail.com
+                </p>
+            </header>
+        </div>
+        
+        <!-- Diapositiva 1: Índice -->
+        <div id="slide-1" class="slide">
+            <nav id="indice">
+                <h2>Índice del Proyecto</h2>
+                <ul>
+                    <li><a onclick="goToSlide(2)">1. INTRODUCCIÓN</a></li>
+                    <li><a onclick="goToSlide(3)">2. <span class="emoji">☁️</span>PASO 1: PREPARACIÓN DEL ENTORNO Y DATOS EN S3</a></li>
+                    <li><a onclick="goToSlide(4)">3. <span class="emoji">🛠️</span>PASO 2: AWS GLUE - ETL DEL EXTRACTO BANCARIO</a></li>
+                    <li><a onclick="goToSlide(5)">4. <span class="emoji">📈</span>PASO 3: AWS GLUE - ETL DE DATOS DE MERCADO</a></li>
+                    <li><a onclick="goToSlide(6)">5. <span class="emoji">🎰</span>PASO 4: SIMULACIÓN MONTE CARLO CON AWS EMR</a></li>
+                    <li><a onclick="goToSlide(7)">6. <span class="emoji">💾</span>PASO 5: COMPROBACIÓN DE RESULTADOS EN S3</a></li>
+                    <li><a onclick="goToSlide(8)">7. <span class="emoji">🎨</span>PASO 6: VISUALIZACIÓN CON POWER BI</a></li>
+                    <li><a onclick="goToSlide(9)">8. <span class="emoji">🏁</span>CONCLUSIÓN DEL PROYECTO</a></li>
+                    <li><a onclick="goToSlide(10)">9. <span class="emoji">📎</span>APÉNDICES</a></li>
+                </ul>
+            </nav>
+            <p style="text-align:center; margin-top: 30px;">Haz clic en un elemento del índice para ir directamente o usa los botones de navegación.</p>
+        </div>
+
+        <!-- Diapositiva 2: INTRODUCCIÓN -->
+        <div id="slide-2" class="slide step-section">
+            <h2 class="step-title">1. <span class="emoji">🚀</span> INTRODUCCIÓN <span class="emoji">🎯</span></h2>
+            <div id="introduccion-problema">
+                <h3>1.1. Problema a Resolver y Solución Propuesta</h3>
+                <h4><span class="emoji">💡</span> PROBLEMA A RESOLVER:</h4>
+                <p>Muchas personas tienen metas financieras <span class="emoji">🏡💰✈️</span> (comprar una casa, jubilación, un viaje) pero les cuesta visualizar si sus hábitos de ahorro e inversión actuales les permitirán alcanzarlas, especialmente considerando la volatilidad de los mercados <span class="emoji">📉📈</span>.</p>
+                <h4><span class="emoji">✨</span> SOLUCIÓN:</h4>
+                <p>Un simulador innovador que:</p>
+                <ul>
+                    <li><span class="emoji">🔍</span> Analiza el comportamiento de ahorro del usuario a partir de un extracto bancario.</li>
+                    <li><span class="emoji">🎯</span> Permite al usuario definir una meta financiera, un plazo y una estrategia de inversión (distribuyendo su ahorro mensual entre efectivo <span class="emoji">💵</span>, S&P 500 <span class="emoji">📊</span> y Bitcoin <span class="emoji">₿</span>).</li>
+                    <li><span class="emoji">🎰</span> Utiliza datos históricos de mercado para simular miles de posibles escenarios futuros mediante la potente técnica de Monte Carlo.</li>
+                    <li><span class="emoji">🧮</span> Calcula la probabilidad de alcanzar la meta financiera definida.</li>
+                    <li><span class="emoji">📊</span> Presenta los resultados de forma clara, visual e interactiva en Microsoft Power BI.</li>
+                </ul>
+            </div>
+            <div id="introduccion-tecnologias">
+                <h3>1.2. Tecnologías Utilizadas y Diagrama de Arquitectura</h3>
+                <h4><span class="emoji">⚙️</span> TECNOLOGÍAS UTILIZADAS:</h4>
+                <ul>
+                    <li><span class="emoji">☁️</span> Almacenamiento de Datos: Amazon S3</li>
+                    <li><span class="emoji">🛠️</span> ETL (Extracción, Transformación, Carga): AWS Glue</li>
+                    <li><span class="emoji">💻</span> Procesamiento y Simulación: Amazon EMR (con Apache Spark)</li>
+                    <li><span class="emoji">📈</span> Visualización: Microsoft Power BI</li>
+                </ul>
+                <h4><span class="emoji">🔗</span> DIAGRAMA DE ARQUITECTURA:</h4>
+                <p>(Se incluirá un diagrama de flujo visualizando <span class="emoji">➡️☁️</span>S3 -> <span class="emoji">🛠️</span>Glue -> <span class="emoji">☁️</span>S3 -> <span class="emoji">💻</span>EMR -> <span class="emoji">☁️</span>S3 -> <span class="emoji">📊</span>Power BI, detallando los tipos de datos en cada transición).</p>
+                <div class="image-container">
+                    <img src="imagenes/DiagramaArquitectura.png" alt="Diagrama de Arquitectura del Proyecto">
+                    <span class="caption">Diagrama de Arquitectura General del Proyecto</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 3: PASO 1 -->
+        <div id="slide-3" class="slide step-section">
+            <h2 class="step-title">2. <span class="emoji">☁️</span>PASO 1: PREPARACIÓN DEL ENTORNO Y DATOS EN S3 <span class="emoji">📂</span></h2>
+            <div class="objective">
+                <p><strong><span class="emoji">🎯</span> OBJETIVO DEL PASO:</strong> Crear la estructura de carpetas en Amazon S3 y subir los datasets iniciales (extracto bancario del usuario y datos históricos de mercado).</p>
+            </div>
+            <div class="actions-block">
+                <h4><span class="emoji">🛠️</span> ACCIONES DETALLADAS:</h4>
+                <div id="paso1-bucket">
+                    <h5 class="sub-step-title">2.1. Creación de Bucket y Estructura de Carpetas</h5>
+                    <p><strong>1. Crear un Bucket S3:</strong></p>
+                    <ul>
+                        <li>Nombre del bucket: <code>mi-simulador-inversion-pablo-vidal</code></li>
+                    </ul>
+                    <div class="image-container">
+                        <img src="imagenes/Imagen1.jpg" alt="Creación de Bucket S3">
+                        <span class="caption">Imagen 1: Creación del Bucket S3</span>
+                    </div>
+                    <p><strong>2. Crear Estructura de Carpetas dentro del Bucket:</strong></p>
+                    <p>Creamos las siguientes carpetas (en S3, las "carpetas" son prefijos de objeto):</p>
+                    <ul>
+                        <li><span class="emoji">📁</span> <code>datos-entrada/</code></li>
+                        <li><span class="emoji">📊</span> <code>datos-mercado/</code></li>
+                        <li><span class="emoji">⚙️</span> <code>procesado-glue/</code> (subcarpetas: <code>detalle_movimientos_mensual/</code>, <code>promedios_gastos_categorias/</code>, <code>aporte_simulacion_base/</code>, <code>parametros_mercado/</code>)</li>
+                        <li><span class="emoji">⚙️</span> <code>procesado-emr/</code></li>
+                        <li><span class="emoji">🐍</span> <code>scripts/</code></li>
+                    </ul>
+                    <div class="image-container">
+                        <img src="imagenes/Imagen2.jpg" alt="Estructura de Carpetas en S3">
+                        <span class="caption">Imagen 2: Estructura de Carpetas en el Bucket S3</span>
+                    </div>
+                </div>
+                <div id="paso1-datos">
+                    <h5 class="sub-step-title">2.2. Generación y Carga de Datos</h5>
+                    <p><strong>3. Preparar los Datos Locales:</strong></p>
+                    <ul>
+                        <li><strong>Extracto Bancario (<code>extracto_bancario.csv</code>):</strong> Generado con script Python <code>generarextractobancario.py</code>.</li>
+                         <div class="image-container">
+                             <img src="imagenes/Imagen3.jpg" alt="Archivos en S3 datos-entrada">
+                             <span class="caption">Imagen 3: Archivo extracto_bancario.csv en S3</span>
+                         </div>
+                        <li><strong>Datos Históricos S&P 500 (<code>sp500_historico.csv</code>):</strong> Obtenido de Yahoo Finance vía script <code>generarcsvsp500.py</code>.</li>
+                        <li><strong>Datos Históricos Bitcoin (<code>bitcoin_historico.csv</code>):</strong> Obtenido de Yahoo Finance vía script <code>generarcsvbitcoin.py</code>.</li>
+                    </ul>
+                    <p><strong>4. Subir los Archivos a S3 en sus respectivas carpetas.</strong></p>
+                </div>
+            </div>
+            <div id="paso1-resumen" class="summary-block">
+                <h4><span class="emoji">📝</span> RESUMEN PASO 1:</h4>
+                 <ul>
+                    <li><span class="emoji">✅</span> Bucket y estructura de carpetas creados en S3.</li>
+                    <li><span class="emoji">✅</span> Datos (extracto, S&P500, Bitcoin) generados y cargados a S3.</li>
+                    <li><span class="emoji">✅</span> Scripts de generación de datos guardados en S3.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4: PASO 2 -->
+        <div id="slide-4" class="slide step-section">
+            <h2 class="step-title">3. <span class="emoji">🛠️</span>PASO 2: AWS GLUE - ETL DEL EXTRACTO BANCARIO <span class="emoji">⚙️</span></h2>
+             <div class="objective">
+                <p><strong><span class="emoji">🎯</span> OBJETIVO PRINCIPAL DEL PASO:</strong> Procesar <code>extracto_bancario.csv</code> para categorizar transacciones, agregar montos mensuales, calcular totales y ahorros, y generar CSVs detallados y de aporte para EMR.</p>
+            </div>
+            <div class="actions-block">
+                 <h4 class="sub-step-title">3.1. Objetivo y Acciones (Crawler, Job, Transformaciones SQL)</h4>
+                 <p><strong>1. Crawler <code>crawler_extracto_bancario</code> (Imagen 4)</strong></p>
+                 <div class="image-container"><img src="imagenes/Imagen4.jpg" alt="Crawler Extracto"><span class="caption">Imagen 4</span></div>
+                 <p><strong>2. Tabla en Data Catalog (Imagen 5)</strong></p>
+                 <div class="image-container"><img src="imagenes/Imagen5.jpg" alt="Tabla Extracto"><span class="caption">Imagen 5</span></div>
+                 <p><strong>3. Job Glue Studio <code>Job_Extracto_Bancario</code> (Imagen 6)</strong></p>
+                 <div class="image-container"><img src="imagenes/Imagen6.jpg" alt="Job Extracto"><span class="caption">Imagen 6</span></div>
+                 <p>   Transformación <code>Transformar_Extracto_detallado</code> (Imagen 7), Destino S3 (Imagen 8)</p>
+                 <div class="image-container"><img src="imagenes/Imagen7.jpg" alt="SQL Extracto Detalle"><span class="caption">Imagen 7</span></div>
+                 <div class="image-container"><img src="imagenes/Imagen8.jpg" alt="Destino Extracto Detalle"><span class="caption">Imagen 8</span></div>
+                 <p>   Transformación <code>Calcular_Promedios_Gasto</code> (Imagen 9), Destino S3 (Imagen 10)</p>
+                 <div class="image-container"><img src="imagenes/Imagen9.jpg" alt="SQL Promedios Gasto"><span class="caption">Imagen 9</span></div>
+                 <div class="image-container"><img src="imagenes/Imagen10.jpg" alt="Destino Promedios Gasto"><span class="caption">Imagen 10</span></div>
+                 <p>   Transformación <code>Calcular_Aporte_Base_Simulacion</code> (Imagen 11), Destino S3 (Imagen 12)</p>
+                 <div class="image-container"><img src="imagenes/Imagen11.jpg" alt="SQL Aporte Base"><span class="caption">Imagen 11</span></div>
+                 <div class="image-container"><img src="imagenes/Imagen12.jpg" alt="Destino Aporte Base"><span class="caption">Imagen 12</span></div>
+            </div>
+            <div id="paso2-salidas"> 
+                <h4 class="sub-step-title">3.2. Salidas: Detalle Mensual, Promedios de Gasto, Aporte para Simulación</h4>
+                <p>Se generan y guardan en S3: <code>detalle_movimientos_categorizados_mensual.csv</code>, <code>promedios_gastos_categorias.csv</code>, y <code>aporte_mensual_simulacion_base.csv</code>.</p>
+            </div>
+            <div id="paso2-resumen" class="summary-block">
+                <h4><span class="emoji">📝</span> RESUMEN PASO 2:</h4>
+                 <p>Job de Glue procesa extracto bancario generando: detalle mensual, promedios de gasto, y el aporte base para simulación, todo guardado en S3.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 5: PASO 3 -->
+        <div id="slide-5" class="slide step-section">
+            <h2 class="step-title">4. <span class="emoji">📈</span>PASO 3: AWS GLUE - ETL DE DATOS DE MERCADO <span class="emoji">⚙️</span></h2>
+            <div class="objective">
+                <p><strong><span class="emoji">🎯</span> OBJETIVO DEL PASO:</strong> Procesar datos históricos de S&P 500 y Bitcoin para calcular μ y σ para cada activo, que se usarán en la simulación de EMR.</p>
+            </div>
+            <div class="actions-block">
+                 <h4 class="sub-step-title">4.1. Objetivo y Acciones (Crawlers, Job, Transformaciones SQL)</h4>
+                <p><strong>1. Crawlers <code>crawler_sp500_historico</code> y <code>crawler_bitcoin_historico</code> (Imagen 13)</strong></p>
+                <div class="image-container"><img src="imagenes/Imagen13.jpg" alt="Crawlers Mercado"><span class="caption">Imagen 13</span></div>
+                <p><strong>2. Tablas en Data Catalog (Imagen 14)</strong></p>
+                <div class="image-container"><img src="imagenes/Imagen14.jpg" alt="Tablas Mercado"><span class="caption">Imagen 14</span></div>
+                <p><strong>3. Job Glue Studio <code>job_procesar_datos_mercado</code> (Imagen 15)</strong></p>
+                <div class="image-container"><img src="imagenes/Imagen15.jpg" alt="Job Datos Mercado"><span class="caption">Imagen 15</span></div>
+                <p>   Flujo Bitcoin (Imagen 16), Unión Retornos (Imagen 17), Cálculo Estadísticas (Imagen 18), Destino S3 (Imagen 19)</p>
+                <div class="image-container"><img src="imagenes/Imagen16.jpg" alt="SQL Retornos Bitcoin"><span class="caption">Imagen 16</span></div>
+                <div class="image-container"><img src="imagenes/Imagen17.jpg" alt="SQL Unión Retornos"><span class="caption">Imagen 17</span></div>
+                <div class="image-container"><img src="imagenes/Imagen18.jpg" alt="SQL Estadísticas Mercado"><span class="caption">Imagen 18</span></div>
+                <div class="image-container"><img src="imagenes/Imagen19.jpg" alt="Destino Parámetros Mercado"><span class="caption">Imagen 19</span></div>
+            </div>
+             <div id="paso3-salidas">
+                <h4 class="sub-step-title">4.2. Salida: Parámetros de Mercado (μ y σ para S&P 500 y Bitcoin)</h4>
+                <p>El archivo <code>parametros_mercado.csv</code> con los 4 valores estadísticos se guarda en S3.</p>
+            </div>
+            <div id="paso3-resumen" class="summary-block">
+                <h4><span class="emoji">📝</span> Resumen del Paso 3:</h4>
+                 <p>Job de Glue procesa datos de mercado, calcula retornos, los une y obtiene μ y σ para S&P 500 y Bitcoin, guardados en S3. <span class="emoji">🚀</span></p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 6: PASO 4 -->
+        <div id="slide-6" class="slide step-section">
+            <h2 class="step-title">5. <span class="emoji">🎰</span>PASO 4: SIMULACIÓN MONTE CARLO CON AWS EMR <span class="emoji">🚀</span></h2>
+            <div class="objective">
+                <p><strong><span class="emoji">🎯</span> Objetivo:</strong> Utilizar Amazon EMR y Apache Spark para ejecutar miles de simulaciones de Monte Carlo, proyectando el crecimiento del capital del usuario y calculando la probabilidad de alcanzar su meta financiera.</p>
+            </div>
+             <h4 class="sub-step-title">5.1. Objetivo y Configuración del Entorno EMR (Clúster, Studio, Notebook)</h4>
+             <p><strong>1. Crear Clúster <code>Clusterparamisimulador</code> (Imagen 20)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen20.jpg" alt="Creación Clúster EMR"><span class="caption">Imagen 20</span></div>
+             <p><strong>2. Crear EMR Studio y Workspace (Imagen 21)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen21.jpg" alt="EMR Studio y Workspace"><span class="caption">Imagen 21</span></div>
+             <p><strong>3. Asociar Clúster y Lanzar Notebook (Imagen 22)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen22.jpg" alt="Lanzar Notebook EMR"><span class="caption">Imagen 22</span></div>
+             
+             <h4 class="sub-step-title">5.2. Desarrollo en Notebook PySpark:</h4>
+             <p><strong>5.2.1. Configuración y Carga de Datos (Celda 1) (Imagen 23)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen23.jpg" alt="EMR Notebook Celda 1"><span class="caption">Imagen 23</span></div>
+             <p><strong>5.2.2. Ejecución de Simulaciones (Celda 2) (Imagen 24)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen24.jpg" alt="EMR Notebook Celda 2"><span class="caption">Imagen 24</span></div>
+             <p><strong>5.2.3. Análisis y Almacenamiento de Resultados (Celda 3) (Imagen 25)</strong></p>
+             <div class="image-container"><img src="imagenes/Imagen25.jpg" alt="EMR Notebook Celda 3"><span class="caption">Imagen 25</span></div>
+             <div class="summary-block">
+                <p><span class="emoji">🔑</span> Resultado Clave: ¡Archivos listos en S3 con toda la información que Power BI necesita! <span class="emoji">📉📈✅</span></p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 7: PASO 5 -->
+        <div id="slide-7" class="slide step-section">
+            <h2 class="step-title">6. <span class="emoji">💾</span>PASO 5: COMPROBACIÓN DE RESULTADOS EN S3</h2>
+            <p>Verificación de los archivos CSV generados en S3: <code>resultados_simulacion_distribucion.csv</code>, <code>resultados_simulacion_proyeccion_mediana.csv</code>, <code>sumario_simulacion.csv</code>.</p>
+            <div class="image-container">
+                <img src="imagenes/Imagen26.jpg" alt="Resultados EMR en S3">
+                <span class="caption">Imagen 26: Archivos CSV resultantes de la simulación en S3</span>
+            </div>
+        </div>
+
+        <!-- Diapositiva 8: PASO 6 -->
+        <div id="slide-8" class="slide step-section">
+            <h2 class="step-title">7. <span class="emoji">🎨</span>PASO 6: VISUALIZACIÓN CON POWER BI <span class="emoji">✨📊</span></h2>
+            <div class="objective">
+                 <p><strong><span class="emoji">🎯</span> Objetivo del Paso:</strong> Conectar Power BI a los datos en S3, importarlos, transformarlos si es necesario, y construir un dashboard interactivo con KPIs y gráficos.</p>
+            </div>
+            <div id="paso6-conexion">
+                <h4 class="sub-step-title">7.1. Conexión, Importación y Transformación de Datos</h4>
+                <p>Conectar Power BI a los CSVs en S3 y realizar transformaciones necesarias en Power Query (ej. delimitadores decimales).</p>
+            </div>
+            <div id="paso6-dashboard">
+                <h4 class="sub-step-title">7.2. Diseño del Dashboard (KPIs, Gráficos de Simulación e Históricos)</h4>
+                <p><strong>Vista 1: Simulación Personalizada (Imagen 27)</strong></p>
+                <div class="image-container"><img src="imagenes/Imagen27.jpg" alt="Power BI Dashboard Vista 1"><span class="caption">Imagen 27</span></div>
+                <p><strong>Vista 2: Evolución Histórica de Inversiones (Imagen 28)</strong></p>
+                <div class="image-container"><img src="imagenes/Imagen28.jpg" alt="Power BI Dashboard Vista 2"><span class="caption">Imagen 28</span></div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 9: CONCLUSIÓN -->
+        <div id="slide-9" class="slide step-section">
+            <h2 class="step-title">8. <span class="emoji">🏁</span>CONCLUSIÓN DEL PROYECTO</h2>
+             <p>Este proyecto ha sido un viaje fascinante a través del mundo del Big Data y la analítica financiera, culminando en la creación de un <strong>Simulador de Inversión Personalizado</strong>. Partiendo de la necesidad real de visualizar el camino hacia metas financieras, hemos construido una solución integral que aprovecha la potencia y flexibilidad del ecosistema AWS, junto con la capacidad de visualización de Microsoft Power BI.</p>
+            <div id="conclusion-recorrido">
+                <h3 class="sub-step-title">8.1. Recorrido por la Solución, Valor y Aprendizaje</h3>
+                <p><strong>Un Recorrido por la Solución:</strong></p>
+                <ol>
+                    <li><span class="emoji">☁️</span> **Cimientos Sólidos en S3:** Establecimos nuestro data lake en Amazon S3, organizando los datos de entrada del usuario (extractos bancarios generados programáticamente) y los datos históricos de mercado (S&P 500 y Bitcoin, también obtenidos mediante scripts Python que interactúan con Yahoo Finance).</li>
+                    <li><span class="emoji">🛠️</span> **Transformación con AWS Glue:**
+                        <ul>
+                            <li>Procesamos los extractos bancarios para obtener un análisis detallado de ingresos, gastos por categoría, y, crucialmente, el aporte mensual base para la inversión.</li>
+                            <li>Analizamos los datos históricos de mercado para calcular los parámetros estadísticos esenciales (retorno promedio mensual μ y volatilidad mensual σ) para el S&P 500 y Bitcoin.</li>
+                        </ul>
+                        Estos procesos de ETL, diseñados en AWS Glue Studio, prepararon los datos de manera eficiente para la siguiente etapa.
+                    </li>
+                    <li><span class="emoji">🎰</span> **Simulación Potente con Amazon EMR y Spark:**
+                        <ul>
+                            <li>Configuramos un clúster de EMR y, utilizando un Notebook de Jupyter (PySpark), implementamos una simulación de Monte Carlo.</li>
+                            <li>Este motor tomó el aporte mensual del usuario, los parámetros de mercado (μ y σ), y la estrategia de inversión definida para proyectar miles de posibles escenarios futuros de crecimiento del capital.</li>
+                            <li>Calculamos la probabilidad de alcanzar la meta financiera y identificamos la trayectoria mediana para una visualización representativa. Los resultados se almacenaron de nuevo en S3, listos para el análisis.</li>
+                        </ul>
+                    </li>
+                    <li><span class="emoji">📊</span> **Visualización Impactante con Power BI:**
+                        <ul>
+                            <li>Conectamos Power BI a los resultados en S3.</li>
+                            <li>Creamos un dashboard que presenta de forma clara: Los KPIs clave (meta, plazo, probabilidad de éxito, capital mediano), un gráfico de proyección de la cartera mediana, ilustrando el poder del interés compuesto, y una vista de la evolución histórica de las inversiones elegidas (S&P 500 y Bitcoin).</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>Valor y Aprendizaje:</h4>
+                <p>Este proyecto no solo demuestra la aplicación práctica de tecnologías de Big Data en un caso de uso financiero relevante, sino que también subraya la importancia de un flujo de datos bien orquestado, desde la ingesta y transformación hasta el procesamiento avanzado y la visualización final. La capacidad de integrar servicios como S3, Glue, EMR y Power BI abre un abanico de posibilidades para análisis complejos y toma de decisiones informadas.</p>
+            </div>
+            <div id="conclusion-agradecimientos">
+                 <h3 class="sub-step-title">8.2. Agradecimientos y Cierre</h3>
+                 <p>Ha sido un placer aprender durante el curso. Se nota que David tiene pasión por lo que hace y así lo transmite. Desarrollar este simulador, profundizando en cada una de las herramientas y superando los desafíos técnicos que surgieron. Ha sido difícil y he obviado alguna cosa pero la oportunidad de construir algo tan tangible y con potencial de ayudar a las personas a planificar su futuro financiero ha sido increíblemente gratificante.</p>
+                 <p>Espero sinceramente que este proyecto y su presentación sean de su agrado y cumplan con las expectativas. Muchísimas gracias por la oportunidad de trabajar en este reto y por su guía a lo largo del proceso.</p>
+                 <p><span class="emoji">🚀</span> ¡Gracias! <span class="emoji">🚀</span></p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 10: APÉNDICES -->
+        <div id="slide-10" class="slide step-section">
+            <h2 class="step-title">9. <span class="emoji">📎</span>APÉNDICES</h2>
+            
+            <div id="apendice-python-main"> 
+                <h3 class="sub-step-title">9.1. Scripts Python de Preparación de Ingesta</h3>
+                <h4><code>generarextractobanario.py</code></h4>
+                <div class="code-block"><pre><code>import pandas as pd
+import random
+from datetime import datetime, timedelta
+import os
+
+def generar_fecha_aleatoria_mes(year, month, dia_inicio=1, dia_fin=28):
+    """Genera una fecha aleatoria dentro de un mes y rango de días."""
+    start_date = datetime(year, month, dia_inicio)
+    try:
+        datetime(year, month, dia_fin)
+        dia_fin_real = dia_fin
+    except ValueError:
+        end_of_month = (start_date.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+        dia_fin_real = end_of_month.day
+    
+    dia_inicio_real = min(dia_inicio, dia_fin_real)
+    random_day = random.randint(dia_inicio_real, dia_fin_real)
+    return datetime(year, month, random_day)
+
+def generar_extracto_simulado(nombre_archivo_salida="extracto_bancario.csv", 
+                            anos_a_generar=10, 
+                            objetivo_saldo_final_mes_cuenta_corriente=20.0):
+    nomina_base = 1800.00
+    incremento_anual_nomina = 0.02
+    paga_extra_base_ratio = 0.6
+    hipoteca_base = -450.00
+    incremento_anual_hipoteca = 0.015
+    suministros_base = -110.00
+    variacion_suministros = 20.00
+    transferencia_ahorro_base = -300.00
+    incremento_anual_transferencia = 0.02
+    supermercado_rango = (-150, -90)
+    restauracion_rango = (-60, -25)
+    gastos_varios_rango = (-150, -40)
+    vacaciones_gasto_base = -1500 
+    transacciones = []
+    ano_inicio_sim = datetime.now().year - anos_a_generar
+    for anio_offset in range(anos_a_generar):
+        ano_actual_sim = ano_inicio_sim + anio_offset
+        nomina_anual = nomina_base * ((1 + incremento_anual_nomina) ** anio_offset)
+        paga_extra_anual = nomina_anual * paga_extra_base_ratio
+        hipoteca_anual = hipoteca_base * ((1 + incremento_anual_hipoteca) ** anio_offset)
+        transferencia_ahorro_anual = transferencia_ahorro_base * ((1 + incremento_anual_transferencia) ** anio_offset)
+        for mes_idx in range(1, 13):
+            ingresos_este_mes = 0
+            gastos_fijos_este_mes = 0 
+            gastos_variables_este_mes_lista = [] 
+            fecha_nomina = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 1, 5)
+            transacciones.append([fecha_nomina.strftime('%Y-%m-%d'), "NOMINA", round(nomina_anual, 2)])
+            ingresos_este_mes += nomina_anual
+            if mes_idx == 6 or mes_idx == 12:
+                fecha_paga_extra = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 15, 25)
+                transacciones.append([fecha_paga_extra.strftime('%Y-%m-%d'), f"PAGA EXTRA {'VERANO' if mes_idx == 6 else 'NAVIDAD'}", round(paga_extra_anual, 2)])
+                ingresos_este_mes += paga_extra_anual
+            if random.random() < 0.1: 
+                monto_ing_extra = round(random.uniform(50, 400), 2)
+                fecha_ing_extra = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 10, 20)
+                transacciones.append([fecha_ing_extra.strftime('%Y-%m-%d'), "INGRESO EXTRAORDINARIO", monto_ing_extra])
+                ingresos_este_mes += monto_ing_extra
+            fecha_hipoteca = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 1, 5)
+            monto_hipoteca_actual = round(hipoteca_anual, 2)
+            transacciones.append([fecha_hipoteca.strftime('%Y-%m-%d'), "HIPOTECA", monto_hipoteca_actual])
+            gastos_fijos_este_mes += abs(monto_hipoteca_actual)
+            fecha_suministros = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 5, 10)
+            monto_suministros = round(suministros_base + random.uniform(-variacion_suministros, variacion_suministros), 2)
+            monto_suministros = -abs(monto_suministros) if monto_suministros > 0 else monto_suministros
+            transacciones.append([fecha_suministros.strftime('%Y-%m-%d'), "SUMINISTROS (LUZ, AGUA, GAS)", monto_suministros])
+            gastos_fijos_este_mes += abs(monto_suministros)
+            fecha_transferencia = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx, 25, 28)
+            monto_transferencia_actual = round(transferencia_ahorro_anual, 2)
+            monto_transferencia_actual = -abs(monto_transferencia_actual) if monto_transferencia_actual > 0 else monto_transferencia_actual
+            transacciones.append([fecha_transferencia.strftime('%Y-%m-%d'), "TRANSFERENCIA AHORRO", monto_transferencia_actual])
+            gastos_fijos_este_mes += abs(monto_transferencia_actual)
+            for _ in range(random.randint(3, 5)):
+                monto = round(random.uniform(supermercado_rango[0], supermercado_rango[1]), 2)
+                gastos_variables_este_mes_lista.append(("SUPERMERCADO", monto))
+            for _ in range(random.randint(4, 8)):
+                monto = round(random.uniform(restauracion_rango[0], restauracion_rango[1]), 2)
+                gastos_variables_este_mes_lista.append(("RESTAURACION", monto))
+            for _ in range(random.randint(2, 5)):
+                monto = round(random.uniform(gastos_varios_rango[0], gastos_varios_rango[1]), 2)
+                gastos_variables_este_mes_lista.append(("GASTOS VARIOS (OCIO, TRANSPORTE, ETC)", monto))
+            if (mes_idx == 7 or mes_idx == 8) and random.random() < 0.7: 
+                monto_vacaciones = round(vacaciones_gasto_base * random.uniform(0.8, 1.5), 2)
+                monto_vacaciones = -abs(monto_vacaciones) if monto_vacaciones > 0 else monto_vacaciones
+                gastos_variables_este_mes_lista.append(("GASTO VACACIONES", monto_vacaciones))
+            total_gastos_variables_original = sum(abs(g[1]) for g in gastos_variables_este_mes_lista)
+            margen_disponible_para_variables = ingresos_este_mes - gastos_fijos_este_mes - objetivo_saldo_final_mes_cuenta_corriente
+            margen_disponible_para_variables = max(0, margen_disponible_para_variables) 
+            factor_ajuste = 1.0
+            if total_gastos_variables_original > 0:
+                factor_ajuste = margen_disponible_para_variables / total_gastos_variables_original
+            factor_ajuste = min(1.0, factor_ajuste) 
+            for concepto_var, importe_var_original in gastos_variables_este_mes_lista:
+                importe_var_ajustado = round(- (abs(importe_var_original) * factor_ajuste), 2)
+                fecha_gasto_var = generar_fecha_aleatoria_mes(ano_actual_sim, mes_idx)
+                transacciones.append([fecha_gasto_var.strftime('%Y-%m-%d'), concepto_var, importe_var_ajustado])
+    df_final = pd.DataFrame(transacciones, columns=['Fecha', 'Concepto', 'Importe'])
+    df_final['Fecha'] = pd.to_datetime(df_final['Fecha']) 
+    df_final = df_final.sort_values(by='Fecha') 
+    df_final['Fecha'] = df_final['Fecha'].dt.strftime('%Y-%m-%d') 
+    df_final['Importe'] = df_final['Importe'].round(2)
+    directorio_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_completa_salida = os.path.join(directorio_script, nombre_archivo_salida)
+    try:
+        df_final.to_csv(ruta_completa_salida, index=False, float_format='%.2f')
+        print(f"Extracto bancario simulado generado y guardado en: {ruta_completa_salida}")
+    except Exception as e:
+        print(f"Error al guardar el CSV: {e}")
+
+if __name__ == "__main__":
+    generar_extracto_simulado(nombre_archivo_salida="extracto_bancario.csv", 
+                            anos_a_generar=10, 
+                            objetivo_saldo_final_mes_cuenta_corriente=25.0)
+</code></pre></div>
+
+                <h4><code>generarcsvsp500.py</code></h4>
+                <div class="code-block"><pre><code>import yfinance as yf
+import datetime
+
+ticker_symbol = "^GSPC"
+end_date = datetime.date.today()
+start_date = end_date - datetime.timedelta(days=10*365.25)
+data = yf.download(ticker_symbol, start=start_date, end=end_date, interval="1mo")
+
+if not data.empty:
+    data_cleaned = data[['Close']].copy()
+    data_cleaned.rename(columns={'Close': 'PrecioCierre'}, inplace=True)
+    data_cleaned.index.name = 'Fecha'
+    
+    nombre_archivo_csv = "sp500_historico.csv"
+    data_cleaned.to_csv(nombre_archivo_csv)
+    print(f"Datos guardados en {nombre_archivo_csv}")
+else:
+    print("No se pudieron descargar los datos.")
+</code></pre></div>
+
+                <h4><code>generarcsvbitcoin.py</code></h4>
+                <div class="code-block"><pre><code>import yfinance as yf
+import datetime
+
+ticker_symbol_btc = "BTC-USD"
+end_date_btc = datetime.date.today()
+start_date_btc = end_date_btc - datetime.timedelta(days=10*365.25)
+data_btc = yf.download(ticker_symbol_btc, start=start_date_btc, end=end_date_btc, interval="1mo")
+
+if not data_btc.empty:
+    data_btc_cleaned = data_btc[['Close']].copy()
+    data_btc_cleaned.rename(columns={'Close': 'PrecioCierre'}, inplace=True)
+    data_btc_cleaned.index.name = 'Fecha'
+    
+    nombre_archivo_csv_btc = "bitcoin_historico.csv"
+    data_btc_cleaned.to_csv(nombre_archivo_csv_btc)
+    print(f"Datos de Bitcoin guardados en {nombre_archivo_csv_btc}")
+else:
+    print(f"No se pudieron descargar los datos para {ticker_symbol_btc}.")
+</code></pre></div>
+            </div>
+
+            <div id="apendice-pyspark-main"> 
+                <h3 class="sub-step-title">9.2. Scripts PySpark del Notebook EMR</h3>
+                <h4>Celda 1: Configuración y Carga de Datos</h4>
+                <div class="code-block"><pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, lag, avg, expr, lit 
+from pyspark.sql.window import Window
+from pyspark.sql.types import DoubleType
+import numpy as np
+
+spark = SparkSession.builder.appName("SimuladorInversionMonteCarlo").getOrCreate()
+
+# --- Parámetros ---
+meta_financiera, plazo_anios, pct_sp500, pct_bitcoin = 60000.0, 5, 0.60, 0.10
+plazo_meses = int(plazo_anios * 12)
+pct_cash = 1.0 - pct_sp500 - pct_bitcoin
+num_simulaciones = 10000
+bucket_name = "mi-simulador-inversion-pablo-vidal" 
+
+# --- Rutas S3 (Concatenadas) ---
+s3_base = f"s3a://{bucket_name}"
+path_sp500 = f"{s3_base}/datos-mercado/sp500_historico.csv"
+path_bitcoin = f"{s3_base}/datos-mercado/bitcoin_historico.csv"
+path_ahorro_usuario = f"{s3_base}/procesado-glue/aporte_simulacion_base/" 
+path_params_mercado = f"{s3_base}/procesado-glue/parametros_mercado/" 
+
+path_out_dist = f"{s3_base}/procesado-emr/resultados_simulacion_distribucion/"
+path_out_median = f"{s3_base}/procesado-emr/resultados_simulacion_proyeccion_mediana/"
+path_out_summary = f"{s3_base}/procesado-emr/sumario_simulacion/"
+
+print(f"Spark: OK. Meta: {meta_financiera}, Plazo: {plazo_meses}m, S&P500:{pct_sp500:.0%}, BTC:{pct_bitcoin:.0%}, Cash:{pct_cash:.0%}")
+
+try:
+    print(f"Intentando cargar parámetros de mercado desde Glue: {path_params_mercado}")
+    df_params_glue = spark.read.option("header", "true").option("inferSchema", "true").csv(path_params_mercado)
+    
+    params_sp500_glue = df_params_glue.filter(col("Activo") == "SP500").first() # Asegúrate que el valor es "SP500" y no "S&P500"
+    mu_sp500 = params_sp500_glue["RetornoPromedioMensual_mu"]
+    sigma_sp500 = params_sp500_glue["VolatilidadMensual_sigma"]
+    print(f"S&P500 (desde Glue): μ={mu_sp500:.4%}, σ={sigma_sp500:.4%}")
+
+    params_bitcoin_glue = df_params_glue.filter(col("Activo") == "Bitcoin").first()
+    mu_bitcoin = params_bitcoin_glue["RetornoPromedioMensual_mu"]
+    sigma_bitcoin = params_bitcoin_glue["VolatilidadMensual_sigma"]
+    print(f"Bitcoin (desde Glue): μ={mu_bitcoin:.4%}, σ={sigma_bitcoin:.4%}")
+
+except Exception as e_glue_params:
+    print(f"No se pudieron cargar parámetros de mercado desde Glue ({e_glue_params}). Calculando directamente...")
+    def get_market_params(path, name):
+        df = spark.read.csv(path, header=True, inferSchema=True)
+        df = df.withColumn("PrecioCierre", col("PrecioCierre").cast(DoubleType())) \
+               .withColumn("Fecha", col("Fecha").cast("date")) 
+        df = df.withColumn("RetornoMensual", (col("PrecioCierre") - lag("PrecioCierre", 1).over(Window.orderBy("Fecha"))) / lag("PrecioCierre", 1).over(Window.orderBy("Fecha")))
+        stats = df.na.drop(subset=["RetornoMensual"]).select(avg("RetornoMensual").alias("mu"), expr("stddev_samp(RetornoMensual)").alias("sigma")).first()
+        if not stats or stats["mu"] is None or stats["sigma"] is None: raise ValueError(f"Params NA for {name}")
+        print(f"{name} (Calculado): μ={stats['mu']:.4%}, σ={stats['sigma']:.4%}")
+        return stats["mu"], stats["sigma"]
+    mu_sp500, sigma_sp500 = get_market_params(path_sp500, "S&P500")
+    mu_bitcoin, sigma_bitcoin = get_market_params(path_bitcoin, "Bitcoin")
+
+try:
+    ahorro_df = spark.read.option("header","true").option("inferSchema","true").csv(path_ahorro_usuario)
+    ahorro_mensual_usuario = ahorro_df.first()["AporteMensualBaseParaInversion"]
+    print(f"Ahorro Usuario: {ahorro_mensual_usuario:.2f}")
+except Exception as e_ahorro:
+    print(f"Error cargando ahorro del usuario: {e_ahorro}. Revisar S3 y job de Glue (aporte_simulacion_base).")
+    raise
+</code></pre></div>
+
+                <h4>Celda 2: Función de Simulación y Ejecución</h4>
+                <div class="code-block"><pre><code>import numpy as np 
+
+def run_simulation_trajectory(sim_id): 
+    local_mu_sp500, local_sigma_sp500 = mu_sp500, sigma_sp500
+    local_mu_bitcoin, local_sigma_bitcoin = mu_bitcoin, sigma_bitcoin
+    local_ahorro_mensual = ahorro_mensual_usuario
+    local_plazo_meses = plazo_meses
+    local_pct_sp500, local_pct_bitcoin, local_pct_cash = pct_sp500, pct_bitcoin, pct_cash
+
+    cap_sp, cap_btc, cap_cash = 0.0, 0.0, 0.0
+    trajectory = []
+    for month in range(1, int(local_plazo_meses) + 1): 
+        ret_sp = np.random.normal(local_mu_sp500, local_sigma_sp500)
+        ret_btc = np.random.normal(local_mu_bitcoin, local_sigma_bitcoin)
+        
+        cap_sp = max(0, (cap_sp + local_ahorro_mensual * local_pct_sp500) * (1 + ret_sp))
+        cap_btc = max(0, (cap_btc + local_ahorro_mensual * local_pct_bitcoin) * (1 + ret_btc))
+        cap_cash += local_ahorro_mensual * local_pct_cash
+        trajectory.append((sim_id, month, cap_cash, cap_sp, cap_btc, cap_cash + cap_sp + cap_btc))
+    return (cap_cash + cap_sp + cap_btc, trajectory) 
+
+simulation_ids_rdd = spark.sparkContext.parallelize(range(num_simulaciones), numSlices=100) 
+resultados_rdd = simulation_ids_rdd.map(run_simulation_trajectory).cache()
+df_final_capitals = resultados_rdd.map(lambda x: (x[0],)).toDF(["CapitalFinalSimulacion"])
+
+print(f"Simulación de {num_simulaciones} trayectorias completada.")
+df_final_capitals.show(5)
+</code></pre></div>
+                
+                <h4>Celda 3: Análisis y Guardado de Resultados</h4>
+                <div class="code-block"><pre><code>from pyspark.sql.types import StructType, StructField, IntegerType, DoubleType
+from pyspark.sql.functions import col, abs as _abs, expr 
+
+prob_exito = df_final_capitals.filter(col("CapitalFinalSimulacion") >= meta_financiera).count() / float(num_simulaciones) 
+print(f"Probabilidad de alcanzar meta ({meta_financiera}): {prob_exito:.2%}")
+
+median_capital = df_final_capitals.selectExpr(f"percentile_approx(CapitalFinalSimulacion, 0.5)").first()[0]
+median_trajectory_data_list = resultados_rdd.min(key=lambda x: abs(x[0] - median_capital))[1] 
+
+schema_trajectory = StructType([
+    StructField("SimID", IntegerType()), StructField("Mes", IntegerType()),
+    StructField("Capital_Cash", DoubleType()), StructField("Capital_SP500", DoubleType()),
+    StructField("Capital_Bitcoin", DoubleType()), StructField("Capital_Total_Mes", DoubleType())
+])
+df_median_trajectory = spark.createDataFrame(median_trajectory_data_list, schema_trajectory)
+print(f"Mediana Capital: {median_capital:.2f}. Trayectoria mediana (primeros 5 meses):")
+df_median_trajectory.show(5)
+
+df_summary = spark.createDataFrame(
+    [(meta_financiera, float(plazo_meses), pct_sp500, pct_bitcoin, pct_cash, prob_exito, float(num_simulaciones), median_capital)],
+    ["MetaFinanciera", "PlazoMeses", "Pct_SP500", "Pct_Bitcoin", "Pct_Cash", "ProbabilidadExito", "NumSimulaciones", "CapitalMedianoP50"]
+)
+print("Sumario de la Simulación:")
+df_summary.show(truncate=False)
+
+df_final_capitals.coalesce(1).write.mode("overwrite").option("header", "true").csv(path_out_dist)
+df_median_trajectory.coalesce(1).write.mode("overwrite").option("header", "true").csv(path_out_median)
+df_summary.coalesce(1).write.mode("overwrite").option("header", "true").csv(path_out_summary)
+print(f"Resultados guardados en S3 en las carpetas de: {path_out_dist}, {path_out_median}, {path_out_summary}")
+</code></pre></div>
+            </div>
+
+            <div id="apendice-sql-main"> 
+                <h3 class="sub-step-title">9.3. Scripts SQL de Transformación en AWS Glue</h3>
+                <h4>Job <code>Extracto_Bancario</code>:</h4>
+                <h5><code>Transformar_Extracto_Detallado</code></h5>
+                <div class="code-block"><pre><code>WITH TransaccionesConFecha AS (
+    SELECT
+        to_date(fecha, 'yyyy-MM-dd') AS FechaTransaccion,
+        LOWER(concepto) as concepto_lower,
+        CAST(importe AS DOUBLE) AS ImporteNumerico
+    FROM myDataSource 
+),
+CategorizacionDetallada AS (
+    SELECT
+        YEAR(FechaTransaccion) AS Anio,
+        MONTH(FechaTransaccion) AS Mes,
+        ImporteNumerico,
+        concepto_lower,
+        CASE 
+            WHEN ImporteNumerico > 0 THEN 'Ingreso_Operativo'
+            WHEN concepto_lower LIKE '%transferencia%ahorro%' THEN 'Transferencia_Ahorro_Saliente'
+            WHEN ImporteNumerico < 0 THEN 'Gasto_Operativo'
+            ELSE 'Otro'
+        END as TipoPrincipalMovimiento
+    FROM TransaccionesConFecha
+),
+AgregadosPorCategoriaMes AS (
+    SELECT
+        Anio, Mes,
+        SUM(CASE WHEN concepto_lower LIKE '%nomina%' AND ImporteNumerico > 0 THEN ImporteNumerico ELSE 0 END) AS Ing_Nomina,
+        SUM(CASE WHEN concepto_lower LIKE '%paga%extra%' AND ImporteNumerico > 0 THEN ImporteNumerico ELSE 0 END) AS Ing_PagaExtra,
+        SUM(CASE WHEN concepto_lower LIKE '%ingreso%extraordinario%' AND ImporteNumerico > 0 THEN ImporteNumerico ELSE 0 END) AS Ing_Extraordinario,
+        SUM(CASE WHEN concepto_lower LIKE '%hipoteca%' AND ImporteNumerico < 0 THEN ABS(ImporteNumerico) ELSE 0 END) AS Gasto_Hipoteca,
+        SUM(CASE WHEN concepto_lower LIKE '%suministros%' AND ImporteNumerico < 0 THEN ABS(ImporteNumerico) ELSE 0 END) AS Gasto_Suministros,
+        SUM(CASE WHEN concepto_lower LIKE '%supermercado%' AND ImporteNumerico < 0 THEN ABS(ImporteNumerico) ELSE 0 END) AS Gasto_Supermercado,
+        SUM(CASE WHEN concepto_lower LIKE '%restauracion%' AND ImporteNumerico < 0 THEN ABS(ImporteNumerico) ELSE 0 END) AS Gasto_Restauracion,
+        SUM(CASE 
+                WHEN ImporteNumerico < 0 AND NOT (concepto_lower LIKE '%hipoteca%') AND NOT (concepto_lower LIKE '%suministros%')
+                AND NOT (concepto_lower LIKE '%supermercado%') AND NOT (concepto_lower LIKE '%restauracion%')
+                AND NOT (concepto_lower LIKE '%vacaciones%') AND NOT (concepto_lower LIKE '%transferencia%ahorro%')
+                THEN ABS(ImporteNumerico) ELSE 0 
+            END) AS Gasto_OtrosVarios,
+        SUM(CASE WHEN concepto_lower LIKE '%vacaciones%' AND ImporteNumerico < 0 THEN ABS(ImporteNumerico) ELSE 0 END) AS Gasto_Vacaciones,
+        SUM(CASE WHEN TipoPrincipalMovimiento = 'Transferencia_Ahorro_Saliente' THEN ABS(ImporteNumerico) ELSE 0 END) AS Monto_TransferenciaAhorro
+    FROM CategorizacionDetallada GROUP BY Anio, Mes
+)
+SELECT
+    Anio, Mes,
+    COALESCE(Ing_Nomina, 0) AS Ing_Nomina, COALESCE(Ing_PagaExtra, 0) AS Ing_PagaExtra, COALESCE(Ing_Extraordinario, 0) AS Ing_Extraordinario,
+    (COALESCE(Ing_Nomina, 0) + COALESCE(Ing_PagaExtra, 0) + COALESCE(Ing_Extraordinario, 0)) AS Total_Ingresos_Mes,
+    COALESCE(Gasto_Hipoteca, 0) AS Gasto_Hipoteca, COALESCE(Gasto_Suministros, 0) AS Gasto_Suministros,
+    COALESCE(Gasto_Supermercado, 0) AS Gasto_Supermercado, COALESCE(Gasto_Restauracion, 0) AS Gasto_Restauracion,
+    COALESCE(Gasto_OtrosVarios, 0) AS Gasto_OtrosVarios, COALESCE(Gasto_Vacaciones, 0) AS Gasto_Vacaciones,
+    (COALESCE(Gasto_Hipoteca, 0) + COALESCE(Gasto_Suministros, 0) + COALESCE(Gasto_Supermercado, 0) + COALESCE(Gasto_Restauracion, 0) + COALESCE(Gasto_OtrosVarios, 0) + COALESCE(Gasto_Vacaciones, 0)) AS Total_Gastos_Operativos_Mes,
+    COALESCE(Monto_TransferenciaAhorro, 0) AS Monto_TransferenciaAhorro,
+    ((COALESCE(Ing_Nomina, 0) + COALESCE(Ing_PagaExtra, 0) + COALESCE(Ing_Extraordinario, 0)) - (COALESCE(Gasto_Hipoteca, 0) + COALESCE(Gasto_Suministros, 0) + COALESCE(Gasto_Supermercado, 0) + COALESCE(Gasto_Restauracion, 0) + COALESCE(Gasto_OtrosVarios, 0) + COALESCE(Gasto_Vacaciones, 0))) AS Ahorro_Potencial_Bruto_Mes,
+    ((COALESCE(Ing_Nomina, 0) + COALESCE(Ing_PagaExtra, 0) + COALESCE(Ing_Extraordinario, 0)) - (COALESCE(Gasto_Hipoteca, 0) + COALESCE(Gasto_Suministros, 0) + COALESCE(Gasto_Supermercado, 0) + COALESCE(Gasto_Restauracion, 0) + COALESCE(Gasto_OtrosVarios, 0) + COALESCE(Gasto_Vacaciones, 0)) - COALESCE(Monto_TransferenciaAhorro, 0)) AS Saldo_Neto_Cuenta_Corriente_Mes
+FROM AgregadosPorCategoriaMes ORDER BY Anio, Mes;
+</code></pre></div>
+                <h5><code>Calcular_Promedios_Gasto</code></h5>
+                <div class="code-block"><pre><code>SELECT 'Hipoteca' AS Categoria_Gasto, AVG(Gasto_Hipoteca) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_Hipoteca > 0
+UNION ALL
+SELECT 'Suministros' AS Categoria_Gasto, AVG(Gasto_Suministros) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_Suministros > 0
+UNION ALL
+SELECT 'Supermercado' AS Categoria_Gasto, AVG(Gasto_Supermercado) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_Supermercado > 0
+UNION ALL
+SELECT 'Restauracion' AS Categoria_Gasto, AVG(Gasto_Restauracion) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_Restauracion > 0
+UNION ALL
+SELECT 'OtrosVarios' AS Categoria_Gasto, AVG(Gasto_OtrosVarios) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_OtrosVarios > 0
+UNION ALL
+SELECT 'Vacaciones' AS Categoria_Gasto, AVG(Gasto_Vacaciones) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Gasto_Vacaciones > 0
+UNION ALL
+SELECT 'TransferenciaAhorro' AS Categoria_Gasto, AVG(Monto_TransferenciaAhorro) AS Promedio_Mensual_Gasto FROM myDataSource WHERE Monto_TransferenciaAhorro > 0;
+</code></pre></div>
+                <h5><code>Calcular_Aporte_Base_Simulacion</code></h5>
+                <div class="code-block"><pre><code>SELECT AVG(Monto_TransferenciaAhorro) AS AporteMensualBaseParaInversion
+FROM myDataSource 
+WHERE Monto_TransferenciaAhorro > 0;
+</code></pre></div>
+
+                <h4>Job <code>Job_Procesar_Datos_Mercado</code>:</h4>
+                <h5><code>SQL_Calc_Retornos_SP500</code></h5>
+                <div class="code-block"><pre><code>WITH PreciosOrdenados AS (
+    SELECT to_date(col0, 'yyyy-MM-dd') AS FechaPrecio, CAST(col1 AS DOUBLE) AS Precio 
+    FROM myDataSource ORDER BY FechaPrecio ASC
+), PreciosConAnterior AS (
+    SELECT FechaPrecio, Precio, LAG(Precio, 1, NULL) OVER (ORDER BY FechaPrecio ASC) AS PrecioAnterior
+    FROM PreciosOrdenados
+), RetornosMensuales AS (
+    SELECT FechaPrecio, Precio, PrecioAnterior,
+           CASE WHEN PrecioAnterior IS NOT NULL AND PrecioAnterior != 0 THEN (Precio - PrecioAnterior) / PrecioAnterior ELSE NULL END AS RetornoMensual
+    FROM PreciosConAnterior WHERE PrecioAnterior IS NOT NULL
+)
+SELECT 'SP500' as Activo, FechaPrecio, RetornoMensual FROM RetornosMensuales WHERE RetornoMensual IS NOT NULL;
+</code></pre></div>
+                <h5><code>SQL_Calc_Retornos_Bitcoin</code></h5>
+                <div class="code-block"><pre><code>WITH PreciosOrdenados AS (
+    SELECT to_date(col0, 'yyyy-MM-dd') AS FechaPrecio, CAST(col1 AS DOUBLE) AS Precio 
+    FROM myDataSource ORDER BY FechaPrecio ASC
+), PreciosConAnterior AS (
+    SELECT FechaPrecio, Precio, LAG(Precio, 1, NULL) OVER (ORDER BY FechaPrecio ASC) AS PrecioAnterior
+    FROM PreciosOrdenados
+), RetornosMensuales AS (
+    SELECT FechaPrecio, Precio, PrecioAnterior,
+           CASE WHEN PrecioAnterior IS NOT NULL AND PrecioAnterior != 0 THEN (Precio - PrecioAnterior) / PrecioAnterior ELSE NULL END AS RetornoMensual
+    FROM PreciosConAnterior WHERE PrecioAnterior IS NOT NULL
+)
+SELECT 'Bitcoin' as Activo, FechaPrecio, RetornoMensual FROM RetornosMensuales WHERE RetornoMensual IS NOT NULL;
+</code></pre></div>
+                <h5><code>SQL_Union_Retornos</code></h5>
+                <div class="code-block"><pre><code>SELECT Activo, FechaPrecio, RetornoMensual FROM myDataSourceSP500
+UNION ALL
+SELECT Activo, FechaPrecio, RetornoMensual FROM myDataSourceBitcoin;
+</code></pre></div>
+                <h5><code>SQL_Calc_Estadisticas_Mercado</code></h5>
+                <div class="code-block"><pre><code>SELECT
+    Activo,
+    AVG(RetornoMensual) AS RetornoPromedioMensual_mu,
+    STDDEV_SAMP(RetornoMensual) AS VolatilidadMensual_sigma
+FROM myDataSource 
+GROUP BY Activo;
+</code></pre></div>
+            </div>
+        </div>
+        
+        <div class="navigation-buttons">
+            <button id="prevBtn" onclick="prevSlide()">Anterior</button>
+            <span id="slideCounter" style="margin: 0 15px; font-weight: 500;"></span>
+            <button id="nextBtn" onclick="nextSlide()">Siguiente</button>
+        </div>
+
+        <footer>
+            <p>Proyecto Simulador de Inversión - Pablo Vidal Vidal - 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevButton = document.getElementById('prevBtn');
+        const nextButton = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            currentSlide = index;
+            updateNavButtons();
+            updateSlideCounter();
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) { // Evitar scroll al inicio
+                const presentationContainerTop = document.querySelector('.presentation-container').offsetTop;
+                window.scrollTo({ top: presentationContainerTop - 20, behavior: 'smooth' }); // Scroll al inicio del contenedor de presentación
+            }
+        }
+
+        function updateNavButtons() {
+            prevButton.disabled = currentSlide === 0;
+            nextButton.disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function updateSlideCounter() {
+            if (totalSlides > 0) {
+                 slideCounter.textContent = `Página ${currentSlide + 1} de ${totalSlides}`;
+            } else {
+                 slideCounter.textContent = "";
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 0 && slideNumber < totalSlides) {
+                 showSlide(slideNumber);
+            }
+        }
+
+        if (slides.length > 0) {
+            showSlide(0); 
+        }
+    </script>
+</body>
+</html>
