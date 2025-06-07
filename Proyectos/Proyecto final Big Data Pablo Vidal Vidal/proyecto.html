@@ -135,7 +135,7 @@
                 mediante la proyección de metas financieras alcanzables y simulación de 
                 MonteCarlo en los mercados S&P500 y Bitcoin</p>
                 <div class="cover-image-container">
-                    <img src="imagenes/Portada.jpg" alt="Portada del Proyecto - Casa sobre monedas">
+                    <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes\portada.jpg" alt="Portada del Proyecto - Casa sobre monedas">
                 </div>
                 <p class="author-info">
                     Autor: Pablo Vidal Vidal<br>
@@ -193,7 +193,7 @@
                 <h4><span class="emoji">🔗</span> DIAGRAMA DE ARQUITECTURA:</h4>
                 <p>(Se incluirá un diagrama de flujo visualizando <span class="emoji">➡️☁️</span>S3 -> <span class="emoji">🛠️</span>Glue -> <span class="emoji">☁️</span>S3 -> <span class="emoji">💻</span>EMR -> <span class="emoji">☁️</span>S3 -> <span class="emoji">📊</span>Power BI, detallando los tipos de datos en cada transición).</p>
                 <div class="image-container">
-                    <img src="imagenes/DiagramaArquitectura.png" alt="Diagrama de Arquitectura del Proyecto">
+                    <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/DiagramaArquitectura.png" alt="Diagrama de Arquitectura del Proyecto">
                     <span class="caption">Diagrama de Arquitectura General del Proyecto</span>
                 </div>
             </div>
@@ -214,7 +214,7 @@
                         <li>Nombre del bucket: <code>mi-simulador-inversion-pablo-vidal</code></li>
                     </ul>
                     <div class="image-container">
-                        <img src="imagenes/Imagen1.jpg" alt="Creación de Bucket S3">
+                        <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen1.jpg" alt="Creación de Bucket S3">
                         <span class="caption">Imagen 1: Creación del Bucket S3</span>
                     </div>
                     <p><strong>2. Crear Estructura de Carpetas dentro del Bucket:</strong></p>
@@ -227,7 +227,7 @@
                         <li><span class="emoji">🐍</span> <code>scripts/</code></li>
                     </ul>
                     <div class="image-container">
-                        <img src="imagenes/Imagen2.jpg" alt="Estructura de Carpetas en S3">
+                        <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen2.jpg" alt="Estructura de Carpetas en S3">
                         <span class="caption">Imagen 2: Estructura de Carpetas en el Bucket S3</span>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
                     <ul>
                         <li><strong>Extracto Bancario (<code>extracto_bancario.csv</code>):</strong> Generado con script Python <code>generarextractobancario.py</code>.</li>
                          <div class="image-container">
-                             <img src="imagenes/Imagen3.jpg" alt="Archivos en S3 datos-entrada">
+                             <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen3.jpg" alt="Archivos en S3 datos-entrada">
                              <span class="caption">Imagen 3: Archivo extracto_bancario.csv en S3</span>
                          </div>
                         <li><strong>Datos Históricos S&P 500 (<code>sp500_historico.csv</code>):</strong> Obtenido de Yahoo Finance vía script <code>generarcsvsp500.py</code>.</li>
@@ -265,20 +265,20 @@
             <div class="actions-block">
                  <h4 class="sub-step-title">3.1. Objetivo y Acciones (Crawler, Job, Transformaciones SQL)</h4>
                  <p><strong>1. Crawler <code>crawler_extracto_bancario</code> (Imagen 4)</strong></p>
-                 <div class="image-container"><img src="imagenes/Imagen4.jpg" alt="Crawler Extracto"><span class="caption">Imagen 4</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen4.jpg" alt="Crawler Extracto"><span class="caption">Imagen 4</span></div>
                  <p><strong>2. Tabla en Data Catalog (Imagen 5)</strong></p>
-                 <div class="image-container"><img src="imagenes/Imagen5.jpg" alt="Tabla Extracto"><span class="caption">Imagen 5</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen5.jpg" alt="Tabla Extracto"><span class="caption">Imagen 5</span></div>
                  <p><strong>3. Job Glue Studio <code>Job_Extracto_Bancario</code> (Imagen 6)</strong></p>
-                 <div class="image-container"><img src="imagenes/Imagen6.jpg" alt="Job Extracto"><span class="caption">Imagen 6</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen6.jpg" alt="Job Extracto"><span class="caption">Imagen 6</span></div>
                  <p>   Transformación <code>Transformar_Extracto_detallado</code> (Imagen 7), Destino S3 (Imagen 8)</p>
-                 <div class="image-container"><img src="imagenes/Imagen7.jpg" alt="SQL Extracto Detalle"><span class="caption">Imagen 7</span></div>
-                 <div class="image-container"><img src="imagenes/Imagen8.jpg" alt="Destino Extracto Detalle"><span class="caption">Imagen 8</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen7.jpg" alt="SQL Extracto Detalle"><span class="caption">Imagen 7</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen8.jpg" alt="Destino Extracto Detalle"><span class="caption">Imagen 8</span></div>
                  <p>   Transformación <code>Calcular_Promedios_Gasto</code> (Imagen 9), Destino S3 (Imagen 10)</p>
-                 <div class="image-container"><img src="imagenes/Imagen9.jpg" alt="SQL Promedios Gasto"><span class="caption">Imagen 9</span></div>
-                 <div class="image-container"><img src="imagenes/Imagen10.jpg" alt="Destino Promedios Gasto"><span class="caption">Imagen 10</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen9.jpg" alt="SQL Promedios Gasto"><span class="caption">Imagen 9</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen10.jpg" alt="Destino Promedios Gasto"><span class="caption">Imagen 10</span></div>
                  <p>   Transformación <code>Calcular_Aporte_Base_Simulacion</code> (Imagen 11), Destino S3 (Imagen 12)</p>
-                 <div class="image-container"><img src="imagenes/Imagen11.jpg" alt="SQL Aporte Base"><span class="caption">Imagen 11</span></div>
-                 <div class="image-container"><img src="imagenes/Imagen12.jpg" alt="Destino Aporte Base"><span class="caption">Imagen 12</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen11.jpg" alt="SQL Aporte Base"><span class="caption">Imagen 11</span></div>
+                 <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen12.jpg" alt="Destino Aporte Base"><span class="caption">Imagen 12</span></div>
             </div>
             <div id="paso2-salidas"> 
                 <h4 class="sub-step-title">3.2. Salidas: Detalle Mensual, Promedios de Gasto, Aporte para Simulación</h4>
@@ -299,16 +299,16 @@
             <div class="actions-block">
                  <h4 class="sub-step-title">4.1. Objetivo y Acciones (Crawlers, Job, Transformaciones SQL)</h4>
                 <p><strong>1. Crawlers <code>crawler_sp500_historico</code> y <code>crawler_bitcoin_historico</code> (Imagen 13)</strong></p>
-                <div class="image-container"><img src="imagenes/Imagen13.jpg" alt="Crawlers Mercado"><span class="caption">Imagen 13</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen13.jpg" alt="Crawlers Mercado"><span class="caption">Imagen 13</span></div>
                 <p><strong>2. Tablas en Data Catalog (Imagen 14)</strong></p>
-                <div class="image-container"><img src="imagenes/Imagen14.jpg" alt="Tablas Mercado"><span class="caption">Imagen 14</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen14.jpg" alt="Tablas Mercado"><span class="caption">Imagen 14</span></div>
                 <p><strong>3. Job Glue Studio <code>job_procesar_datos_mercado</code> (Imagen 15)</strong></p>
-                <div class="image-container"><img src="imagenes/Imagen15.jpg" alt="Job Datos Mercado"><span class="caption">Imagen 15</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen15.jpg" alt="Job Datos Mercado"><span class="caption">Imagen 15</span></div>
                 <p>   Flujo Bitcoin (Imagen 16), Unión Retornos (Imagen 17), Cálculo Estadísticas (Imagen 18), Destino S3 (Imagen 19)</p>
-                <div class="image-container"><img src="imagenes/Imagen16.jpg" alt="SQL Retornos Bitcoin"><span class="caption">Imagen 16</span></div>
-                <div class="image-container"><img src="imagenes/Imagen17.jpg" alt="SQL Unión Retornos"><span class="caption">Imagen 17</span></div>
-                <div class="image-container"><img src="imagenes/Imagen18.jpg" alt="SQL Estadísticas Mercado"><span class="caption">Imagen 18</span></div>
-                <div class="image-container"><img src="imagenes/Imagen19.jpg" alt="Destino Parámetros Mercado"><span class="caption">Imagen 19</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen16.jpg" alt="SQL Retornos Bitcoin"><span class="caption">Imagen 16</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen17.jpg" alt="SQL Unión Retornos"><span class="caption">Imagen 17</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen18.jpg" alt="SQL Estadísticas Mercado"><span class="caption">Imagen 18</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen19.jpg" alt="Destino Parámetros Mercado"><span class="caption">Imagen 19</span></div>
             </div>
              <div id="paso3-salidas">
                 <h4 class="sub-step-title">4.2. Salida: Parámetros de Mercado (μ y σ para S&P 500 y Bitcoin)</h4>
@@ -328,19 +328,19 @@
             </div>
              <h4 class="sub-step-title">5.1. Objetivo y Configuración del Entorno EMR (Clúster, Studio, Notebook)</h4>
              <p><strong>1. Crear Clúster <code>Clusterparamisimulador</code> (Imagen 20)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen20.jpg" alt="Creación Clúster EMR"><span class="caption">Imagen 20</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen20.jpg" alt="Creación Clúster EMR"><span class="caption">Imagen 20</span></div>
              <p><strong>2. Crear EMR Studio y Workspace (Imagen 21)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen21.jpg" alt="EMR Studio y Workspace"><span class="caption">Imagen 21</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen21.jpg" alt="EMR Studio y Workspace"><span class="caption">Imagen 21</span></div>
              <p><strong>3. Asociar Clúster y Lanzar Notebook (Imagen 22)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen22.jpg" alt="Lanzar Notebook EMR"><span class="caption">Imagen 22</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen22.jpg" alt="Lanzar Notebook EMR"><span class="caption">Imagen 22</span></div>
              
              <h4 class="sub-step-title">5.2. Desarrollo en Notebook PySpark:</h4>
              <p><strong>5.2.1. Configuración y Carga de Datos (Celda 1) (Imagen 23)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen23.jpg" alt="EMR Notebook Celda 1"><span class="caption">Imagen 23</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen23.jpg" alt="EMR Notebook Celda 1"><span class="caption">Imagen 23</span></div>
              <p><strong>5.2.2. Ejecución de Simulaciones (Celda 2) (Imagen 24)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen24.jpg" alt="EMR Notebook Celda 2"><span class="caption">Imagen 24</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen24.jpg" alt="EMR Notebook Celda 2"><span class="caption">Imagen 24</span></div>
              <p><strong>5.2.3. Análisis y Almacenamiento de Resultados (Celda 3) (Imagen 25)</strong></p>
-             <div class="image-container"><img src="imagenes/Imagen25.jpg" alt="EMR Notebook Celda 3"><span class="caption">Imagen 25</span></div>
+             <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen25.jpg" alt="EMR Notebook Celda 3"><span class="caption">Imagen 25</span></div>
              <div class="summary-block">
                 <p><span class="emoji">🔑</span> Resultado Clave: ¡Archivos listos en S3 con toda la información que Power BI necesita! <span class="emoji">📉📈✅</span></p>
             </div>
@@ -351,7 +351,7 @@
             <h2 class="step-title">6. <span class="emoji">💾</span>PASO 5: COMPROBACIÓN DE RESULTADOS EN S3</h2>
             <p>Verificación de los archivos CSV generados en S3: <code>resultados_simulacion_distribucion.csv</code>, <code>resultados_simulacion_proyeccion_mediana.csv</code>, <code>sumario_simulacion.csv</code>.</p>
             <div class="image-container">
-                <img src="imagenes/Imagen26.jpg" alt="Resultados EMR en S3">
+                <img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen26.jpg" alt="Resultados EMR en S3">
                 <span class="caption">Imagen 26: Archivos CSV resultantes de la simulación en S3</span>
             </div>
         </div>
@@ -369,9 +369,9 @@
             <div id="paso6-dashboard">
                 <h4 class="sub-step-title">7.2. Diseño del Dashboard (KPIs, Gráficos de Simulación e Históricos)</h4>
                 <p><strong>Vista 1: Simulación Personalizada (Imagen 27)</strong></p>
-                <div class="image-container"><img src="imagenes/Imagen27.jpg" alt="Power BI Dashboard Vista 1"><span class="caption">Imagen 27</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen27.jpg" alt="Power BI Dashboard Vista 1"><span class="caption">Imagen 27</span></div>
                 <p><strong>Vista 2: Evolución Histórica de Inversiones (Imagen 28)</strong></p>
-                <div class="image-container"><img src="imagenes/Imagen28.jpg" alt="Power BI Dashboard Vista 2"><span class="caption">Imagen 28</span></div>
+                <div class="image-container"><img src="Proyectos\Proyecto final Big Data Pablo Vidal Vidal\imagenes/Imagen28.jpg" alt="Power BI Dashboard Vista 2"><span class="caption">Imagen 28</span></div>
             </div>
         </div>
 
