@@ -7,8 +7,8 @@ from geopy.distance import geodesic
 import time
 
 # Tu clave de API de Google
-API_KEY = "AIzaSyCwoafv-rlTpl0Tdk7hgx8QeE5yLfc-nAM"
-OPENCAGE_API_KEY = "1863d83ce43f45ee9a776e1908abff47"  # Asegúrate de ingresar tu propia clave de OpenCage
+API_KEY = ""
+OPENCAGE_API_KEY = ""  # Asegúrate de ingresar tu propia clave de OpenCage
 
 # Configuración de la página
 st.set_page_config(
