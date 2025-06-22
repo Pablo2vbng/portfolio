@@ -19,6 +19,7 @@
             --text-color: #212529;
             --card-bg: #ffffff;
             --border-color: #dee2e6;
+            --danger-color: #d90429;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
@@ -121,6 +122,7 @@
         .optimistic-case { border-color: #2a9d8f; } .optimistic-case h3, .optimistic-case .final-amount { color: #2a9d8f; }
         .average-case { border-color: #e9c46a; } .average-case h3, .average-case .final-amount { color: #e9c46a; }
         .pessimistic-case { border-color: #f4a261; } .pessimistic-case h3, .pessimistic-case .final-amount { color: #f4a261; }
+        .inaction-case { border-color: #6c757d; } .inaction-case h3, .inaction-case .final-amount { color: #6c757d; }
 
         #results-explanation { background: #e9ecef; padding: 30px; border-radius: 10px; border-top: 3px solid var(--accent-color); margin-top: 40px; }
         #results-explanation h3 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 15px;}
@@ -234,12 +236,22 @@
                                 <li><span>Ganancias Totales:</span> <strong id="pessimistic-total-gains"></strong></li>
                             </ul>
                         </div>
+                        <!-- NUEVO ESCENARIO: INACCIÓN -->
+                        <div class="result-scenario inaction-case">
+                            <h3>Ahorro (sin invertir)</h3>
+                            <span class="final-amount" id="inaction-case-amount"></span>
+                            <ul class="details-list">
+                                <li><span>Poder de Compra Real:</span> <strong id="inaction-case-real"></strong></li>
+                                <li><span>Total Aportado:</span> <strong id="inaction-total-invested"></strong></li>
+                                <li><span>Pérdida por Inflación:</span> <strong id="inaction-inflation-loss" style="color:var(--danger-color);"></strong></li>
+                            </ul>
+                        </div>
                     </div>
                     <div id="results-explanation">
                         <h3>Interpretación de Resultados</h3>
-                        <p><strong>Escenarios:</strong> Las proyecciones se basan en el rendimiento histórico del fondo, pero el futuro es incierto. Por eso, mostramos un rango de posibilidades: un escenario promedio (basado en el histórico), uno optimista (+2%) y uno pesimista (-2%).</p>
-                        <p><strong>Poder de Compra Real:</strong> Esta es la cifra más importante. Muestra cuánto valdría tu dinero en el futuro, ajustado por una inflación anual del 2.5%. 100.000€ hoy no compran lo mismo que 100.000€ en 20 años.</p>
-                        <p><strong>Ganancias Totales:</strong> Es el beneficio neto, la magia del interés compuesto. Muestra la diferencia entre el valor final de tu portafolio y el dinero que tú aportaste.</p>
+                        <p><strong>Escenarios de Inversión:</strong> Las proyecciones se basan en el rendimiento histórico del fondo, pero el futuro es incierto. Por eso, mostramos un rango de posibilidades: un escenario promedio (basado en el histórico), uno optimista (+2%) y uno pesimista (-2%).</p>
+                        <p><strong>Poder de Compra Real:</strong> ¡Esta es la cifra clave! Muestra cuánto valdría tu dinero en el futuro, ajustado por una inflación anual del 2.5%. 100.000€ hoy no compran lo mismo que 100.000€ en 20 años.</p>
+                        <p><strong>Escenario "Ahorro":</strong> Esto demuestra el coste de la inacción. Muestra qué le pasaría a tu dinero si simplemente lo guardaras. La "Pérdida por Inflación" es el poder adquisitivo que se desvanece con el tiempo.</p>
                     </div>
                 </div>
             </div>
@@ -282,9 +294,7 @@
             function populateFunds() {
                 fundsData.forEach((fund, index) => {
                     const tag = document.createElement('div');
-                    tag.className = 'fund-tag';
-                    tag.textContent = fund.name;
-                    tag.dataset.index = index;
+                    tag.className = 'fund-tag'; tag.textContent = fund.name; tag.dataset.index = index;
                     tag.addEventListener('click', () => selectFund(tag, index));
                     fundListContainer.appendChild(tag);
                 });
@@ -292,35 +302,27 @@
 
             function selectFund(tag, index) {
                 document.querySelectorAll('.fund-tag').forEach(t => t.classList.remove('selected'));
-                tag.classList.add('selected');
-                selectedFundIndex = index;
+                tag.classList.add('selected'); selectedFundIndex = index;
                 const fund = fundsData[index];
                 infoDisplay.innerHTML = `<h3>${fund.fullName}</h3><p>${fund.desc}</p><p class="performance">Rendimiento 20 años: ~${fund.rates[1]}% anual</p>`;
-                infoDisplay.classList.add('visible');
-                submitButton.disabled = false;
+                infoDisplay.classList.add('visible'); submitButton.disabled = false;
             }
 
-            investmentToggle.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    dcaInputGroup.classList.toggle('hidden', e.target.value !== 'dca');
-                    lumpSumInputGroup.classList.toggle('hidden', e.target.value !== 'lumpsum');
-                });
-            });
+            investmentToggle.forEach(radio => radio.addEventListener('change', (e) => {
+                dcaInputGroup.classList.toggle('hidden', e.target.value !== 'dca');
+                lumpSumInputGroup.classList.toggle('hidden', e.target.value !== 'lumpsum');
+            }));
 
             function handleFormSubmit(event) {
                 event.preventDefault();
-                if (selectedFundIndex === null) {
-                    alert("Por favor, selecciona un fondo para continuar."); return;
-                }
+                if (selectedFundIndex === null) { alert("Por favor, selecciona un fondo para continuar."); return; }
                 const years = parseInt(document.getElementById('years').value);
                 const investmentType = document.querySelector('input[name="investment-type"]:checked').value;
                 const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
                 const lumpSumAmount = parseFloat(document.getElementById('lump-sum-amount').value);
-
                 const totalInvested = investmentType === 'dca' ? monthlyContribution * 12 * years : lumpSumAmount;
                 const fund = fundsData[selectedFundIndex];
                 const [pessimisticRate, averageRate, optimisticRate] = fund.rates.map(r => r / 100);
-
                 let best, average, worst;
                 if (investmentType === 'dca') {
                     best = calculateDCA(monthlyContribution, years, optimisticRate);
@@ -354,6 +356,13 @@
                 document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(worst, years));
                 document.getElementById('pessimistic-total-invested').textContent = formatCurrency(totalInvested);
                 document.getElementById('pessimistic-total-gains').textContent = formatCurrency(worst - totalInvested);
+                
+                // Inaction case
+                document.getElementById('inaction-case-amount').textContent = formatCurrency(totalInvested);
+                const inactionRealValue = adjustForInflation(totalInvested, years);
+                document.getElementById('inaction-case-real').textContent = formatCurrency(inactionRealValue);
+                document.getElementById('inaction-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('inaction-inflation-loss').textContent = formatCurrency(inactionRealValue - totalInvested);
 
                 resultsContainer.style.display = 'block';
                 resultsContainer.scrollIntoView({ behavior: 'smooth' });
