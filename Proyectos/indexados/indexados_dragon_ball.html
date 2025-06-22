@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBZ: La Búsqueda Financiera de Zeus</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --db-orange: #f97300;
+            --db-blue: #005b9a;
+            --db-gold: #ffc900;
+            --db-red: #d92b2b;
+            --bg-light: #e6f3ff;
+            --text-dark: #2c3e50;
+            --container-bg: #ffffff;
+            --freezer-purple: #9b59b6;
+            --goku-color: #f39c12;
+            --gohan-color: #c0392b;
+            --vegeta-color: #2980b9;
+        }
+
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 5px var(--db-gold)); }
+            50% { filter: drop-shadow(0 0 15px var(--db-gold)); }
+            100% { filter: drop-shadow(0 0 5px var(--db-gold)); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80"><path fill="%23d4eaff" fill-opacity="0.4" d="M40 40c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-18c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM20 20c5.523 0 10-4.477 10-10S25.523 0 20 0s-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM60 20c5.523 0 10-4.477 10-10S65.523 0 60 0s-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM20 60c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM60 60c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>');
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.1);
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+            border: 4px solid var(--db-blue);
+        }
+
+        h1, .section-title {
+            font-family: 'Luckiest Guy', cursive;
+            color: var(--db-orange);
+            text-shadow: 2px 2px 0 var(--db-blue), 4px 4px 0 rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+        }
+        h1 { font-size: 3.8rem; margin: 0 0 10px 0; }
+        .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+        strong { color: var(--db-blue); font-weight: 700; }
+
+        .dragonball-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .dragonball-card {
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+        }
+        .dragonball-card img { width: 100%; border-radius: 50%; display: block;}
+        .dragonball-card:hover { transform: scale(1.1); }
+        .dragonball-card.selected { animation: pulse-glow 1.5s infinite; transform: scale(1.1); }
+        .dragonball-card.dimmed { opacity: 0.6; filter: grayscale(50%); }
+
+        .form-section { background-color: rgba(0, 91, 154, 0.1); padding: 30px; border-radius: 18px; border: 2px dashed var(--db-blue); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--db-blue); }
+        input[type=number] {
+            width: 100%; padding: 14px 16px; border: 2px solid var(--db-blue); border-radius: 12px;
+            box-sizing: border-box; font-size: 1rem; color: var(--text-dark);
+            transition: border-color .2s, box-shadow .2s;
+        }
+        input[type=number]:focus { outline: 0; border-color: var(--db-orange); box-shadow: 0 0 10px rgba(249, 115, 0, .5); }
+
+        button {
+            width: 100%; padding: 16px 40px; background: var(--db-orange);
+            color: #fff; border: none; border-radius: 12px; font-family: 'Luckiest Guy', cursive;
+            font-size: 1.5rem; cursor: pointer; transition: transform .2s, box-shadow .2s, background-color .2s, opacity 0.3s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        button:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 5px 15px rgba(217, 43, 43, .4); background-color: var(--db-red); }
+        button:disabled { background-color: #aaa; color: #eee; cursor: not-allowed; }
+
+        #results-container { margin-top: 40px; display: none; opacity: 0; }
+        #results-container.visible { display: block; opacity: 1; transition: opacity .5s ease-out; }
+        
+        .section-title { font-size: 2.8rem; margin-bottom: 20px; }
+        
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 18px; text-align: center; border-width: 3px; border-style: solid; transition: transform 0.3s; display: flex; flex-direction: column; background-color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .result-scenario:hover { transform: translateY(-10px); }
+        
+        .character-portrait { height: 120px; margin: 0 auto 15px; display: block; object-fit: contain; }
+        .result-scenario h3 { font-family: 'Luckiest Guy', cursive; margin-top: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; }
+        .real-value { font-size: 1.1rem; color: #555; margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #777; }
+
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed #ccc; }
+        .details-list strong { color: var(--text-dark); }
+
+        .goku-case { border-color: var(--goku-color); } .goku-case h3 { color: var(--goku-color); } .goku-case .final-amount { color: var(--goku-color); }
+        .gohan-case { border-color: var(--gohan-color); } .gohan-case h3 { color: var(--gohan-color); } .gohan-case .final-amount { color: var(--gohan-color); }
+        .vegeta-case { border-color: var(--vegeta-color); } .vegeta-case h3 { color: var(--vegeta-color); } .vegeta-case .final-amount { color: var(--vegeta-color); }
+        .freezer-case { border-color: var(--freezer-purple); } .freezer-case h3 { color: var(--freezer-purple); } .freezer-case .final-amount { color: var(--freezer-purple); }
+
+        .guide-section { margin-top: 50px; padding: 20px; border-top: 4px solid var(--db-blue); text-align: left; line-height: 1.7; background-color: #fff; border-radius: 18px; }
+        .guide-section h3 { font-family: 'Luckiest Guy', cursive; font-size: 2rem; color: var(--db-blue); margin-bottom: 10px; }
+        .guide-section p { margin-bottom: 20px; }
+
+        footer { margin-top: 40px; font-size: .9rem; color: #555; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>La Búsqueda de las Bolas de Dragón</h1>
+        <p class="subtitle">
+            ¡Hola, Guerrero Z! Tu misión es encontrar las <strong>7 Bolas de Dragón Financieras</strong>. Cada una representa una poderosa estrategia de inversión. Reúnelas para invocar a Shenron y pedir el deseo de la prosperidad. Pero cuidado, el tirano <strong>Freezer (la Inacción)</strong> quiere impedir que alcances tu objetivo. ¡No dejes que destruya tu futuro!
+        </p>
+        
+        <div id="dragonball-section">
+            <h2 class="section-title">Paso 1: Elige una Bola de Dragón</h2>
+            <div class="dragonball-grid" id="dragonball-grid-container"></div>
+        </div>
+        
+        <div class="form-section">
+            <form id="calculator-form">
+                 <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 20px;">Paso 2: Define tu Entrenamiento</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="monthly-contribution">Ki mensual (€)</label>
+                        <input type="number" id="monthly-contribution" name="contribution" required min="1" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="years">Años de Entrenamiento</label>
+                        <input type="number" id="years" name="years" required min="1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label> </label>
+                        <button type="submit" id="submit-button" disabled>¡Invocar a Shenron!</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div id="results-container">
+            <h2 class="section-title">¡Shenron ha aparecido!</h2>
+            <div class="scenarios-grid">
+                 <div class="result-scenario goku-case">
+                    <img id="goku-img" class="character-portrait" alt="Goku Super Saiyan">
+                    <h3>¡Nivel Super Saiyan! (Goku)</h3>
+                    <span class="final-amount" id="best-case-amount"></span>
+                    <div class="real-value">
+                        <span id="best-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Ki ganado:</span> <strong id="best-total-interest"></strong></li>
+                        <li><span>Ki invertido:</span> <strong id="best-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario gohan-case">
+                    <img id="gohan-img" class="character-portrait" alt="Gohan">
+                    <h3>Potencial Liberado (Gohan)</h3>
+                    <span class="final-amount" id="average-case-amount"></span>
+                    <div class="real-value">
+                        <span id="average-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                     <ul class="details-list">
+                        <li><span>Ki ganado:</span> <strong id="average-total-interest"></strong></li>
+                        <li><span>Ki invertido:</span> <strong id="average-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario vegeta-case">
+                    <img id="vegeta-img" class="character-portrait" alt="Vegeta">
+                    <h3>¡Poder Saiyan! (Vegeta)</h3>
+                    <span class="final-amount" id="worst-case-amount"></span>
+                    <div class="real-value">
+                        <span id="worst-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Ki ganado:</span> <strong id="worst-total-interest"></strong></li>
+                        <li><span>Ki invertido:</span> <strong id="worst-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario freezer-case">
+                    <img id="freezer-img" class="character-portrait" alt="Freezer">
+                    <h3>Derrotado por Freezer</h3>
+                    <span class="final-amount" id="bank-case-amount"></span>
+                    <div class="real-value">
+                         <span id="bank-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Ki ganado:</span> <strong>0,00 €</strong></li>
+                        <li><span>Ki invertido:</span> <strong id="bank-total-invested"></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="guide-section">
+            <h2 class="section-title">Guía del Guerrero Z</h2>
+            <h3>El Enemigo Silencioso: la Inflación (Freezer)</h3>
+            <p>
+                Imagina que <strong>Freezer</strong>, en lugar de destruir planetas, destruye el valor de tu dinero. ¡Eso es la <strong>inflación</strong>! Si dejas tu dinero quieto sin entrenar (en el banco), Freezer lo irá debilitando año tras año. Lo que hoy te compra una armadura Saiyan, en el futuro apenas te comprará unas botas. Por eso, no hacer nada es dejar que Freezer gane.
+            </p>
+            <h3>Las Bolas de Dragón (Fondos Indexados)</h3>
+            <p>
+                Intentar vencer a Freezer tú solo eligiendo a un único Guerrero Z (una sola empresa) es muy arriesgado. ¿Y si ese guerrero pierde? Un <strong>Fondo Indexado</strong> (una Bola de Dragón) te permite luchar con el poder de <strong>un ejército entero</strong>. La Bola de 4 estrellas (S&P 500) te une a los 500 guerreros más fuertes de América. Si el ejército gana, tú ganas. Es la forma más inteligente y segura de aumentar tu Ki financiero y cumplir tus deseos.
+            </p>
+        </div>
+
+        <footer>
+            Creado para el Guerrero Z  por <strong>Pablo Vidal Vidal pablo2vbngdaw@gmail.com </strong>.
+            <br>Las simulaciones consideran que el poder de Freezer (inflación) es de un 2.2% anual. Esto es una guía de entrenamiento de la Capsule Corp.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedDragonBallIndex = null;
+
+                const characters = {
+                    goku: 'https://www.teleadhesivo.com/es/img/drball027-png/folder/products-detalle-png/vinilos-infantiles-dragon-ball-son-goku-ataque-ii.png',
+                    gohan: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMQeXLRJQgmwpgqaBS6PxPw7K7PS65z7XOsg&s',
+                    vegeta: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO4oY6_HM8mBiKLGxIRwhnM-KGFU6waUUFVw&s',
+                    freezer: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfj4h53-sjnyPZ-P_Btv9T1f8xdN9aBxPeyg&s'
+                };
+                
+                const dragonBallsData = [
+                    { stars: 1, fund: 'MSCI World', rates: [8.5, 10.5, 5.5], img: 'https://i.pinimg.com/736x/8a/e8/9a/8ae89a90e576104183339ca5f042757e.jpg' },
+                    { stars: 2, fund: 'Nasdaq 100', rates: [13.5, 16.5, 9.5], img: 'https://i.pinimg.com/736x/bb/87/d5/bb87d58722646ba1b2902c3c2924aec2.jpg' },
+                    { stars: 3, fund: 'MSCI EM', rates: [7.5, 11.5, 4.0], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b0801584-14e4-4a5e-9006-26be51081bbb/d74n36l-ead9c7a9-a42b-41e6-bad6-c35f11294afc.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2IwODAxNTg0LTE0ZTQtNGE1ZS05MDA2LTI2YmU1MTA4MWJiYlwvZDc0bjM2bC1lYWQ5YzdhOS1hNDJiLTQxZTYtYmFkNi1jMzVmMTEyOTRhZmMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.qpFEMjp0ulzLISVvwZBaUbIsQZ3eLNgDRaIq_VDp-aI' },
+                    { stars: 4, fund: 'S&P 500', rates: [9.8, 12.0, 6.5], img: 'https://i.pinimg.com/736x/95/83/c9/9583c9d095deca6bbc88e1a7c27fc1a0.jpg' },
+                    { stars: 5, fund: 'Small Caps', rates: [11.0, 15.0, 6.0], img: 'https://i.pinimg.com/736x/13/19/62/1319628426fa9d3783705daf7db525f8.jpg' },
+                    { stars: 6, fund: 'High Dividend', rates: [7.0, 9.0, 4.5], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b0801584-14e4-4a5e-9006-26be51081bbb/d74n3lz-dbb378eb-551c-46eb-b09f-0a3366cb6174.png/v1/fill/w_600,h_600/esfera_del_dragon_6_estrellas_by_vaer2000_d74n3lz-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjAwIiwicGF0aCI6IlwvZlwvYjA4MDE1ODQtMTRlNC00YTVlLTkwMDYtMjZiZTUxMDgxYmJiXC9kNzRuM2x6LWRiYjM3OGViLTU1MWMtNDZlYi1iMDlmLTBhMzM2NmNiNjE3NC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.jCmPEkZjISTzB3BtcKMMapv1jCU7BKckT0X0j12_UHQ' },
+                    { stars: 7, fund: 'Global Bonds', rates: [4.0, 5.5, 2.5], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b0801584-14e4-4a5e-9006-26be51081bbb/d74n3rt-f04fafab-eaf0-4364-8eb3-8e43debbcfa2.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2IwODAxNTg0LTE0ZTQtNGE1ZS05MDA2LTI2YmU1MTA4MWJiYlwvZDc0bjNydC1mMDRmYWZhYi1lYWYwLTQzNjQtOGViMy04ZTQzZGViYmNmYTIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.8zBC2BKWdUFpGPrxsC36p0Reki5W7utQGIScvpS9Glw' },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) {
+                    if (annualRate === 0) {
+                        return monthlyContribution * years * 12;
+                    }
+                    const monthlyRate = annualRate / 12;
+                    const numMonths = years * 12;
+                    let futureValue = 0;
+                    for (let i = 0; i < numMonths; i++) {
+                        futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate);
+                    }
+                    return futureValue;
+                }
+
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+
+                function populatePage() {
+                    document.getElementById('goku-img').src = characters.goku;
+                    document.getElementById('gohan-img').src = characters.gohan;
+                    document.getElementById('vegeta-img').src = characters.vegeta;
+                    document.getElementById('freezer-img').src = characters.freezer;
+                    
+                    const gridContainer = document.getElementById('dragonball-grid-container');
+                    const submitButton = document.getElementById('submit-button');
+
+                    dragonBallsData.forEach((ball, index) => {
+                        const card = document.createElement('div');
+                        card.classList.add('dragonball-card');
+                        card.dataset.index = index;
+                        card.innerHTML = `<img src="${ball.img}" alt="Bola de ${ball.stars} estrellas">`;
+                        
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.dragonball-card').forEach(c => {
+                                c.classList.remove('selected');
+                                c.classList.add('dimmed');
+                            });
+                            card.classList.add('selected');
+                            card.classList.remove('dimmed');
+                            selectedDragonBallIndex = index;
+                            submitButton.disabled = false;
+                        });
+                        gridContainer.appendChild(card);
+                    });
+                }
+                
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedDragonBallIndex === null) {
+                        alert("¡Guerrero, primero debes elegir una Bola de Dragón!");
+                        return;
+                    }
+
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                    const years = parseInt(document.getElementById('years').value, 10);
+                    
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) {
+                        alert("¡Revisa tu plan de entrenamiento! Los valores no son correctos.");
+                        return;
+                    }
+                    
+                    const selectedBall = dragonBallsData[selectedDragonBallIndex];
+                    const [avgRate, bestRate, worstRate] = selectedBall.rates.map(r => parseFloat(r) / 100);
+                    
+                    const results = {
+                        best: calculateCompoundInterest(monthlyContribution, years, bestRate),
+                        average: calculateCompoundInterest(monthlyContribution, years, avgRate),
+                        worst: calculateCompoundInterest(monthlyContribution, years, worstRate),
+                        totalInvested: calculateCompoundInterest(monthlyContribution, years, 0)
+                    };
+                    
+                    // Goku
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best);
+                    document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years));
+                    document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    
+                    // Gohan
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average);
+                    document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years));
+                    document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    
+                    // Vegeta
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst);
+                    document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years));
+                    document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+
+                    // Freezer
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years));
+                    document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+
+                    const resultsContainer = document.getElementById('results-container');
+                    resultsContainer.classList.add('visible');
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+
+            } catch (e) {
+                alert("¡ERROR! Algo ha fallado en la Capsule Corp. Avisa al Dr. Brief. Error: " + e.message);
+            }
+        });
+    </script>
+</body>
+</html>

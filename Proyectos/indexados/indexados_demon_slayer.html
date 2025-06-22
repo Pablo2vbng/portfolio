@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNY: Misión Financiera de Zeus</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bangers&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --container-bg: #16213e;
+            --form-bg: #0f3460;
+            --text-light: #e94560;
+            --text-secondary: #a8a8c4;
+            --accent-color: #fca311;
+            --accent-hover: #ffc300;
+            --border-color: #533483;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --info-color: #3498db;
+            --danger-color: #c0392b;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px rgba(255, 195, 0, 0.5), 0 0 20px rgba(255, 195, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 195, 0, 0.8), 0 0 30px rgba(255, 195, 0, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(255, 195, 0, 0.5), 0 0 20px rgba(255, 195, 0, 0.3); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-secondary);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.5);
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+
+        .header { margin-bottom: 20px; }
+
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 3.8rem;
+            color: var(--text-light);
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        strong { color: var(--accent-color); font-weight: 600; }
+
+        #pillar-info-section { margin-bottom: 40px; }
+        .pillar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
+        
+        .pillar-card {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 3px solid var(--border-color);
+            background-color: #000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+        .pillar-card.dimmed { opacity: 0.5; }
+        .pillar-card.selected { border-color: var(--accent-hover); transform: scale(1.05); animation: pulse-glow 2s infinite; }
+        .pillar-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+            transition: opacity 0.3s;
+        }
+        .pillar-card:hover img { opacity: 0.15; }
+
+        .pillar-card .pillar-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #fff;
+            padding: 20px 8px 8px 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+        .pillar-card:hover .pillar-overlay { opacity: 0; }
+        
+        .pillar-card .pillar-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.80rem;
+            line-height: 1.4;
+        }
+        .pillar-card:hover .pillar-info { opacity: 1; }
+        .pillar-info h4 { margin: 0 0 5px 0; color: var(--accent-color); font-size: 1rem; }
+        .pillar-info .fund-name { font-weight: bold; color: var(--text-secondary); margin-bottom: 5px; }
+        .pillar-info .fund-desc { margin-bottom: 5px; font-size: 0.75rem; }
+        .pillar-info .fund-rate { font-weight: bold; color: var(--success-color); }
+
+
+        .form-section { background-color: var(--form-bg); padding: 30px; border-radius: 18px; border: 1px solid var(--border-color); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--text-light); }
+        input[type=number] {
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 12px;
+            box-sizing: border-box; font-size: 1rem; background-color: var(--bg-dark); color: var(--text-secondary);
+            transition: border-color .2s, box-shadow .2s;
+        }
+        input[type=number]:focus { outline: 0; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(252, 163, 17, .4); }
+
+        button {
+            width: 100%; padding: 16px 40px; background: linear-gradient(45deg, var(--accent-color), var(--accent-hover));
+            color: var(--bg-dark); border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 700;
+            cursor: pointer; transition: transform .2s, box-shadow .2s, opacity 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        button:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 5px 20px rgba(252, 163, 17, .3); }
+        button:disabled { background: #555; color: #999; cursor: not-allowed; opacity: 0.7; }
+
+        #results-container { margin-top: 40px; display: none; opacity: 0; transform: translateY(20px); transition: opacity .5s ease-out,transform .5s ease-out; }
+        #results-container.visible { display: block; opacity: 1; transform: translateY(0); }
+        
+        .section-title { font-family: 'Bangers', cursive; font-size: 2.5rem; color: var(--text-light); margin-bottom: 20px; letter-spacing: 1.5px; }
+        
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 18px; background-color: var(--form-bg); text-align: center; border-width: 2px; border-style: solid; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .result-scenario:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .result-scenario a { text-decoration: none; }
+        .character-portrait { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: top; margin: 0 auto 15px; border: 3px solid; display: block; }
+        .result-scenario h3 { margin-top: 0; font-size: 1.3rem; font-weight: 600; color: #fff; }
+        
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; }
+        .real-value { font-size: 1.1rem; color: var(--text-secondary); margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; }
+
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; color: var(--text-secondary); padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed var(--border-color); }
+        .details-list strong { color: #fff; }
+
+        .best-case { border-color: var(--success-color); }
+        .best-case .character-portrait { border-color: var(--success-color); }
+        .best-case .final-amount { color: var(--success-color); }
+        .average-case { border-color: var(--warning-color); }
+        .average-case .character-portrait { border-color: var(--warning-color); }
+        .average-case .final-amount { color: var(--warning-color); }
+        .worst-case { border-color: var(--info-color); }
+        .worst-case .character-portrait { border-color: var(--info-color); }
+        .worst-case .final-amount { color: var(--info-color); }
+        .bank-case { border-color: var(--danger-color); }
+        .bank-case .character-portrait { border-color: var(--danger-color); }
+        .bank-case .final-amount { color: var(--danger-color); }
+        
+        .guide-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+            text-align: left;
+            line-height: 1.7;
+        }
+        .guide-section h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .guide-section p {
+            margin-bottom: 20px;
+        }
+
+        footer { margin-top: 50px; font-size: .9rem; color: var(--text-secondary); line-height: 1.6; }
+        footer a { color: var(--accent-color); text-decoration: none; transition: color .2s; font-weight: 600; }
+        footer a:hover { color: var(--accent-hover); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Tu Misión Contra Muzan</h1>
+        </div>
+        <p class="subtitle">
+            ¡Atención Cazador! Tu misión es derrotar al demonio más poderoso: <strong>Muzan, el Demonio de la Inacción</strong>. Para vencerlo, debes aliarte con los guerreros más fuertes, <strong>los Pilares (Fondos Indexados)</strong>. ¡Forja tu futuro y no dejes que Muzan devore tu patrimonio!
+        </p>
+        
+        <div id="pillar-info-section">
+            <h2 class="section-title">Paso 1: Elige tu Pilar Aliado</h2>
+            <div class="pillar-grid" id="pillar-grid-container"></div>
+        </div>
+        
+        <div class="form-section">
+            <form id="calculator-form">
+                 <h2 class="section-title" style="margin-bottom: 20px; font-size: 2rem;">Paso 2: Define tu Entrenamiento</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="monthly-contribution">Entrenamiento Mensual (€)</label>
+                        <input type="number" id="monthly-contribution" name="contribution" required min="1" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="years">Años de Misión</label>
+                        <input type="number" id="years" name="years" required min="1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label> </label>
+                        <button type="submit" id="submit-button" disabled>¡Desenvainar Espada!</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div id="results-container">
+            <h2 class="section-title">Resultados de la Batalla</h2>
+            <div class="scenarios-grid">
+                 <div class="result-scenario best-case">
+                    <a id="tanjiro-link" target="_blank" rel="noopener noreferrer">
+                        <img id="tanjiro-img" class="character-portrait" alt="Tanjiro Kamado">
+                        <h3>Potencial Desatado (Tanjiro) Mejor escenario. Si va un 50% mejor que en los últimos 20 años</h3>
+                    </a>
+                    <span class="final-amount" id="best-case-amount"></span>
+                    <div class="real-value">
+                        <span id="best-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Poder Adquirido:</span> <strong id="best-total-interest"></strong></li>
+                        <li><span>Total Entrenado:</span> <strong id="best-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario average-case">
+                     <a id="zenitsu-link" target="_blank" rel="noopener noreferrer">
+                        <img id="zenitsu-img" class="character-portrait" alt="Zenitsu Agatsuma">
+                        <h3>Concentración Máxima (Zenitsu) Igual Escenario. Si va igual que en los últimos 20 años</h3>
+                    </a>
+                    <span class="final-amount" id="average-case-amount"></span>
+                    <div class="real-value">
+                        <span id="average-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                     <ul class="details-list">
+                        <li><span>Poder Adquirido:</span> <strong id="average-total-interest"></strong></li>
+                        <li><span>Total Entrenado:</span> <strong id="average-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario worst-case">
+                    <a id="inosuke-link" target="_blank" rel="noopener noreferrer">
+                        <img id="inosuke-img" class="character-portrait" alt="Inosuke Hashibira">
+                        <h3>Ataque Impredecible (Inosuke). Si va un 50% peor que en los últimos 20 años</h3>
+                    </a>
+                    <span class="final-amount" id="worst-case-amount"></span>
+                    <div class="real-value">
+                        <span id="worst-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Poder Adquirido:</span> <strong id="worst-total-interest"></strong></li>
+                        <li><span>Total Entrenado:</span> <strong id="worst-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario bank-case">
+                    <a id="muzan-link" target="_blank" rel="noopener noreferrer">
+                        <img id="muzan-img" class="character-portrait" alt="Muzan Kibutsuji">
+                        <h3>Derrotado por Muzan (Inacción). El demonio te ha ganado</h3>
+                    </a>
+                    <span class="final-amount" id="bank-case-amount"></span>
+                    <div class="real-value">
+                         <span id="bank-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Poder Adquirido:</span> <strong>0,00 €</strong></li>
+                        <li><span>Total Entrenado:</span> <strong id="bank-total-invested"></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="guide-section">
+            <h2 class="section-title">Guía del Cazador Financiero</h2>
+            <h3>El Demonio de la Inflación</h3>
+            <p>
+                Imagina un demonio invisible que, cada año, se come un trocito del poder de tu dinero. ¡Esa es la <strong>inflación</strong>! Si hoy tienes 10€ para comprarte 10 boles de ramen, puede que en unos años esos mismos 10€ solo te alcancen para 9. El dinero guardado sin hacer nada (como en el banco) pierde su fuerza poco a poco. Por eso, el Demonio de la Inacción (Muzan) es tan peligroso, porque deja que la inflación devore tu futuro.
+            </p>
+            <h3>Los Pilares y los Fondos Indexados</h3>
+            <p>
+                En lugar de apostar todo tu dinero a que un solo Cazador (una sola empresa como Apple o Amazon) gane todas las batallas, un <strong>Fondo Indexado</strong> te permite aliarte con un ejército entero: ¡los <strong>Pilares</strong>! Un fondo como el "S&P 500" (Pilar de la Llama) es como unirse a los 500 guerreros más fuertes de América. Si a la mayoría le va bien, a ti también. Tu poder crece con la fuerza de todo el equipo, haciendo que tu estrategia sea mucho más poderosa y segura que luchar solo. ¡Es la mejor forma de entrenar tu dinero para el futuro!
+            </p>
+        </div>
+
+        <footer>
+            Forjado con el alma de un herrero para el Cazador por <strong>Pablo Vidal Vidal pablo2vbngdaw@gmail.com </strong>.
+            <br>Las simulaciones consideran al <strong>Demonio de la Inflación</strong> (un 2.2% anual). Esto es una guía de entrenamiento, no una orden del Patrón.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedPillarIndex = null;
+
+                const characters = {
+                    tanjiro: { img: 'https://i.pinimg.com/originals/f2/fc/ce/f2fcce2565729e3e33d6bc22d933e963.jpg', link: 'https://i.pinimg.com/originals/f2/fc/ce/f2fcce2565729e3e33d6bc22d933e963.jpg' },
+                    zenitsu: { img: 'https://i.pinimg.com/736x/df/c3/df/dfc3df0d6f344adc9e81bd0e3e825d82.jpg', link: 'https://i.pinimg.com/736x/df/c3/df/dfc3df0d6f344adc9e81bd0e3e825d82.jpg' },
+                    inosuke: { img: 'https://i.pinimg.com/736x/6b/74/05/6b74053b56d7e4865824d3e48b71d758.jpg', link: 'https://i.pinimg.com/736x/6b/74/05/6b74053b56d7e4865824d3e48b71d758.jpg' },
+                    muzan:   { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM3riArY4jVYtnpK18uT9GDf9QHfs7ONIOjA&s', link: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM3riArY4jVYtnpK18uT9GDf9QHfs7ONIOjA&s' }
+                };
+                
+                const pillarsData = [
+                    { name: 'Kyojuro Rengoku', pillar: 'Llama', fund: 'S&P 500', description: 'El poder de las 500 empresas más grandes de EE.UU. ¡Potente y ardiente!', rates: [9.8, 12.0, 6.5], img: 'https://i.pinimg.com/736x/da/45/ac/da45ac41d573af37fd78fd3579c981f5.jpg' },
+                    { name: 'Tengen Uzui', pillar: 'Sonido', fund: 'Nasdaq 100', description: 'La extravagancia y velocidad de las 100 mayores tecnológicas. ¡Llamativo y explosivo!', rates: [13.5, 16.5, 9.5], img: 'https://img.wattpad.com/d21c0b8266657c13fb5350004394f8c316ad69b4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f717139766f615835777171794c773d3d2d31372e313636306639393737316232383336373132393430343835333135382e6a7067?s=fit&w=720&h=720' },
+                    { name: 'Giyu Tomioka', pillar: 'Agua', fund: 'MSCI World', description: 'Fluye con las mayores empresas del mundo. Versátil y adaptable.', rates: [8.5, 10.5, 5.5], img: 'https://img.wattpad.com/719e5354ae9dd82e2788d9ccbed32d7ce02b40ea/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f424b3233654a35746e57427738673d3d2d313031383433383231382e313635663261363631653138356537353233313336333832353638342e6a7067?s=fit&w=720&h=720' },
+                    { name: 'Shinobu Kocho', pillar: 'Insecto', fund: 'MSCI EM', description: 'El potencial de mercados emergentes. Preciso y letal a largo plazo.', rates: [7.5, 11.5, 4.0], img: 'https://i.pinimg.com/236x/65/b1/f9/65b1f99e2e2523b2d61dd75e47ed6cb0.jpg' },
+                    { name: 'Gyomei Himejima', pillar: 'Roca', fund: 'All-Weather', description: 'Una cartera diversificada y sólida que resiste cualquier tormenta.', rates: [6.0, 8.0, 3.5], img: 'https://i.pinimg.com/736x/8c/c4/8b/8cc48b38b1d439f49ed50d65d0c04175.jpg' },
+                    { name: 'Mitsuri Kanroji', pillar: 'Amor', fund: 'Socially Responsible', description: 'Invierte en empresas con impacto positivo. ¡Un futuro adorable!', rates: [8.0, 10.0, 5.0], img: 'https://i.pinimg.com/564x/a7/83/12/a783126ea17bdc065aabfdfaf9abc3f5.jpg' },
+                    { name: 'Obanai Iguro', pillar: 'Serpiente', fund: 'Small Caps', description: 'Empresas pequeñas con gran potencial. Arriesgado pero sinuoso.', rates: [11.0, 15.0, 6.0], img: 'https://img.wattpad.com/2d8069735e676bfec774f8eddfe8fe16c4b4c263/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f2d4372466f596c3936516e5139413d3d2d31312e313635663239643733613063666666363739303433343236393432352e6a7067?s=fit&w=720&h=720' },
+                    { name: 'Sanemi Shinazugawa', pillar: 'Viento', fund: 'High Dividend', description: 'Empresas que reparten beneficios. Un ataque constante y agresivo.', rates: [7.0, 9.0, 4.5], img: 'https://ih1.redbubble.net/image.5597904750.0244/st,small,507x507-pad,600x600,f8f8f8.jpg' },
+                    { name: 'Muichiro Tokito', pillar: 'Niebla', fund: 'Global Bonds', description: 'Una estrategia defensiva y diversificada. Difícil de predecir pero estable.', rates: [4.0, 5.5, 2.5], img: 'https://ih1.redbubble.net/image.5599152301.9609/st,small,507x507-pad,600x600,f8f8f8.jpg' },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) {
+                    if (annualRate === 0) {
+                        return monthlyContribution * years * 12;
+                    }
+                    const monthlyRate = annualRate / 12;
+                    const numMonths = years * 12;
+                    let futureValue = 0;
+                    for (let i = 0; i < numMonths; i++) {
+                        futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate);
+                    }
+                    return futureValue;
+                }
+
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+
+                function populatePage() {
+                    document.getElementById('tanjiro-img').src = characters.tanjiro.img;
+                    document.getElementById('zenitsu-img').src = characters.zenitsu.img;
+                    document.getElementById('inosuke-img').src = characters.inosuke.img;
+                    document.getElementById('muzan-img').src = characters.muzan.img;
+
+                    document.getElementById('tanjiro-link').href = characters.tanjiro.link;
+                    document.getElementById('zenitsu-link').href = characters.zenitsu.link;
+                    document.getElementById('inosuke-link').href = characters.inosuke.link;
+                    document.getElementById('muzan-link').href = characters.muzan.link;
+
+                    const pillarContainer = document.getElementById('pillar-grid-container');
+                    const submitButton = document.getElementById('submit-button');
+
+                    pillarsData.forEach((pillar, index) => {
+                        const card = document.createElement('div');
+                        card.classList.add('pillar-card');
+                        card.dataset.index = index;
+                        card.innerHTML = `
+                            <img src="${pillar.img}" alt="${pillar.name}">
+                            <div class="pillar-overlay">${pillar.pillar}</div>
+                            <div class="pillar-info">
+                                <h4>${pillar.name}</h4>
+                                <div class="fund-name">${pillar.fund}</div>
+                                <div class="fund-desc">${pillar.description}</div>
+                                <div class="fund-rate">Rendimiento ~${pillar.rates[0]}% anual</div>
+                            </div>`;
+                        
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.pillar-card').forEach(c => {
+                                c.classList.remove('selected');
+                                c.classList.add('dimmed');
+                            });
+                            card.classList.add('selected');
+                            card.classList.remove('dimmed');
+                            selectedPillarIndex = index;
+                            submitButton.disabled = false;
+                        });
+                        pillarContainer.appendChild(card);
+                    });
+                }
+                
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedPillarIndex === null) {
+                        alert("¡Cazador, primero debes elegir un Pilar en el que confiar!");
+                        return;
+                    }
+
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                    const years = parseInt(document.getElementById('years').value, 10);
+                    
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) {
+                        alert("¡Revisa tu plan de entrenamiento! Los valores no son correctos.");
+                        return;
+                    }
+                    
+                    const selectedPillar = pillarsData[selectedPillarIndex];
+                    const [avgRate, bestRate, worstRate] = selectedPillar.rates.map(r => parseFloat(r) / 100);
+                    
+                    const results = {
+                        best: calculateCompoundInterest(monthlyContribution, years, bestRate),
+                        average: calculateCompoundInterest(monthlyContribution, years, avgRate),
+                        worst: calculateCompoundInterest(monthlyContribution, years, worstRate),
+                        totalInvested: calculateCompoundInterest(monthlyContribution, years, 0)
+                    };
+                    
+                    // Mejor Escenario
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best);
+                    document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years));
+                    document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    
+                    // Promedio
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average);
+                    document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years));
+                    document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    
+                    // Peor
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst);
+                    document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years));
+                    document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+
+                    // Banco
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years));
+                    document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+
+                    const resultsContainer = document.getElementById('results-container');
+                    resultsContainer.classList.add('visible');
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+
+            } catch (e) {
+                alert("¡UN DEMONIO HA INTERFERIDO! Algo ha salido terriblemente mal en el código. Error: " + e.message);
+            }
+        });
+    </script>
+</body>
+</html>

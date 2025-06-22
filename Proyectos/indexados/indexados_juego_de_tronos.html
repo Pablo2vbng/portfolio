@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoT: El Juego Financiero de Zeus</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --got-red: #9c1a1e;
+            --got-gold: #c9a441;
+            --got-dark: #222222;
+            --got-light: #e8e8e8;
+            --container-bg: #f5f5f5;
+            --text-dark: #333333;
+            --border-color: #a0a0a0;
+            --daenerys-color: #6d0000;
+            --tyrion-color: #b78628;
+            --jon-color: #4a4a4a;
+            --cersei-color: #0c4a1e;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 8px var(--got-gold), 0 0 16px var(--got-gold); }
+            50% { box-shadow: 0 0 16px var(--got-gold), 0 0 32px var(--got-gold); }
+            100% { box-shadow: 0 0 8px var(--got-gold), 0 0 16px var(--got-gold); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--got-dark);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><g fill="%23333" fill-opacity="0.1"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm76 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48-50c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z"/></g></svg>');
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.3);
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid #888;
+        }
+
+        h1, .section-title {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--got-dark);
+            text-shadow: 1px 1px 2px #fff;
+        }
+        h1 { font-size: 3.2rem; margin: 0 0 10px 0; }
+        .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+        strong { color: var(--got-red); font-weight: 700; }
+
+        .house-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .house-card {
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+        }
+        .house-card img {
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .house-card .house-name { font-weight: 600; margin-top: 8px; color: var(--text-dark); }
+        .house-card:hover img { transform: scale(1.1); border-color: var(--got-gold); }
+        .house-card.selected img { border-color: var(--got-gold); animation: pulse-glow 2s infinite; transform: scale(1.1); }
+        .house-card.dimmed { opacity: 0.5; filter: grayscale(50%); }
+
+        .form-section { background-color: rgba(0,0,0,0.05); padding: 30px; border-radius: 18px; border: 1px solid #ccc; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--text-dark); }
+        input[type=number] {
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 8px;
+            box-sizing: border-box; font-size: 1rem; color: var(--text-dark);
+            transition: border-color .2s, box-shadow .2s;
+        }
+        input[type=number]:focus { outline: 0; border-color: var(--got-gold); box-shadow: 0 0 8px rgba(201, 164, 65, .5); }
+
+        button {
+            width: 100%; padding: 16px 40px; background: var(--got-dark);
+            color: #fff; border: none; border-radius: 8px; font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.2rem; cursor: pointer; transition: all .3s;
+        }
+        button:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0, .3); background-color: var(--got-red); }
+        button:disabled { background-color: #aaa; color: #eee; cursor: not-allowed; }
+
+        #results-container { margin-top: 40px; display: none; opacity: 0; }
+        #results-container.visible { display: block; opacity: 1; transition: opacity .5s ease-out; }
+        
+        .section-title { font-size: 2.5rem; margin-bottom: 20px; }
+        
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 18px; text-align: center; border-width: 3px; border-style: solid; transition: transform 0.3s; display: flex; flex-direction: column; background-color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .result-scenario:hover { transform: translateY(-10px); }
+        
+        .character-portrait { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: top; margin: 0 auto 15px; border: 3px solid; display: block; }
+        .result-scenario h3 { font-family: 'Cinzel Decorative', cursive; margin-top: 0; font-size: 1.2rem; }
+        
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; }
+        .real-value { font-size: 1.1rem; color: #555; margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #777; }
+
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed #ccc; }
+        .details-list strong { color: var(--text-dark); }
+
+        .daenerys-case { border-color: var(--daenerys-color); } .daenerys-case h3, .daenerys-case .final-amount { color: var(--daenerys-color); } .daenerys-case .character-portrait { border-color: var(--daenerys-color); }
+        .tyrion-case { border-color: var(--tyrion-color); } .tyrion-case h3, .tyrion-case .final-amount { color: var(--tyrion-color); } .tyrion-case .character-portrait { border-color: var(--tyrion-color); }
+        .jon-case { border-color: var(--jon-color); } .jon-case h3, .jon-case .final-amount { color: var(--jon-color); } .jon-case .character-portrait { border-color: var(--jon-color); }
+        .cersei-case { border-color: var(--cersei-color); } .cersei-case h3, .cersei-case .final-amount { color: var(--cersei-color); } .cersei-case .character-portrait { border-color: var(--cersei-color); }
+
+        .guide-section { margin-top: 50px; padding: 30px; border-top: 3px solid var(--got-dark); text-align: left; line-height: 1.7; background-color: #fdfdfd; border-radius: 18px; }
+        .guide-section h3 { font-family: 'Cinzel Decorative', cursive; font-size: 1.8rem; color: var(--got-dark); margin-bottom: 10px; }
+        .guide-section p { margin-bottom: 20px; }
+
+        footer { margin-top: 40px; font-size: .9rem; color: #ccc; line-height: 1.6; text-shadow: 1px 1px 2px #000; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>El Juego de los Fondos</h1>
+        <p class="subtitle">
+            Hola, Lord Zeus. Bienvenido al Gran Consejo Financiero de Poniente. Para asegurar la prosperidad de tu Casa, debes jurar lealtad a uno de los grandes linajes (Fondos Indexados). Tu oro crecerá con su poder. Pero ten cuidado, la <strong>inacción</strong> y las malas decisiones te llevarán a la ruina, como a tantos otros que jugaron y perdieron.
+        </p>
+        
+        <div id="house-section">
+            <h2 class="section-title">Paso 1: Jura Lealtad a una Casa</h2>
+            <div class="house-grid" id="house-grid-container"></div>
+        </div>
+        
+        <div class="form-section">
+            <form id="calculator-form">
+                 <h2 class="section-title" style="font-size: 2rem; margin-bottom: 20px; text-shadow: 1px 1px 0 #fff;">Paso 2: Define tu Tributo</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="monthly-contribution">Tributo mensual (Dragones de Oro)</label>
+                        <input type="number" id="monthly-contribution" name="contribution" required min="1" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="years">Años de Lealtad</label>
+                        <input type="number" id="years" name="years" required min="1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label> </label>
+                        <button type="submit" id="submit-button" disabled>Forjar mi Destino</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div id="results-container">
+            <h2 class="section-title">El Destino de tu Casa</h2>
+            <div class="scenarios-grid">
+                 <div class="result-scenario daenerys-case">
+                    <img id="daenerys-img" class="character-portrait" alt="Daenerys Targaryen">
+                    <h3>Conquista (Daenerys)</h3>
+                    <span class="final-amount" id="best-case-amount"></span>
+                    <div class="real-value">
+                        <span id="best-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Botín de guerra:</span> <strong id="best-total-interest"></strong></li>
+                        <li><span>Tributo total:</span> <strong id="best-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario tyrion-case">
+                    <img id="tyrion-img" class="character-portrait" alt="Tyrion Lannister">
+                    <h3>Estrategia (Tyrion)</h3>
+                    <span class="final-amount" id="average-case-amount"></span>
+                    <div class="real-value">
+                        <span id="average-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                     <ul class="details-list">
+                        <li><span>Botín de guerra:</span> <strong id="average-total-interest"></strong></li>
+                        <li><span>Tributo total:</span> <strong id="average-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario jon-case">
+                    <img id="jon-img" class="character-portrait" alt="Jon Snow">
+                    <h3>Supervivencia (Jon Snow)</h3>
+                    <span class="final-amount" id="worst-case-amount"></span>
+                    <div class="real-value">
+                        <span id="worst-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Botín de guerra:</span> <strong id="worst-total-interest"></strong></li>
+                        <li><span>Tributo total:</span> <strong id="worst-total-invested"></strong></li>
+                    </ul>
+                </div>
+                <div class="result-scenario cersei-case">
+                    <img id="cersei-img" class="character-portrait" alt="Cersei Lannister">
+                    <h3>Ruina (Cersei)</h3>
+                    <span class="final-amount" id="bank-case-amount"></span>
+                    <div class="real-value">
+                         <span id="bank-case-real"></span>
+                        <div class="real-value-label">Poder de compra real</div>
+                    </div>
+                    <ul class="details-list">
+                        <li><span>Botín de guerra:</span> <strong>0</strong></li>
+                        <li><span>Tributo total:</span> <strong id="bank-total-invested"></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="guide-section">
+            <h2 class="section-title">Consejo del Maestre</h2>
+            <h3>La Deuda con el Banco de Hierro (Inflación)</h3>
+            <p>
+                Imagina que el <strong>Banco de Hierro de Braavos</strong> te exige un tributo cada año sobre el oro que guardas en tus arcas. ¡Esa es la <strong>inflación</strong>! Si no haces que tu oro trabaje y crezca, el Banco de Hierro se cobrará su deuda y cada año tu tesoro valdrá menos. Lo que hoy compra un castillo, en el futuro apenas alcanzará para una torre. Dejar el oro quieto es declararse en bancarrota frente al Banco de Hierro.
+            </p>
+            <h3>Jurar Lealtad a una Gran Casa (Fondos Indexados)</h3>
+            <p>
+                Apostar todo tu oro a un solo caballero (una empresa) para que gane un torneo es muy arriesgado. Si cae, lo pierdes todo. Un <strong>Fondo Indexado</strong> es como <strong>jurar lealtad a una Gran Casa</strong>. Por ejemplo, aliarte con la Casa Lannister (S&P 500) significa unir tu fortuna a la de los 500 lores más ricos de Poniente. Si la mayoría prospera, tu tesoro también lo hará. Es la estrategia más sabia para navegar las intrigas de los Siete Reinos y asegurar el futuro de tu linaje.
+            </p>
+        </div>
+
+        <footer>
+            Forjado en Desembarco del Rey por <strong>Pablo Vidal Vidal pablo2vbngdaw@gmail.com </strong>.
+            <br>Las simulaciones consideran que el Banco de Hierro (inflación) reclama un 2.2% anual. Este es un consejo del Maestre, no un decreto real.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedHouseIndex = null;
+
+                const characters = {
+                    daenerys: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWbrfx1_Zk3IaJZzMxJ3bqf2RKK_4-4egSUw&s',
+                    tyrion: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/50/Tyrion_Lannister-Peter_Dinklage.jpg/250px-Tyrion_Lannister-Peter_Dinklage.jpg',
+                    jon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcG13vn2cnFP9T-D7iS1YPSxj2cFmK8mIs6Q&s',
+                    cersei: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8-vfBhWFBqAxojnMTyX3GkEm5f3N5e-QdcA&s'
+                };
+                
+                const housesData = [
+                    { name: 'Stark', fund: 'MSCI World', rates: [8.5, 10.5, 5.5], img: 'https://i.pinimg.com/474x/fe/9b/c3/fe9bc3b535f9ab8e944da3a2af64abae.jpg' },
+                    { name: 'Lannister', fund: 'S&P 500', rates: [9.8, 12.0, 6.5], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8LtoQ8puXbOwWgoee6ScpOfu-8Wz51pPJSQ&s' },
+                    { name: 'Targaryen', fund: 'Nasdaq 100', rates: [13.5, 16.5, 9.5], img: 'https://upload.wikimedia.org/wikipedia/commons/4/49/House_Targaryen.png' },
+                    { name: 'Baratheon', fund: 'High Dividend', rates: [7.0, 9.0, 4.5], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVpXP_GU2XO4srzrX8-l2soiXh1BI-HfnUwg&s' },
+                    { name: 'Greyjoy', fund: 'MSCI EM', rates: [7.5, 11.5, 4.0], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG0bnXtJr3kHTh6thxGFfWRBonvxx1CNLPlQ&s' },
+                    { name: 'Arryn', fund: 'All-Weather', rates: [6.0, 8.0, 3.5], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD7WNFUWxI66JeuetgUAEVls_03awb8bySSg&s' },
+                    { name: 'Tyrell', fund: 'Socially Responsible', rates: [8.0, 10.0, 5.0], img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/A_Song_of_Ice_and_Fire_arms_of_House_Tyrell_yellow_scroll.jpg/960px-A_Song_of_Ice_and_Fire_arms_of_House_Tyrell_yellow_scroll.jpg' },
+                    { name: 'Martell', fund: 'Small Caps', rates: [11.0, 15.0, 6.0], img: 'https://upload.wikimedia.org/wikipedia/commons/6/66/A_Song_of_Ice_and_Fire_arms_of_House_Martell_scroll.png' },
+                    { name: 'Tully', fund: 'Global Bonds', rates: [4.0, 5.5, 2.5], img: 'https://static.wikia.nocookie.net/hieloyfuego/images/f/f5/Casa_Tully.png/revision/latest?cb=20220804135156' },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) {
+                    if (annualRate === 0) return monthlyContribution * years * 12;
+                    const monthlyRate = annualRate / 12;
+                    const numMonths = years * 12;
+                    let futureValue = 0;
+                    for (let i = 0; i < numMonths; i++) {
+                        futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate);
+                    }
+                    return futureValue;
+                }
+
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+
+                function populatePage() {
+                    document.getElementById('daenerys-img').src = characters.daenerys;
+                    document.getElementById('tyrion-img').src = characters.tyrion;
+                    document.getElementById('jon-img').src = characters.jon;
+                    document.getElementById('cersei-img').src = characters.cersei;
+                    
+                    const gridContainer = document.getElementById('house-grid-container');
+                    const submitButton = document.getElementById('submit-button');
+
+                    housesData.forEach((house, index) => {
+                        const card = document.createElement('div');
+                        card.classList.add('house-card');
+                        card.dataset.index = index;
+                        card.innerHTML = `<img src="${house.img}" alt="Estandarte de la Casa ${house.name}"><div class="house-name">${house.name}</div>`;
+                        
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.house-card').forEach(c => {
+                                c.classList.remove('selected');
+                                c.classList.add('dimmed');
+                            });
+                            card.classList.add('selected');
+                            card.classList.remove('dimmed');
+                            selectedHouseIndex = index;
+                            submitButton.disabled = false;
+                        });
+                        gridContainer.appendChild(card);
+                    });
+                }
+                
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedHouseIndex === null) {
+                        alert("¡Lord Zeus, primero debe jurar lealtad a una Casa!");
+                        return;
+                    }
+
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                    const years = parseInt(document.getElementById('years').value, 10);
+                    
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) {
+                        alert("¡Revisad vuestros planes! Los números del tributo no son correctos.");
+                        return;
+                    }
+                    
+                    const selectedHouse = housesData[selectedHouseIndex];
+                    const [avgRate, bestRate, worstRate] = selectedHouse.rates.map(r => parseFloat(r) / 100);
+                    
+                    const results = {
+                        best: calculateCompoundInterest(monthlyContribution, years, bestRate),
+                        average: calculateCompoundInterest(monthlyContribution, years, avgRate),
+                        worst: calculateCompoundInterest(monthlyContribution, years, worstRate),
+                        totalInvested: calculateCompoundInterest(monthlyContribution, years, 0)
+                    };
+                    
+                    // Daenerys
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best);
+                    document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years));
+                    document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    
+                    // Tyrion
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average);
+                    document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years));
+                    document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    
+                    // Jon
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst);
+                    document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years));
+                    document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+
+                    // Cersei
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested);
+                    document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years));
+                    document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+
+                    const resultsContainer = document.getElementById('results-container');
+                    resultsContainer.classList.add('visible');
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+
+            } catch (e) {
+                alert("¡ERROR! Un cuervo se ha perdido en la tormenta. Avisa al Gran Maestre. Error: " + e.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universo Financiero - Aprende Finanzas con tus Series Favoritas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --background-color: #0c0a1a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header y Navegación --- */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-logo span {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* --- Sección de Héroe --- */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            text-align: center;
+            padding: 100px 0;
+            background: radial-gradient(circle, rgba(12,10,26,0) 0%, var(--background-color) 70%), 
+                        url('https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #c3c3c3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+        }
+
+        /* --- Secciones Generales --- */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+        }
+        .section-title span {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Rejilla de Universos --- */
+        .universe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .universe-card {
+            text-decoration: none;
+            color: var(--text-color);
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .universe-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 40%);
+            transform: rotate(0deg);
+            transition: transform 1s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+        .universe-card:hover::before {
+            transform: rotate(360deg);
+            opacity: 1;
+        }
+
+        .universe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .universe-card img {
+            max-width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .universe-card .series-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* --- Sección de Explicación --- */
+        .explanation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .explanation-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        /* --- Formulario de Contacto y Disclaimer --- */
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        .contact-form button {
+            width: auto;
+            align-self: center;
+        }
+
+        .disclaimer {
+            max-width: 800px;
+            margin: 100px auto 0 auto;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+            background: var(--card-bg);
+        }
+        .disclaimer h4 {
+            color: #fff;
+            margin-top: 0;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            border-top: 1px solid #222;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="nav-logo">Universo<span>Financiero</span></a>
+            <ul class="nav-links">
+                <li><a href="#universos">Universos</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Donde las Finanzas y la Fantasía se Unen</h1>
+                <p>Descubre los secretos del interés compuesto y la inversión a largo plazo a través de los mundos que ya amas. ¡Tu aventura financiera comienza ahora!</p>
+                <a href="#universos" class="cta-button">Explorar Universos</a>
+            </div>
+        </section>
+
+        <section id="why-us" class="container">
+             <div class="explanation-content">
+                <div class="explanation-text">
+                    <h2 class="section-title" style="text-align: left;">¿Por qué <span>Aprender Así?</span></h2>
+                    <h3>Las historias son el mejor maestro.</h3>
+                    <p>Conceptos como "interés compuesto" o "inflación" pueden sonar intimidantes. Pero, ¿y si te dijera que son tan fáciles de entender como la rivalidad entre Goku y Vegeta o la lucha por el Trono de Hierro?</p>
+                    <p>Esta plataforma utiliza las historias y personajes que te apasionan para explicar ideas financieras de una manera que nunca olvidarás. Porque cuando algo te divierte, lo aprendes para siempre.</p>
+                </div>
+                <div class="explanation-image">
+                    <!-- Puedes poner una imagen representativa aquí si quieres -->
+                </div>
+            </div>
+        </section>
+
+        <section id="universos">
+            <div class="container">
+                <h2 class="section-title">Elige <span>tu Aventura</span></h2>
+                <div class="universe-grid">
+                    <a href="indexados_dragon_ball.html" class="universe-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Dragon_Ball_Z_logo.svg" alt="Logo Dragon Ball Z">
+                        <div class="series-name">Dragon Ball</div>
+                    </a>
+                    <a href="indexados_demon_slayer.html" class="universe-card">
+                        <img src="https://i.pinimg.com/736x/13/aa/78/13aa78ce272bdf1882d4ff1e634ecb80.jpg" alt="Logo Demon Slayer">
+                        <div class="series-name">Demon Slayer</div>
+                    </a>
+                    <a href="indexados_juego_de_tronos.html" class="universe-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1VegpF5is5X2A4T-tnzhXtXk7zgnUN8Trrw&s" alt="Logo Juego de Tronos">
+                        <div class="series-name">Juego de Tronos</div>
+                    </a>
+                    <a href="indexados_one_piece.html" class="universe-card">
+                        <img src="https://preview.redd.it/one-piece-logo-theory-updated-v0-sh9uj0bn5vbd1.jpeg?auto=webp&s=106a81fc4dbead2159f8469a668c743b3720528b" alt="Logo One Piece">
+                        <div class="series-name">One Piece</div>
+                    </a>
+                    <a href="indexados_star_wars.html" class="universe-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH1UvJLC-9r6aRYDw6-epssjDyDIeQ9v4emQ&s" alt="Logo Star Wars">
+                        <div class="series-name">Star Wars</div>
+                    </a>
+                    <a href="indexados_vengadores.html" class="universe-card">
+                        <img src="https://i.pinimg.com/736x/c7/4b/98/c74b98df344abb976c93899b5376c102.jpg" alt="Logo Vengadores">
+                        <div class="series-name">Vengadores</div>
+                    </a>
+                    <a href="indexados_dc.html" class="universe-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/DC_Comics_2024.svg/1200px-DC_Comics_2024.svg.png" alt="Logo DC Comics">
+                        <div class="series-name">DC Comics</div>
+                    </a>
+                    <a href="indexados_breaking_bad.html" class="universe-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Breaking_Bad_logo.svg/2560px-Breaking_Bad_logo.svg.png" alt="Logo Breaking Bad">
+                        <div class="series-name">Breaking Bad</div>
+                    </a>
+                    <a href="indexados_stranger_things.html" class="universe-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Stranger_Things_logo.png" alt="Logo Stranger Things">
+                        <div class="series-name">Stranger Things</div>
+                    </a>
+                    <a href="indexados_vikingos.html" class="universe-card">
+                        <img src="https://www.teleadhesivo.com/es/img/as1124-jpg/folder/products-listado-merchanthover/vinilos-decorativos-vikingos-logo.jpg" alt="Logo Vikingos">
+                        <div class="series-name">Vikingos</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <div class="container">
+                <h2 class="section-title"><span>Contacta</span> con el Maestre</h2>
+                <form id="contact-form" class="contact-form">
+                    <input type="text" id="contact-name" name="name" placeholder="Tu nombre de Lord/Guerrero" required>
+                    <input type="email" id="contact-email" name="email" placeholder="Tu correo (vía cuervo)" required>
+                    <textarea id="contact-message" name="message" rows="5" placeholder="Tu mensaje para el consejo..." required></textarea>
+                    <button type="submit" class="cta-button">Enviar Mensaje</button>
+                </form>
+
+                <div class="disclaimer">
+                    <h4>Aviso Legal</h4>
+                    <p>El contenido de esta web y de todas las calculadoras asociadas tiene un propósito puramente educativo y de entretenimiento. La información proporcionada no constituye asesoramiento financiero profesional, legal o fiscal. Las simulaciones se basan en datos históricos y estimaciones que no garantizan resultados futuros. Siempre consulta con un profesional cualificado antes de tomar cualquier decisión de inversión.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            © 2025 Universo Financiero | Creado y forjado por Pablo Vidal Vidal
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactForm = document.getElementById('contact-form');
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                
+                const subject = encodeURIComponent(`Mensaje de ${name} desde Universo Financiero`);
+                const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
+                
+                window.location.href = `mailto:pablo2vbngdaw@gmail.com?subject=${subject}&body=${body}`;
+            });
+        });
+    </script>
+</body>
+</html>
