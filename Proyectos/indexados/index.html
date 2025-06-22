@@ -69,7 +69,6 @@
         .intro-text h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         .intro-text h3 { font-size: 1.5rem; font-weight: 400; color: var(--secondary-color); margin-bottom: 20px; }
 
-        /* --- ESTILOS CORREGIDOS PARA LOS UNIVERSOS --- */
         .universe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; perspective: 1000px; }
         .universe-card {
             min-height: 280px;
@@ -102,7 +101,6 @@
         }
         .universe-card .series-name { font-size: 1.4rem; font-weight: 700; text-align: center; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         
-        /* --- ESTILOS CORREGIDOS PARA ACCIONES Y CRIPTO --- */
         .teaser-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto; }
         .teaser-card {
             display: flex;
@@ -143,11 +141,10 @@
             .hero-content p { font-size: 1rem; }
             .section-title { font-size: 2rem; }
             .subsection-title { font-size: 1.5rem; margin-top: 60px; }
+            .universe-card img { width: 100px; height: 100px; }
             .intro-grid { grid-template-columns: 1fr; text-align: center; justify-items: center; }
             .intro-image { margin-bottom: 30px; }
             .intro-image img { max-width: 200px; }
-            
-            .universe-card img { width: 100px; height: 100px; }
             .teaser-card { height: auto; padding-bottom: 30px; }
             .teaser-card img { width: 120px; height: 120px; }
         }
@@ -157,7 +154,7 @@
 
     <header>
         <nav class="container">
-            <a href="#" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
             <ul class="nav-links">
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#fondos-indexados">Fondos</a></li>
@@ -202,6 +199,10 @@
                 <h2 class="section-title">Calculadoras de <span>Fondos Indexados</span></h2>
                 <p class="section-subtitle">Usa nuestras calculadoras temáticas para simular tu inversión en fondos indexados de una forma que nunca olvidarás.</p>
                 <div class="universe-grid">
+                    <a href="calculadorasimple.html" class="universe-card">
+                        <img src="..\..\\img\\indexados.png" alt="Icono de calculadora">
+                        <div class="series-name">Calculadora Simple</div>
+                    </a>
                     <a href="indexados_dragon_ball.html" class="universe-card">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Dragon_Ball_Z_logo.svg" alt="Logo Dragon Ball Z">
                         <div class="series-name">Dragon Ball</div>
@@ -222,12 +223,8 @@
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH1UvJLC-9r6aRYDw6-epssjDyDIeQ9v4emQ&s" alt="Logo Star Wars">
                         <div class="series-name">Star Wars</div>
                     </a>
-                </div>
-                <h3 class="subsection-title">Fondos Clave Utilizados</h3>
-                <div class="asset-grid">
-                    <div class="asset-card"><h3>S&P 500</h3><span class="asset-performance">Rendimiento 20 años: ~10.2% anual</span><p>Invierte en las 500 empresas más grandes de EE.UU. Es como apostar por toda la economía estadounidense, el motor del mundo.</p></div>
-                    <div class="asset-card"><h3>MSCI World</h3><span class="asset-performance">Rendimiento 20 años: ~8.9% anual</span><p>Invierte en más de 1.500 empresas de países desarrollados. Ofrece una diversificación geográfica excelente.</p></div>
-                    <div class="asset-card"><h3>Nasdaq 100</h3><span class="asset-performance">Rendimiento 20 años: ~14.5% anual</span><p>Se concentra en las 100 mayores empresas tecnológicas. Mayor potencial, pero también mayor volatilidad.</p></div>
+                    <!-- NUEVO ENLACE A LA CALCULADORA SIMPLE -->
+                   
                 </div>
             </div>
         </section>

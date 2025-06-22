@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Fondos Indexados - ProInvestingESP</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #ee9b00;
+            --background-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* --- HEADER Y FOOTER --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #000; text-decoration: none; z-index: 10; }
+        .nav-logo span { color: var(--primary-color); }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { font-family: 'Poppins', sans-serif; color: #333; text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary-color); }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-color); border-radius: 2px; }
+        
+        footer {
+            padding: 40px 20px; text-align: center; font-size: .9rem; color: #6c757d;
+            background-color: #e9ecef;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px; margin: 0 auto;
+            background-color: var(--card-bg); padding: 40px; border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        h1, .section-title {
+            font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--text-color);
+            text-align: center;
+        }
+        h1 { font-size: 2.8rem; margin-bottom: 10px; }
+        .subtitle { text-align: center; font-size: 1.1rem; max-width: 700px; margin: 0 auto 40px auto; color: #6c757d; }
+        strong { color: var(--primary-color); font-weight: 700; }
+
+        .form-section, .results-section { padding: 30px; }
+        
+        .fund-selection { margin-bottom: 30px; }
+        .fund-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .fund-tag {
+            padding: 8px 15px; border: 1px solid var(--border-color);
+            border-radius: 50px; cursor: pointer; transition: all 0.3s;
+        }
+        .fund-tag:hover { background-color: #f1f1f1; }
+        .fund-tag.selected { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        
+        #fund-info-display {
+            background: #f1f1f1; border: 1px solid var(--border-color);
+            padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;
+            opacity: 0; max-height: 0; overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        #fund-info-display.visible { opacity: 1; max-height: 300px; padding: 20px; }
+        #fund-info-display h3 { font-size: 1.5rem; color: var(--primary-color); }
+        #fund-info-display p { margin: 10px 0 0 0; }
+        #fund-info-display .performance { font-weight: bold; color: var(--accent-color); }
+
+        .investment-toggle { display: flex; justify-content: center; margin-bottom: 20px; }
+        .investment-toggle input { display: none; }
+        .investment-toggle label { padding: 10px 20px; background-color: #e9ecef; color: #495057; cursor: pointer; transition: all 0.3s; border: 1px solid var(--border-color); }
+        .investment-toggle label:first-of-type { border-radius: 8px 0 0 8px; }
+        .investment-toggle label:last-of-type { border-radius: 0 8px 8px 0; }
+        .investment-toggle input:checked + label { background-color: var(--secondary-color); color: #fff; border-color: var(--secondary-color); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        .hidden { display: none; }
+        label { display: block; margin-bottom: 10px; font-weight: 500; font-size: 1rem; color: #495057; }
+        input[type=number] { width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        input[type=number]:focus { outline: 0; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.2); }
+        
+        button { width: 100%; padding: 16px; background: var(--secondary-color); color: #fff; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all .3s; }
+        button:hover:not(:disabled) { background-color: var(--primary-color); }
+        button:disabled { background-color: #adb5bd; cursor: not-allowed; }
+
+        #results-container { display: none; margin-top: 40px; }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 25px; border-radius: 10px; text-align: center; border: 2px solid; }
+        .result-scenario h3 { font-size: 1.3rem; font-weight: 700; }
+        .final-amount { font-size: 2rem; font-weight: 700; display: block; margin: 5px 0 15px 0; }
+        .details-list { font-size: 1rem; text-align: left; margin: 15px 0 0 0; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px dashed #ced4da; }
+        
+        .optimistic-case { border-color: #2a9d8f; } .optimistic-case h3, .optimistic-case .final-amount { color: #2a9d8f; }
+        .average-case { border-color: #e9c46a; } .average-case h3, .average-case .final-amount { color: #e9c46a; }
+        .pessimistic-case { border-color: #f4a261; } .pessimistic-case h3, .pessimistic-case .final-amount { color: #f4a261; }
+
+        #results-explanation { background: #e9ecef; padding: 30px; border-radius: 10px; border-top: 3px solid var(--accent-color); margin-top: 40px; }
+        #results-explanation h3 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 15px;}
+        #results-explanation p { margin-bottom: 10px; }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background-color: #f8f9fa; width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1rem; }
+            .form-grid { grid-template-columns: 1fr; gap: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Calculadora de Fondos Indexados</h1>
+            <p class="subtitle">
+                Simula el crecimiento de tu patrimonio con las estrategias de inversión más populares y probadas. Elige un fondo, define tu plan de aportaciones y descubre el poder del interés compuesto.
+            </p>
+            
+            <div class="form-section">
+                <h2 class="section-title" style="font-size: 1.8rem;">Paso 1: Elige tu Fondo</h2>
+                <div class="fund-selection">
+                    <div class="fund-list" id="fund-list-container"></div>
+                    <div id="fund-info-display"></div>
+                </div>
+
+                <h2 class="section-title" style="font-size: 1.8rem; margin-top:40px;">Paso 2: Define tu Estrategia</h2>
+                <form id="calculator-form">
+                    <div class="investment-toggle">
+                        <input type="radio" id="investment-type-dca" name="investment-type" value="dca" checked>
+                        <label for="investment-type-dca">Aportación Mensual (DCA)</label>
+                        <input type="radio" id="investment-type-lumpsum" name="investment-type" value="lumpsum">
+                        <label for="investment-type-lumpsum">Aportación Única</label>
+                    </div>
+                    <div class="form-grid">
+                        <div id="dca-inputs" class="form-group">
+                            <label for="monthly-contribution">Aportación mensual (€)</label>
+                            <input type="number" id="monthly-contribution" min="1" value="150">
+                        </div>
+                        <div id="lump-sum-inputs" class="form-group hidden">
+                            <label for="lump-sum-amount">Inversión única (€)</label>
+                            <input type="number" id="lump-sum-amount" min="1" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Horizonte Temporal (Años)</label>
+                            <input type="number" id="years" required min="1" value="20">
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-button" style="margin-top: 20px;" disabled>Calcular Proyección</button>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <div class="results-section">
+                    <h2 class="section-title">Resultados de la Proyección</h2>
+                    <div class="scenarios-grid">
+                        <div class="result-scenario average-case">
+                            <h3>Escenario Promedio</h3>
+                            <span class="final-amount" id="average-case-amount"></span>
+                            <ul class="details-list">
+                                <li><span>Poder de Compra Real:</span> <strong id="average-case-real"></strong></li>
+                                <li><span>Total Invertido:</span> <strong id="average-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="average-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario optimistic-case">
+                            <h3>Escenario Optimista</h3>
+                            <span class="final-amount" id="best-case-amount"></span>
+                            <ul class="details-list">
+                                <li><span>Poder de Compra Real:</span> <strong id="best-case-real"></strong></li>
+                                <li><span>Total Invertido:</span> <strong id="best-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="best-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario pessimistic-case">
+                            <h3>Escenario Pesimista</h3>
+                            <span class="final-amount" id="worst-case-amount"></span>
+                            <ul class="details-list">
+                                <li><span>Poder de Compra Real:</span> <strong id="worst-case-real"></strong></li>
+                                <li><span>Total Invertido:</span> <strong id="pessimistic-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="pessimistic-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="results-explanation">
+                        <h3>Interpretación de Resultados</h3>
+                        <p><strong>Escenarios:</strong> Las proyecciones se basan en el rendimiento histórico del fondo, pero el futuro es incierto. Por eso, mostramos un rango de posibilidades: un escenario promedio (basado en el histórico), uno optimista (+2%) y uno pesimista (-2%).</p>
+                        <p><strong>Poder de Compra Real:</strong> Esta es la cifra más importante. Muestra cuánto valdría tu dinero en el futuro, ajustado por una inflación anual del 2.5%. 100.000€ hoy no compran lo mismo que 100.000€ en 20 años.</p>
+                        <p><strong>Ganancias Totales:</strong> Es el beneficio neto, la magia del interés compuesto. Muestra la diferencia entre el valor final de tu portafolio y el dinero que tú aportaste.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="background-color: #e9ecef; border: none; box-shadow: none;">
+             © 2025 ProInvestingESP | Creado y forjado por Pablo Vidal Vidal
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fundsData = [
+                { name: 'S&P 500', fullName: 'Standard & Poor\'s 500', rates: [8.2, 10.2, 12.2], desc: 'Invierte en las 500 empresas más grandes de EE.UU., representando el motor de la economía mundial.' },
+                { name: 'MSCI World', fullName: 'MSCI World Index', rates: [6.9, 8.9, 10.9], desc: 'Invierte en más de 1,500 empresas de países desarrollados de todo el mundo, ofreciendo máxima diversificación geográfica.' },
+                { name: 'Nasdaq 100', fullName: 'Nasdaq-100 Index', rates: [12.5, 14.5, 16.5], desc: 'Se concentra en las 100 mayores empresas tecnológicas y de crecimiento del Nasdaq. Mayor potencial y volatilidad.' },
+                { name: 'MSCI EM', fullName: 'MSCI Emerging Markets', rates: [7.5, 9.5, 11.5], desc: 'Invierte en empresas de economías emergentes como China o India. Alto potencial y alto riesgo.' },
+                { name: 'Russell 2000', fullName: 'Russell 2000 Index (Small Caps)', rates: [9.8, 11.8, 13.8], desc: 'Se enfoca en 2,000 empresas de pequeña capitalización en EE.UU., buscando a los gigantes del mañana.' },
+                { name: 'EURO STOXX 50', fullName: 'EURO STOXX 50 Index', rates: [5.5, 7.5, 9.5], desc: 'Invierte en las 50 empresas líderes de la Eurozona. Una apuesta por la economía del Viejo Continente.' },
+                { name: 'Nikkei 225', fullName: 'Nikkei 225 Index', rates: [6.0, 8.0, 10.0], desc: 'Sigue a las 225 mayores empresas de la Bolsa de Tokio, el principal indicador de la economía japonesa.' },
+                { name: 'REITs Global', fullName: 'Global Real Estate Investment Trusts', rates: [6.1, 8.1, 10.1], desc: 'Invierte en un portafolio global de bienes raíces (oficinas, centros comerciales, etc.) a través de Fideicomisos.' },
+                { name: 'High Dividend', fullName: 'High Dividend Yield Stocks', rates: [5.5, 7.5, 9.5], desc: 'Selecciona empresas estables que históricamente pagan altos dividendos, ideal para generar ingresos pasivos.' },
+                { name: 'Global Bonds', fullName: 'Global Aggregate Bond Index', rates: [1.1, 3.1, 4.1], desc: 'El ancla de la cartera. Invierte en deuda de gobiernos y empresas de todo el mundo para dar estabilidad.' }
+            ];
+
+            const fundListContainer = document.getElementById('fund-list-container');
+            const infoDisplay = document.getElementById('fund-info-display');
+            const submitButton = document.getElementById('submit-button');
+            const form = document.getElementById('calculator-form');
+            const resultsContainer = document.getElementById('results-container');
+            let selectedFundIndex = null;
+            
+            const dcaInputGroup = document.getElementById('dca-inputs');
+            const lumpSumInputGroup = document.getElementById('lump-sum-inputs');
+            const investmentToggle = document.querySelectorAll('input[name="investment-type"]');
+            const AVG_INFLATION_RATE = 0.025; 
+
+            function populateFunds() {
+                fundsData.forEach((fund, index) => {
+                    const tag = document.createElement('div');
+                    tag.className = 'fund-tag';
+                    tag.textContent = fund.name;
+                    tag.dataset.index = index;
+                    tag.addEventListener('click', () => selectFund(tag, index));
+                    fundListContainer.appendChild(tag);
+                });
+            }
+
+            function selectFund(tag, index) {
+                document.querySelectorAll('.fund-tag').forEach(t => t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedFundIndex = index;
+                const fund = fundsData[index];
+                infoDisplay.innerHTML = `<h3>${fund.fullName}</h3><p>${fund.desc}</p><p class="performance">Rendimiento 20 años: ~${fund.rates[1]}% anual</p>`;
+                infoDisplay.classList.add('visible');
+                submitButton.disabled = false;
+            }
+
+            investmentToggle.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    dcaInputGroup.classList.toggle('hidden', e.target.value !== 'dca');
+                    lumpSumInputGroup.classList.toggle('hidden', e.target.value !== 'lumpsum');
+                });
+            });
+
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                if (selectedFundIndex === null) {
+                    alert("Por favor, selecciona un fondo para continuar."); return;
+                }
+                const years = parseInt(document.getElementById('years').value);
+                const investmentType = document.querySelector('input[name="investment-type"]:checked').value;
+                const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                const lumpSumAmount = parseFloat(document.getElementById('lump-sum-amount').value);
+
+                const totalInvested = investmentType === 'dca' ? monthlyContribution * 12 * years : lumpSumAmount;
+                const fund = fundsData[selectedFundIndex];
+                const [pessimisticRate, averageRate, optimisticRate] = fund.rates.map(r => r / 100);
+
+                let best, average, worst;
+                if (investmentType === 'dca') {
+                    best = calculateDCA(monthlyContribution, years, optimisticRate);
+                    average = calculateDCA(monthlyContribution, years, averageRate);
+                    worst = calculateDCA(monthlyContribution, years, pessimisticRate);
+                } else {
+                    best = calculateLumpSum(lumpSumAmount, years, optimisticRate);
+                    average = calculateLumpSum(lumpSumAmount, years, averageRate);
+                    worst = calculateLumpSum(lumpSumAmount, years, pessimisticRate);
+                }
+                displayResults(best, average, worst, totalInvested, years);
+            }
+
+            const calculateDCA = (m, y, r) => { let t = 0; for(let i=0; i<y*12; i++){ t = (t+m)*(1+r/12); } return t; };
+            const calculateLumpSum = (p, y, r) => p * Math.pow((1+r), y);
+            const adjustForInflation = (v, y) => v / Math.pow(1 + AVG_INFLATION_RATE, y);
+            const formatCurrency = (v) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+
+            function displayResults(best, average, worst, totalInvested, years) {
+                document.getElementById('best-case-amount').textContent = formatCurrency(best);
+                document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(best, years));
+                document.getElementById('best-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('best-total-gains').textContent = formatCurrency(best - totalInvested);
+
+                document.getElementById('average-case-amount').textContent = formatCurrency(average);
+                document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(average, years));
+                document.getElementById('average-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('average-total-gains').textContent = formatCurrency(average - totalInvested);
+
+                document.getElementById('worst-case-amount').textContent = formatCurrency(worst);
+                document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(worst, years));
+                document.getElementById('pessimistic-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('pessimistic-total-gains').textContent = formatCurrency(worst - totalInvested);
+
+                resultsContainer.style.display = 'block';
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Lógica del menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+
+            populateFunds();
+            form.addEventListener('submit', handleFormSubmit);
+        });
+    </script>
+</body>
+</html>
