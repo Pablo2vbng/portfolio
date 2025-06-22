@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - ProInvestingESP</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --background-color: #0c0a1a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- HEADER Y FOOTER --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 0; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-color); border-radius: 2px; }
+        footer { padding: 40px 20px; text-align: center; font-size: 0.9rem; color: #888; border-top: 1px solid #222; }
+
+        /* --- ESTILOS DEL BLOG --- */
+        .blog-header { padding: 100px 20px 60px; text-align: center; }
+        .blog-header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #c3c3c3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .blog-header p { font-size: 1.2rem; color: #aab; }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Una columna para que los artículos se apilen */
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-image-container {
+            display: flex; justify-content: center; align-items: center;
+            gap: 15px; padding: 25px; background: rgba(0,0,0,0.2);
+        }
+        
+        .blog-card img {
+            width: 120px; height: 120px;
+            border-radius: 50%; border: 4px solid #fff;
+            object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .card-content { padding: 30px; }
+        .card-content h2 { font-size: 1.8rem; color: var(--text-color); margin-bottom: 15px; }
+        .card-content p, .card-content ul { font-size: 1.1rem; color: #ccc; margin-bottom: 1rem;}
+        .card-content ul { padding-left: 20px; }
+        .card-content strong { color: var(--secondary-color); }
+        .author-signature { text-align: right; font-style: italic; margin-top: 20px; color: #aaa; }
+        
+        /* Estilos para "Leer más" */
+        .article-excerpt { max-height: 100px; overflow: hidden; position: relative; transition: max-height 0.7s ease-in-out;}
+        .article-excerpt::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 50px;
+            background: linear-gradient(to top, var(--card-bg), transparent);
+        }
+        .article-full { max-height: 2000px; /* Un valor alto para permitir la expansión */ }
+        .article-full::after { display: none; }
+
+        .read-more-btn {
+            display: inline-block; padding: 10px 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: #fff; text-decoration: none; border-radius: 50px;
+            font-weight: 700; transition: transform 0.3s ease;
+            margin-top: 20px; align-self: flex-start; cursor: pointer; border: none; font-family: 'Poppins', sans-serif; font-size: 1rem;
+        }
+        .read-more-btn:hover { transform: scale(1.05); }
+
+        @media screen and (max-width: 800px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--background-color); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--card-border); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            .blog-header h1 { font-size: 2.5rem; }
+            .card-image-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="blog-header">
+            <h1>Blog</h1>
+            <p>Artículos para desmitificar las finanzas y potenciar tu conocimiento.</p>
+        </div>
+
+        <div class="container">
+            <div class="blog-grid">
+                
+                <!-- Artículo 1: Riesgos en Criptomonedas -->
+                <article class="blog-card">
+                    <div class="card-image-container">
+                        <img src="https://estaticos-cdn.prensaiberica.es/clip/74c03414-1ed9-4703-a287-2f521a2b7177_16-9-discover-aspect-ratio_default_0.jpg" alt="Gráfico de criptomonedas cayendo">
+                        
+                    </div>
+                    <div class="card-content">
+                        <h2>Los 5 Grandes Riesgos de Invertir en Criptomonedas</h2>
+                        <div class="article-excerpt">
+                            <p>El universo cripto es una tierra de oportunidades gigantescas, donde fortunas se han creado de la noche a la mañana. Pero como en toda frontera salvaje, también está plagada de peligros. Antes de invertir un solo euro, es crucial que entiendas los riesgos a los que te enfrentas. No es un juego, es tu dinero.</p>
+                            <p><strong>1. Volatilidad Extrema:</strong> Es el riesgo más conocido. El precio de una criptomoneda puede subir un 50% en un día y caer un 70% a la semana siguiente. Debes tener un estómago de acero y estar preparado para ver cómo el valor de tu cartera fluctúa de forma dramática. Nunca inviertas dinero que vayas a necesitar a corto plazo.</p>
+                            <p><strong>2. Riesgo Regulatorio:</strong> Las criptomonedas operan en una zona gris a nivel legal en muchos países. Un gobierno puede decidir prohibirlas, regularlas estrictamente o aplicarles impuestos inesperados, lo que podría hundir su valor de la noche a la mañana. La incertidumbre regulatoria es una espada de Damocles constante sobre el mercado.</p>
+                            <p><strong>3. Seguridad y Hacks:</strong> "Not your keys, not your coins" (Si no tienes tus claves, no tienes tus monedas). Si guardas tus criptos en un exchange (como Binance o Coinbase), y este es hackeado, podrías perderlo todo. Si las guardas tú mismo en una wallet, pero pierdes tu clave privada, nadie podrá recuperarlas. La responsabilidad de la seguridad recae 100% en ti.</p>
+                            <p><strong>4. Estafas y 'Rug Pulls':</strong> El anonimato del mundo cripto atrae a muchos estafadores. Proyectos que parecen prometedores pueden desaparecer de la noche a la mañana llevándose el dinero de los inversores (lo que se conoce como 'rug pull' o tirón de alfombra). Desconfía de las promesas de ganancias garantizadas y rápidas.</p>
+                            <p><strong>5. Falta de Valor Intrínseco:</strong> A diferencia de una acción, que representa una parte de una empresa que genera beneficios, el valor de muchas criptomonedas se basa puramente en la oferta y la demanda (en la fe de la gente). Si la confianza en un proyecto desaparece, su valor puede caer a cero. Invertir en cripto es, en gran medida, una apuesta por la adopción futura de su tecnología.</p>
+                            <p class="author-signature">— Por Pablo Vidal Vidal</p>
+                        </div>
+                        <button class="read-more-btn">Leer más</button>
+                    </div>
+                </article>
+
+                <!-- Artículo 2: Qué es el DCA -->
+                <article class="blog-card">
+                    <div class="card-image-container">
+                        <img src="https://www.fondosindexados.net/wp-content/uploads/2022/01/Dollar-cost-averaging.jpeg" alt="Gráfico explicando el Dollar Cost Averaging (DCA)">
+                    </div>
+                    <div class="card-content">
+                        <h2>DCA: La Estrategia que Vence al Miedo y la Codicia</h2>
+                        <div class="article-excerpt">
+                            <p>¿Y si te dijera que la estrategia de inversión más efectiva para la mayoría de las personas no requiere ser un genio de las finanzas ni adivinar el futuro? Se llama <strong>Dollar Cost Averaging (DCA)</strong>, y es tu mejor arma para construir patrimonio a largo plazo.</p>
+                            <p>El concepto es insultantemente simple: <strong>invertir una cantidad fija de dinero a intervalos regulares (por ejemplo, 100€ cada mes), sin importar si el mercado sube o baja.</strong></p>
+                            <p><strong>¿Cómo funciona la magia?</strong></p>
+                            <ul>
+                                <li><strong>Cuando el mercado baja:</strong> Tus 100€ compran más participaciones/acciones porque están baratas. ¡Estás comprando en rebajas!</li>
+                                <li><strong>Cuando el mercado sube:</strong> Tus 100€ compran menos participaciones porque están más caras.</li>
+                            </ul>
+                            <p>Con el tiempo, este método hace que tu precio medio de compra sea más bajo que si hubieras intentado "adivinar" el mejor momento para entrar. El DCA elimina las dos emociones que arruinan a los inversores: el <strong>miedo</strong> (que te paraliza cuando el mercado cae) y la <strong>codicia</strong> (que te hace comprarlo todo cuando ya está caro).</p>
+                            <p>Es una estrategia disciplinada, automática y que te permite aprovechar las caídas del mercado como oportunidades de compra. Para el 99% de los inversores, la consistencia del DCA supera a la búsqueda inútil del momento perfecto.</p>
+                            <p class="author-signature">— Por Pablo Vidal Vidal</p>
+                        </div>
+                        <button class="read-more-btn">Leer más</button>
+                    </div>
+                </article>
+
+                <!-- Artículo 3: Fondos Indexados -->
+                <article class="blog-card">
+                    <div class="card-image-container">
+                        <img src="https://www.bbva.com/wp-content/uploads/2018/03/Fondos-Indexados-Bindex-BBVA-Asset-Management-Fondo-de-Inversion.jpg" alt="Gráfico de un índice bursátil subiendo">
+                    </div>
+                    <div class="card-content">
+                        <h2>La Revolución Silenciosa: Historia y Éxito de los Fondos Indexados</h2>
+                        <div class="article-excerpt">
+                            <p>En el mundo de la inversión, existía un dogma: para ganar dinero, debías contratar a un gestor de fondos muy listo (y muy caro) para que eligiera las mejores acciones por ti. Pero en 1975, un hombre llamado <strong>John C. Bogle</strong>, fundador de Vanguard, lanzó una idea que fue ridiculizada: "¿Y si en lugar de intentar ganar al mercado, simplemente lo compramos entero?". Así nació el primer fondo indexado.</p>
+                            <p>La idea era simple: crear un fondo que no intentara ser más listo que nadie, sino que se limitara a replicar el comportamiento de un índice bursátil completo, como el S&P 500 (las 500 empresas más grandes de EE.UU.). Al eliminar la necesidad de analistas caros y operaciones constantes, los costes se desplomaron.</p>
+                            <p><strong>¿El resultado? Una revolución.</strong> Década tras década, se ha demostrado que la gran mayoría de los fondos de gestión activa (los caros) no logran superar el rendimiento de un simple y barato fondo indexado a largo plazo. Warren Buffett, uno de los mejores inversores de la historia, ha recomendado repetidamente los fondos indexados al S&P 500 para el inversor medio.</p>
+                            <p>La probabilidad de éxito de un fondo indexado no es una opinión, es matemática. Al invertir en todo el mercado, garantizas que obtendrás el rendimiento del mercado, menos unas comisiones mínimas. Es la forma más eficiente, diversificada y probada de participar en el crecimiento económico global.</p>
+                            <p class="author-signature">— Por Pablo Vidal Vidal</p>
+                        </div>
+                        <button class="read-more-btn">Leer más</button>
+                    </div>
+                </article>
+
+                <!-- Artículo 4: Educación Financiera -->
+                <article class="blog-card">
+                    <div class="card-image-container">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRph_v6dlLWQPl_ZO1L0AEbg5ldFLRQO4HrVg&s" alt="Niños aprendiendo sobre finanzas">
+    
+                    </div>
+                    <div class="card-content">
+                        <h2>Educación Financiera: ¿Por qué EEUU nos lleva ventaja?</h2>
+                        <div class="article-excerpt">
+                            <p>Es una realidad que a menudo se comenta: en Estados Unidos, la conversación sobre invertir, el mercado de valores y la planificación para la jubilación parece mucho más extendida que en España. ¿A qué se debe esta diferencia cultural y estructural?</p>
+                            <ul>
+                                <li><strong>El Sistema de Pensiones:</strong> En España, hemos confiado históricamente en un robusto sistema público de pensiones. Esto ha creado una mentalidad en la que el Estado es el principal responsable de nuestra jubilación. En EEUU, el sistema es más débil y se fomenta activamente el ahorro privado a través de planes como el <strong>401(k)</strong>, donde el empleado y la empresa aportan a un fondo de inversión. Esto "fuerza" a la gente a familiarizarse con los mercados.</li>
+                                <li><strong>Cultura del Emprendimiento y el Riesgo:</strong> La cultura estadounidense glorifica el riesgo y la iniciativa individual. Invertir en bolsa se ve como una parte natural de la construcción de riqueza. En España, tenemos una cultura más conservadora, donde la prioridad ha sido tradicionalmente la compra de vivienda como principal vehículo de ahorro e inversión.</li>
+                            </ul>
+                            <p><strong>La importancia de cerrar la brecha:</strong> No se trata de convertir a todo el mundo en un trader de Wall Street, sino de dar a las personas las herramientas para tomar decisiones informadas. Una buena educación financiera desde pequeños enseña a gestionar un presupuesto, a entender la deuda, a diferenciar activos de pasivos y, sobre todo, a comprender que el dinero puede trabajar para ti gracias al interés compuesto. Es una habilidad vital para la soberanía personal en el siglo XXI.</p>
+                            <p class="author-signature">— Por Pablo Vidal Vidal</p>
+                        </div>
+                        <button class="read-more-btn">Leer más</button>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            © 2025 ProInvestingESP | Creado por Pablo Vidal Vidal pablo2vbngdaw@gmail.com
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica del menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+
+            // Lógica para los botones "Leer más"
+            document.querySelectorAll('.read-more-btn').forEach(button => {
+                button.addEventListener('click', event => {
+                    event.preventDefault(); // Evita que la página se recargue si el botón está dentro de un <a>
+                    const excerpt = button.previousElementSibling;
+                    excerpt.classList.toggle('article-excerpt');
+                    excerpt.classList.toggle('article-full');
+
+                    if (excerpt.classList.contains('article-full')) {
+                        button.textContent = 'Leer menos';
+                    } else {
+                        button.textContent = 'Leer más';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

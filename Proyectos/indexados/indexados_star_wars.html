@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars: La Fuerza Financiera</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES GLOBALES --- */
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --sw-red: #d92b2b;
+            --sw-blue: #3498db;
+            --sw-gold: #ffc900;
+            --sw-dark: #111111;
+            --sw-light: #f5f5f5;
+            --container-bg: #222222;
+            --text-light: #e0e0e0;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --yoda-color: #2ecc71;
+            --obiwan-color: var(--sw-blue);
+            --anakin-color: var(--sw-red);
+            --han-color: #7f8c8d;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 8px var(--sw-gold), 0 0 16px var(--sw-gold); transform: scale(1.1); }
+            50% { box-shadow: 0 0 16px var(--sw-gold), 0 0 32px var(--sw-gold); transform: scale(1.15); }
+            100% { box-shadow: 0 0 8px var(--sw-gold), 0 0 16px var(--sw-gold); transform: scale(1.1); }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sw-dark);
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            color: var(--text-light);
+        }
+        
+        /* --- HEADER Y FOOTER --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { font-family: 'Poppins', sans-serif; color: var(--text-light); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-light); border-radius: 2px; }
+        
+        footer {
+            padding: 40px 20px; text-align: center; font-size: .9rem; color: #888;
+            background-color: var(--sw-dark); line-height: 1.6;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            padding: 40px 20px;
+        }
+
+        .container {
+            display: flex; flex-direction: column; align-items: center;
+            background-color: var(--container-bg); padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.5); max-width: 1100px; width: 100%;
+            text-align: center; border: 2px solid var(--border-color);
+        }
+        h1, .section-title {
+            font-family: 'Orbitron', sans-serif; color: var(--text-light);
+            text-shadow: 0 0 5px var(--sw-blue), 0 0 10px var(--sw-blue);
+            letter-spacing: 2px;
+        }
+        h1 { font-size: 3.5rem; margin: 0 0 10px 0; }
+        .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+        strong { color: var(--sw-gold); font-weight: 700; }
+        .path-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 25px; margin-bottom: 20px; width: 100%; }
+        .path-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; }
+        .path-card img { height: 100px; width: 100px; object-fit: contain; filter: invert(90%) sepia(10%) saturate(600%) hue-rotate(180deg); transition: all 0.3s ease; }
+        .path-card .path-name { font-weight: 600; margin-top: 8px; color: var(--text-light); font-size: 0.9rem;}
+        .path-card:hover img { filter: none; filter: drop-shadow(0 0 5px var(--sw-gold)); transform: scale(1.1); }
+        .path-card.selected { transform: scale(1.1); }
+        .path-card.selected img { filter: none; filter: drop-shadow(0 0 10px var(--sw-gold)); animation: pulse-glow 2s infinite; }
+        .path-card.dimmed { opacity: 0.5; filter: grayscale(70%); }
+        #path-info-display { width: 100%; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        #path-info-display.visible { opacity: 1; max-height: 200px; }
+        #path-info-display h3 { font-family: 'Orbitron', sans-serif; margin: 0 0 5px 0; font-size: 1.6rem; color: var(--sw-blue); text-shadow: none; }
+        .form-section { background-color: rgba(0,0,0,0.2); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); width: 100%;}
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--text-light); }
+        input[type=number] { width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; color: var(--text-light); background-color: rgba(0,0,0,0.3); transition: border-color .2s, box-shadow .2s; }
+        input[type=number]:focus { outline: 0; border-color: var(--sw-gold); box-shadow: 0 0 10px rgba(255, 201, 0, .5); }
+        button { width: 100%; padding: 16px 40px; background: var(--sw-blue); color: #fff; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; cursor: pointer; transition: all .2s; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(217, 43, 43, .4); background-color: var(--sw-red); }
+        button:disabled { background-color: #555; color: #999; cursor: not-allowed; }
+        #results-container { margin-top: 40px; display: none; opacity: 0; width: 100%; }
+        #results-container.visible { display: block; opacity: 1; transition: opacity .5s ease-out; }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 15px; text-align: center; border-width: 2px; border-style: solid; transition: transform 0.3s; display: flex; flex-direction: column; background-color: #2a2a2a; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .result-scenario:hover { transform: translateY(-10px); }
+        .character-portrait { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: center; margin: 0 auto 15px; border: 3px solid; display: block; }
+        .result-scenario h3 { font-family: 'Orbitron', sans-serif; margin-top: 0; font-size: 1.3rem; letter-spacing: 1px; }
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; color: var(--sw-gold); }
+        .real-value { font-size: 1.1rem; color: #ccc; margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #888; }
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed var(--border-color); }
+        .details-list strong { color: var(--text-light); }
+        .yoda-case { border-color: var(--yoda-color); } .yoda-case h3 { color: var(--yoda-color); } .yoda-case .character-portrait { border-color: var(--yoda-color); }
+        .obiwan-case { border-color: var(--obiwan-color); } .obiwan-case h3 { color: var(--obiwan-color); } .obiwan-case .character-portrait { border-color: var(--obiwan-color); }
+        .anakin-case { border-color: var(--anakin-color); } .anakin-case h3 { color: var(--anakin-color); } .anakin-case .character-portrait { border-color: var(--anakin-color); }
+        .han-case { border-color: var(--han-color); } .han-case h3 { color: var(--han-color); } .han-case .character-portrait { border-color: var(--han-color); }
+        .guide-section { margin-top: 50px; padding: 30px; border-top: 2px solid var(--border-color); text-align: left; line-height: 1.7; background-color: rgba(0,0,0,0.2); border-radius: 15px; width: 100%;}
+        .guide-section h3 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--sw-blue); margin-bottom: 10px; }
+        .guide-section p { margin-bottom: 20px; }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background-color: var(--sw-dark); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
+            .section-title { font-size: 1.8rem; }
+            .path-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 20px; }
+            .path-card img { width: 80px; height: 80px; }
+            .form-section { padding: 20px; }
+            .form-grid { gap: 25px; }
+            .hidden-mobile { display: none; }
+            .character-portrait { width: 90px; height: 90px; }
+            .final-amount { font-size: 1.8rem; }
+            .guide-section { padding: 20px; }
+            .guide-section h3 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#universos">Universos</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>La Fuerza Financiera</h1>
+            <p class="subtitle">
+                Hace mucho tiempo, en una galaxia muy, muy cercana... un joven padawan financiero debe elegir su camino. La <strong>Fuerza del Interés Compuesto</strong> es poderosa, pero el <strong>Lado Oscuro de la Inflación</strong> siempre acecha. Elige tu alianza, entrena tus créditos y que la Fuerza te acompañe.
+            </p>
+            
+            <div id="path-section" style="width: 100%;">
+                <h2 class="section-title">Paso 1: Elige tu Senda</h2>
+                <div class="path-grid" id="path-grid-container"></div>
+            </div>
+            
+            <div id="path-info-display"></div>
+            
+            <div class="form-section">
+                <form id="calculator-form">
+                     <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Paso 2: Define tu Entrenamiento</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="monthly-contribution">Créditos mensuales (€)</label>
+                            <input type="number" id="monthly-contribution" name="contribution" required min="1" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Años de Entrenamiento</label>
+                            <input type="number" id="years" name="years" required min="1" value="15">
+                        </div>
+                        <div class="form-group">
+                            <label class="hidden-mobile"> </label> 
+                            <button type="submit" id="submit-button" disabled>¡Despierta la Fuerza!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <h2 class="section-title">Tu Destino en la Fuerza</h2>
+                <div class="scenarios-grid">
+                     <div class="result-scenario yoda-case">
+                        <img id="yoda-img" class="character-portrait">
+                        <h3>Maestro de la Fuerza</h3>
+                        <span class="final-amount" id="best-case-amount"></span>
+                        <div class="real-value">
+                            <span id="best-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancia de la Fuerza:</span> <strong id="best-total-interest"></strong></li>
+                            <li><span>Créditos invertidos:</span> <strong id="best-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario obiwan-case">
+                        <img id="obiwan-img" class="character-portrait">
+                        <h3>Caballero Jedi</h3>
+                        <span class="final-amount" id="average-case-amount"></span>
+                        <div class="real-value">
+                            <span id="average-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                         <ul class="details-list">
+                            <li><span>Ganancia de la Fuerza:</span> <strong id="average-total-interest"></strong></li>
+                            <li><span>Créditos invertidos:</span> <strong id="average-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario anakin-case">
+                        <img id="anakin-img" class="character-portrait">
+                        <h3>Caído al Lado Oscuro</h3>
+                        <span class="final-amount" id="worst-case-amount"></span>
+                        <div class="real-value">
+                            <span id="worst-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancia de la Fuerza:</span> <strong id="worst-total-interest"></strong></li>
+                            <li><span>Créditos invertidos:</span> <strong id="worst-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario han-case">
+                        <img id="han-img" class="character-portrait">
+                        <h3>Congelado en Carbonita</h3>
+                        <span class="final-amount" id="bank-case-amount"></span>
+                        <div class="real-value">
+                             <span id="bank-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancia de la Fuerza:</span> <strong>0 créditos</strong></li>
+                            <li><span>Créditos invertidos:</span> <strong id="bank-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <h2 class="section-title">Holocrón del Templo Jedi</h2>
+                <h3>El Lado Oscuro de la Fuerza (Inflación)</h3>
+                <p>
+                    El <strong>Lado Oscuro</strong> seduce con la inacción. Si dejas tus créditos en una caja fuerte, el Emperador Palpatine (la <strong>inflación</strong>) los corromperá, drenando su poder año tras año. Lo que hoy te compra un speeder, en el futuro solo te alcanzará para un droide de protocolo. No hacer nada es ceder ante el Lado Oscuro.
+                </p>
+                <h3>El Poder de una Alianza (Fondos Indexados)</h3>
+                <p>
+                    Confiar en un solo caza estelar (una sola acción) para ganar la guerra es arriesgado. Si es derribado, estás perdido. Un <strong>Fondo Indexado</strong> es como comandar a toda la <strong>Flota Rebelde</strong>. Al unirte a la Alianza (S&P 500), tu éxito está ligado al de los 500 pilotos más valientes de la galaxia. Es la estrategia más sabia para derrocar al Imperio y traer el equilibrio a tus finanzas.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container" style="background-color: var(--sw-dark); border: none; box-shadow: none;">
+            Construido en los astilleros de Kuat por <strong>Pablo Vidal Vidal (@proinvestingesp)</strong>.
+            <br>Las simulaciones consideran que el poder del Imperio (inflación) es de un 2.2% anual. Que la Fuerza te acompañe.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica de la calculadora de Star Wars
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedPathIndex = null;
+                const resultLevels = { yoda: 'https://hips.hearstapps.com/hmg-prod/images/yoda-consejo-jedi-1568794362.jpg', obiwan: 'https://ca-times.brightspotcdn.com/dims4/default/10beaaa/2147483647/strip/true/crop/1263x720+0+0/resize/1200x684!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F57%2F32%2F9f488c2d4bc288bcfce63e749811%2Fobi-wan.JPG', anakin: 'https://wallpapers.com/images/hd/dark-darth-vader-star-wars-tablet-gp7se5myotp7mfhj.jpg', han: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_bps_5mtaJg_uKxTW-OE9K5kVelriaTRDig&s' };
+                const pathData = [
+                    { name: 'Senda Jedi', fund: 'MSCI World', rates: [8.5, 10.5, 5.5], img: 'https://m.media-amazon.com/images/I/91U-+OJxaFL._UF1000,1000_QL80_.jpg', annualizedReturn20Y: 8.9 },
+                    { name: 'Imperio Sith', fund: 'Nasdaq 100', rates: [13.5, 16.5, 9.5], img: 'https://static.wikia.nocookie.net/esstarwars/images/6/61/SithEmblem-Traced-TORkit.svg', annualizedReturn20Y: 14.5 },
+                    { name: 'República Galáctica', fund: 'S&P 500', rates: [9.8, 12.0, 6.5], img: 'https://static.wikia.nocookie.net/rolbenigno/images/9/98/Bandera_Rep%C3%BAblica_Gal%C3%A1ctica.jpg', annualizedReturn20Y: 10.2 },
+                    { name: 'Alianza Rebelde', fund: 'MSCI EM', rates: [7.5, 11.5, 4.0], img: 'https://i.ytimg.com/vi/P6D2ekpDx30/sddefault.jpg', annualizedReturn20Y: 9.5 },
+                    { name: 'Credo Mandaloriano', fund: 'High Dividend', rates: [7.0, 9.0, 4.5], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3g7kEOXWArGxIRyUWJN8l_r9A3f90V0QhLw&s', annualizedReturn20Y: 7.5 },
+                    { name: 'Ruta del Contrabandista', fund: 'Small Caps', rates: [11.0, 15.0, 6.0], img: 'https://static.wikia.nocookie.net/esstarwars/images/b/bb/HanChewie_SWFMatrixc1.jpg', annualizedReturn20Y: 11.8 },
+                    { name: 'Sindicato Hutt', fund: 'Global Bonds', rates: [4.0, 5.5, 2.5], img: 'https://static.wikia.nocookie.net/esstarwars/images/e/e0/HuttCartel-Timeline4.jpg', annualizedReturn20Y: 3.1 },
+                    { name: 'Gremio de Cazarrecompensas', fund: 'All-Weather', rates: [6.0, 8.0, 3.5], img: 'https://labibliotecadeltemplojedi.wordpress.com/wp-content/uploads/2022/10/ivv6gyt.jpg?w=500', annualizedReturn20Y: 6.2 },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) { if (annualRate === 0) return monthlyContribution * years * 12; const monthlyRate = annualRate / 12; const numMonths = years * 12; let futureValue = 0; for (let i = 0; i < numMonths; i++) { futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate); } return futureValue; }
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+                function populatePage() {
+                    document.getElementById('yoda-img').src = resultLevels.yoda; document.getElementById('obiwan-img').src = resultLevels.obiwan; document.getElementById('anakin-img').src = resultLevels.anakin; document.getElementById('han-img').src = resultLevels.han;
+                    const gridContainer = document.getElementById('path-grid-container'); const submitButton = document.getElementById('submit-button'); const infoDisplay = document.getElementById('path-info-display');
+                    pathData.forEach((path, index) => {
+                        const card = document.createElement('div'); card.classList.add('path-card'); card.dataset.index = index;
+                        card.innerHTML = `<img src="${path.img}" alt="${path.name}"><div class="path-name">${path.name}</div>`;
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.path-card').forEach(c => { c.classList.remove('selected'); c.classList.add('dimmed'); });
+                            card.classList.add('selected'); card.classList.remove('dimmed');
+                            selectedPathIndex = index; submitButton.disabled = false;
+                            const selectedPath = pathData[selectedPathIndex];
+                            infoDisplay.innerHTML = `<h3>${selectedPath.name}</h3><p style="margin-bottom: 8px;">Estrategia de Inversión: <strong>${selectedPath.fund}</strong></p><p style="margin-top: 0;">Poder histórico (20 años): <strong style="color:var(--sw-gold);">${selectedPath.annualizedReturn20Y}% anual</strong></p>`;
+                            infoDisplay.classList.add('visible');
+                        });
+                        gridContainer.appendChild(card);
+                    });
+                }
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedPathIndex === null) { alert("¡Padawan, primero debes elegir una senda en la Fuerza!"); return; }
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value); const years = parseInt(document.getElementById('years').value, 10);
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) { alert("¡Los archivos de la República están incompletos! Revisa tus datos."); return; }
+                    const selectedPath = pathData[selectedPathIndex]; const [avgRate, bestRate, worstRate] = selectedPath.rates.map(r => parseFloat(r) / 100);
+                    const results = { best: calculateCompoundInterest(monthlyContribution, years, bestRate), average: calculateCompoundInterest(monthlyContribution, years, avgRate), worst: calculateCompoundInterest(monthlyContribution, years, worstRate), totalInvested: calculateCompoundInterest(monthlyContribution, years, 0) };
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best); document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years)); document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average); document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years)); document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst); document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years)); document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested); document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years)); document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+                    const resultsContainer = document.getElementById('results-container'); resultsContainer.classList.add('visible'); resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+            } catch (e) {
+                alert("¡Hay una perturbación en la Fuerza! Avisa al Consejo Jedi. Error: " + e.message);
+            }
+
+            // Lógica del menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

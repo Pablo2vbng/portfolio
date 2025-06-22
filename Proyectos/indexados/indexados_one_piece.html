@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece: La Aventura del Tesoro Financiero</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES GLOBALES --- */
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --op-orange: #f97300;
+            --op-blue: #005b9a;
+            --op-gold: #ffc900;
+            --op-red: #d92b2b;
+            --bg-light: #e6f3ff;
+            --text-dark: #2c3e50;
+            --container-bg: #ffffff;
+            --imu-purple: #4a148c;
+            --yonkou-color: #e67e22;
+            --almirante-color: #3498db;
+            --gorosei-color: #c0392b;
+        }
+
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 5px var(--op-gold)); transform: scale(1.1); }
+            50% { filter: drop-shadow(0 0 15px var(--op-gold)); transform: scale(1.15); }
+            100% { filter: drop-shadow(0 0 5px var(--op-gold)); transform: scale(1.1); }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80"><path fill="%23d4eaff" fill-opacity="0.4" d="M40 40c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-18c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM20 20c5.523 0 10-4.477 10-10S25.523 0 20 0s-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM60 20c5.523 0 10-4.477 10-10S65.523 0 60 0s-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM20 60c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zM60 60c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-2c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>');
+            color: var(--text-dark);
+        }
+        
+        /* --- HEADER Y FOOTER --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { font-family: 'Poppins', sans-serif; color: #e0e0e0; text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: #e0e0e0; border-radius: 2px; }
+        
+        footer {
+            padding: 40px 20px; text-align: center; font-size: .9rem; color: #555;
+            background-color: var(--bg-light); line-height: 1.6;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            padding: 40px 20px;
+        }
+
+        .container {
+            background-color: var(--container-bg); padding: 40px; border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.1); max-width: 1100px; width: 100%;
+            text-align: center; border: 4px solid var(--op-blue);
+        }
+        h1, .section-title {
+            font-family: 'Luckiest Guy', cursive; color: var(--op-orange);
+            text-shadow: 2px 2px 0 var(--op-blue), 4px 4px 0 rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+        }
+        h1 { font-size: 3.8rem; margin: 0 0 10px 0; }
+        .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+        strong { color: var(--op-blue); font-weight: 700; }
+        .crew-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 20px; margin-bottom: 20px; width: 100%; }
+        .crew-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; }
+        .crew-card img { width: 100%; height: 100%; object-fit: cover; border: 4px solid #fff; border-radius: 15px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s ease; }
+        .crew-card .crew-name { font-weight: 600; margin-top: 8px; color: var(--op-blue); font-size: 0.9rem;}
+        .crew-card:hover img { transform: scale(1.1); border-color: var(--op-gold); }
+        .crew-card.selected { transform: scale(1.1); }
+        .crew-card.selected img { border-color: var(--op-gold); animation: pulse-glow 1.5s infinite ease-in-out; }
+        .crew-card.dimmed { opacity: 0.6; filter: grayscale(50%); }
+        #crew-info-display { width: 100%; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; background: var(--bg-light); border-radius: 18px; border: 2px dashed var(--op-blue); opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        #crew-info-display.visible { opacity: 1; max-height: 200px; }
+        #crew-info-display h3 { font-family: 'Luckiest Guy', cursive; margin: 0 0 5px 0; font-size: 1.6rem; color: var(--op-blue); }
+        .form-section { background-color: rgba(0, 91, 154, 0.1); padding: 30px; border-radius: 18px; border: 2px dashed var(--op-blue); width: 100%;}
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--op-blue); }
+        input[type=number] { width: 100%; padding: 14px 16px; border: 2px solid var(--op-blue); border-radius: 12px; box-sizing: border-box; font-size: 1rem; color: var(--text-dark); transition: border-color .2s, box-shadow .2s; }
+        input[type=number]:focus { outline: 0; border-color: var(--op-orange); box-shadow: 0 0 10px rgba(249, 115, 0, .5); }
+        button { width: 100%; padding: 16px 40px; background: var(--op-orange); color: #fff; border: none; border-radius: 12px; font-family: 'Luckiest Guy', cursive; font-size: 1.5rem; cursor: pointer; transition: all .2s; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(217, 43, 43, .4); background-color: var(--op-red); }
+        button:disabled { background-color: #aaa; color: #eee; cursor: not-allowed; }
+        #results-container { margin-top: 40px; display: none; opacity: 0; width: 100%; }
+        #results-container.visible { display: block; opacity: 1; transition: opacity .5s ease-out; }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 18px; text-align: center; border-width: 4px; border-style: solid; transition: transform 0.3s; display: flex; flex-direction: column; background-color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .result-scenario:hover { transform: translateY(-10px); }
+        .character-portrait { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: center; margin: 0 auto 15px; border: 4px solid; display: block; }
+        .result-scenario h3 { font-family: 'Luckiest Guy', cursive; margin-top: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; }
+        .real-value { font-size: 1.1rem; color: #555; margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #777; }
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed #ccc; }
+        .details-list strong { color: var(--text-dark); }
+        .yonkou-case { border-color: var(--yonkou-color); } .yonkou-case h3, .yonkou-case .final-amount { color: var(--yonkou-color); } .yonkou-case .character-portrait { border-color: var(--yonkou-color); }
+        .almirante-case { border-color: var(--almirante-color); } .almirante-case h3, .almirante-case .final-amount { color: var(--almirante-color); } .almirante-case .character-portrait { border-color: var(--almirante-color); }
+        .gorosei-case { border-color: var(--gorosei-color); } .gorosei-case h3, .gorosei-case .final-amount { color: var(--gorosei-color); } .gorosei-case .character-portrait { border-color: var(--gorosei-color); }
+        .imu-case { border-color: var(--imu-purple); } .imu-case h3, .imu-case .final-amount { color: var(--imu-purple); } .imu-case .character-portrait { border-color: var(--imu-purple); }
+        .guide-section { margin-top: 50px; padding: 30px; border-top: 4px solid var(--op-blue); text-align: left; line-height: 1.7; background-color: #fff; border-radius: 18px; width: 100%;}
+        .guide-section h3 { font-family: 'Luckiest Guy', cursive; font-size: 2rem; color: var(--op-blue); margin-bottom: 10px; }
+        .guide-section p { margin-bottom: 20px; }
+        
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background-color: var(--bg-dark); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .crew-grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 15px; }
+            .crew-card img { width: 80px; height: 80px; }
+            .form-section { padding: 20px; }
+            .form-grid { gap: 25px; }
+            .hidden-mobile { display: none; }
+            .character-portrait { width: 90px; height: 90px; }
+            .final-amount { font-size: 1.8rem; }
+            .guide-section { padding: 20px; }
+            .guide-section h3 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#universos">Universos</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>La Aventura del Tesoro Financiero</h1>
+            <p class="subtitle">
+                ¡Oye, pirata! La era de la inversión ha comenzado. Para encontrar el gran tesoro de la libertad financiera, debes unirte a una tripulación legendaria (un Fondo Indexado) y acumular tus Berries. Pero ten cuidado, el <strong>Gobierno Mundial (la Inacción y la Inflación)</strong>, liderado por el misterioso <strong>Imu-sama</strong>, intentará detenerte. ¡No dejes que hundan tu barco!
+            </p>
+            
+            <div id="crew-section" style="width: 100%;">
+                <h2 class="section-title">Paso 1: Elige un Nakama</h2>
+                <div class="crew-grid" id="crew-grid-container"></div>
+            </div>
+            
+            <div id="crew-info-display"></div>
+            
+            <div class="form-section">
+                <form id="calculator-form">
+                     <h2 class="section-title" style="font-size: 2rem; margin-bottom: 20px;">Paso 2: Acumula tus Berries</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="monthly-contribution">Berries mensuales (€)</label>
+                            <input type="number" id="monthly-contribution" name="contribution" required min="1" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Años de Travesía</label>
+                            <input type="number" id="years" name="years" required min="1" value="15">
+                        </div>
+                        <div class="form-group">
+                            <label class="hidden-mobile"> </label> 
+                            <button type="submit" id="submit-button" disabled>¡Zarpar hacia el One Piece!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <h2 class="section-title">¡Has Encontrado un Tesoro!</h2>
+                <div class="scenarios-grid">
+                     <div class="result-scenario yonkou-case">
+                        <img id="yonkou-img" class="character-portrait">
+                        <h3>Nivel Yonkou</h3>
+                        <span class="final-amount" id="best-case-amount"></span>
+                        <div class="real-value">
+                            <span id="best-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Tesoro ganado:</span> <strong id="best-total-interest"></strong></li>
+                            <li><span>Berries invertidos:</span> <strong id="best-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario almirante-case">
+                        <img id="almirante-img" class="character-portrait">
+                        <h3>Nivel Almirante</h3>
+                        <span class="final-amount" id="average-case-amount"></span>
+                        <div class="real-value">
+                            <span id="average-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                         <ul class="details-list">
+                            <li><span>Tesoro ganado:</span> <strong id="average-total-interest"></strong></li>
+                            <li><span>Berries invertidos:</span> <strong id="average-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario gorosei-case">
+                        <img id="gorosei-img" class="character-portrait">
+                        <h3>Nivel Gorosei</h3>
+                        <span class="final-amount" id="worst-case-amount"></span>
+                        <div class="real-value">
+                            <span id="worst-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Tesoro ganado:</span> <strong id="worst-total-interest"></strong></li>
+                            <li><span>Berries invertidos:</span> <strong id="worst-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario imu-case">
+                        <img id="imu-img" class="character-portrait">
+                        <h3>Hundido por Imu-sama</h3>
+                        <span class="final-amount" id="bank-case-amount"></span>
+                        <div class="real-value">
+                             <span id="bank-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Tesoro ganado:</span> <strong>0 €</strong></li>
+                            <li><span>Berries invertidos:</span> <strong id="bank-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <h2 class="section-title">Consejos de Rayleigh</h2>
+                <h3>El Enemigo Oculto: El Gobierno Mundial (Inflación)</h3>
+                <p>
+                    Imagina que el <strong>Gobierno Mundial</strong> te cobra un impuesto invisible cada año sobre los Berries que guardas bajo el colchón. ¡Esa es la <strong>inflación</strong>! Si no pones tus Berries a trabajar en el mar de las inversiones, su poder de compra se hundirá. Lo que hoy te compra un barco, en el futuro solo te alcanzará para el timón. Dejar tu tesoro quieto es rendirte sin luchar.
+                </p>
+                <h3>El Poder de la Tripulación (Fondos Indexados)</h3>
+                <p>
+                    Enfrentarse al Grand Line solo, confiando en una única habilidad (una sola acción), es una locura. ¿Y si te encuentras con un enemigo que es tu debilidad? Un <strong>Fondo Indexado</strong> es como tener a toda la <strong>Gran Flota del Sombrero de Paja</strong> luchando a tu lado. Al unirte a Luffy (S&P 500), tu fortuna crece con la de los 500 piratas más poderosos. Es la estrategia más segura para navegar las aguas más peligrosas y alcanzar el One Piece.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="background-color: var(--container-bg); border: none; box-shadow: none;">
+            Creado en el Thousand Sunny por <strong>Pablo Vidal Vidal (@proinvestingesp)</strong>.
+            <br>Las simulaciones consideran que el poder del Gobierno Mundial (inflación) es de un 2.2% anual. Esto es un consejo de un vicealmirante retirado.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica de la calculadora de One Piece
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedCrewmateIndex = null;
+                const resultLevels = { yonkou: 'https://img.asmedia.epimg.net/resizer/v2/L7QK2VBMINGAFE6KOWE6CCGUYY.jpg?auth=ed09152a8bf0375ca2012c6507ff6c43887cf3bc07396b2a6f083428286b1ca4&width=1200&height=1200&smart=true', almirante: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1YlpqfokSDp6Ty8aW1ChOEUKHTU4KQGaDpw&s', gorosei: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGyaUVZGoUANdw6Tem_iqc6sPmcryEu6lDFw&s', imu: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1OCOudL_gEMk8IWWUhzDJSw7kKJ5YdhiHCQ&s' };
+                const crewData = [
+                    { name: 'Luffy', role: 'Capitán', fund: 'S&P 500', rates: [9.8, 12.0, 6.5], img: 'https://i.pinimg.com/564x/63/e4/2c/63e42c31af4518838ea20919d62684d8.jpg', annualizedReturn20Y: 10.2 },
+                    { name: 'Zoro', role: 'Espadachín', fund: 'MSCI World', rates: [8.5, 10.5, 5.5], img: 'https://i.pinimg.com/736x/2b/4d/8a/2b4d8ad9914b484e1bfd4d53c70e30bc.jpg', annualizedReturn20Y: 8.9 },
+                    { name: 'Nami', role: 'Navegante', fund: 'Nasdaq 100', rates: [13.5, 16.5, 9.5], img: 'https://mystickermania.com/cdn/stickers/one-piece/one-piece-nami-loves-money-512x512.png', annualizedReturn20Y: 14.5 },
+                    { name: 'Usopp', role: 'Francotirador', fund: 'Small Caps', rates: [11.0, 15.0, 6.0], img: 'https://i.pinimg.com/736x/76/19/60/761960d3132f0d6c9e1874aa0b718994.jpg', annualizedReturn20Y: 11.8 },
+                    { name: 'Sanji', role: 'Cocinero', fund: 'Socially Responsible', rates: [8.0, 10.0, 5.0], img: 'https://i.pinimg.com/736x/82/bb/f2/82bbf2c579fcf75959722f3f3907ce5a.jpg', annualizedReturn20Y: 9.1 },
+                    { name: 'Chopper', role: 'Médico', fund: 'Global Bonds', rates: [4.0, 5.5, 2.5], img: 'https://mystickermania.com/cdn/stickers/cartoons/sticker_5067-512x512.png', annualizedReturn20Y: 3.1 },
+                    { name: 'Robin', role: 'Arqueóloga', fund: 'All-Weather', rates: [6.0, 8.0, 3.5], img: 'https://mystickermania.com/cdn/stickers/anime/one-piece-nico-robin-512x512.png', annualizedReturn20Y: 6.2 },
+                    { name: 'Franky', role: 'Carpintero', fund: 'High Dividend', rates: [7.0, 9.0, 4.5], img: 'https://cdn3.emoji.gg/emojis/25035-onepiece-franky.png', annualizedReturn20Y: 7.5 },
+                    { name: 'Brook', role: 'Músico', fund: 'Real Estate (REITs)', rates: [7.2, 9.5, 4.8], img: 'https://i.pinimg.com/236x/ae/77/b6/ae77b67a920916b94728178a1b198e31.jpg', annualizedReturn20Y: 8.1 },
+                    { name: 'Jinbe', role: 'Timonel', fund: 'MSCI EM', rates: [7.5, 11.5, 4.0], img: 'https://ih1.redbubble.net/image.1855268073.2510/st,small,507x507-pad,600x600,f8f8f8.jpg', annualizedReturn20Y: 9.5 },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) { if (annualRate === 0) return monthlyContribution * years * 12; const monthlyRate = annualRate / 12; const numMonths = years * 12; let futureValue = 0; for (let i = 0; i < numMonths; i++) { futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate); } return futureValue; }
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+                function populatePage() {
+                    document.getElementById('yonkou-img').src = resultLevels.yonkou; document.getElementById('almirante-img').src = resultLevels.almirante; document.getElementById('gorosei-img').src = resultLevels.gorosei; document.getElementById('imu-img').src = resultLevels.imu;
+                    const gridContainer = document.getElementById('crew-grid-container'); const submitButton = document.getElementById('submit-button'); const infoDisplay = document.getElementById('crew-info-display');
+                    crewData.forEach((crewmate, index) => {
+                        const card = document.createElement('div'); card.classList.add('crew-card'); card.dataset.index = index;
+                        card.innerHTML = `<img src="${crewmate.img}" alt="${crewmate.name}"><div class="crew-name">${crewmate.name}</div>`;
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.crew-card').forEach(c => { c.classList.remove('selected'); c.classList.add('dimmed'); });
+                            card.classList.add('selected'); card.classList.remove('dimmed');
+                            selectedCrewmateIndex = index; submitButton.disabled = false;
+                            const selectedCrewmate = crewData[selectedCrewmateIndex];
+                            infoDisplay.innerHTML = `<h3>${selectedCrewmate.name} (${selectedCrewmate.role})</h3><p style="margin-bottom: 8px;">Estrategia de Inversión: <strong>${selectedCrewmate.fund}</strong></p><p style="margin-top: 0;">Recompensa histórica (20 años): <strong style="color:var(--op-orange);">${selectedCrewmate.annualizedReturn20Y}% anual</strong></p>`;
+                            infoDisplay.classList.add('visible');
+                        });
+                        gridContainer.appendChild(card);
+                    });
+                }
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedCrewmateIndex === null) { alert("¡Pirata, primero debes elegir un nakama para tu tripulación!"); return; }
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value); const years = parseInt(document.getElementById('years').value, 10);
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) { alert("¡Revisa tu plan de travesía! Esos números no llevarán a ningún tesoro."); return; }
+                    const selectedCrewmate = crewData[selectedCrewmateIndex]; const [avgRate, bestRate, worstRate] = selectedCrewmate.rates.map(r => parseFloat(r) / 100);
+                    const results = { best: calculateCompoundInterest(monthlyContribution, years, bestRate), average: calculateCompoundInterest(monthlyContribution, years, avgRate), worst: calculateCompoundInterest(monthlyContribution, years, worstRate), totalInvested: calculateCompoundInterest(monthlyContribution, years, 0) };
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best); document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years)); document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average); document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years)); document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst); document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years)); document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested); document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years)); document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+                    const resultsContainer = document.getElementById('results-container'); resultsContainer.classList.add('visible'); resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+            } catch (e) {
+                alert("¡ERROR! El Den Den Mushi no funciona. Avisa a Franky. Error: " + e.message);
+            }
+
+            // Lógica del menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

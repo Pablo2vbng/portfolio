@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC - Construye tu Imperio Financiero</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES GLOBALES DEL SITIO --- */
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --dc-red: #d32f2f;
+            --dc-yellow: #fdd835;
+            --bg-dark: #121212;
+            --bg-light: #212121;
+            --text-light: #e0e0e0;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --joker-purple: #9c27b0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        
+        /* --- HEADER Y FOOTER (TRAÍDOS DE INDEX.HTML) --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { font-family: 'Poppins', sans-serif; color: var(--text-light); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-light); border-radius: 2px; }
+
+        footer {
+            padding: 40px 20px; text-align: center; font-size: 0.9rem; color: #888;
+            border-top: 1px solid #222; background-color: #0c0a1a;
+        }
+
+        /* --- CONTENIDO PRINCIPAL DE LA PÁGINA --- */
+        main {
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px; margin: 0 auto;
+            background-color: var(--bg-light); padding: 40px; border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        h1, .section-title {
+            font-family: 'Bebas Neue', cursive; color: var(--text-light);
+            letter-spacing: 2px; text-align: center;
+        }
+        h1 { font-size: 4.5rem; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(2, 119, 189, 0.5); }
+        .subtitle { text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; color: #bbb;}
+        strong { color: var(--dc-yellow); font-weight: 700; }
+
+        .hero-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 25px; margin-bottom: 20px;
+        }
+        .hero-card {
+            cursor: pointer; position: relative; text-align: center; padding: 10px;
+            border: 2px solid transparent; border-radius: 10px; transition: all 0.3s ease;
+        }
+        .hero-card img {
+            width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+            object-fit: cover; object-position: center;
+            border: 3px solid var(--border-color); transition: all 0.3s ease;
+        }
+        .hero-card .hero-name { font-weight: 600; margin-top: 10px; font-size: 0.9rem; }
+        .hero-card:hover { background-color: rgba(255,255,255,0.05); }
+        .hero-card.selected { border-color: var(--dc-yellow); background-color: rgba(253, 216, 53, 0.1); }
+        .hero-card.selected img { transform: scale(1.1); box-shadow: 0 0 15px var(--dc-yellow); }
+        
+        /* El resto de estilos de la calculadora se mantiene igual */
+        #hero-info-display { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        #hero-info-display.visible { opacity: 1; max-height: 300px; padding: 20px; }
+        #hero-info-display h3 { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: var(--dc-yellow); letter-spacing: 1px;}
+        #hero-info-display p { margin-top: 10px; font-size: 1rem; color: #ccc; }
+        .form-section, .allocation-section, .results-section { background-color: rgba(0,0,0,0.2); padding: 30px; border-radius: 10px; border: 1px solid var(--border-color); margin-top: 30px; }
+        .investment-toggle { display: flex; justify-content: center; margin-bottom: 20px; }
+        .investment-toggle input { display: none; }
+        .investment-toggle label { padding: 10px 20px; background-color: #333; color: #aaa; cursor: pointer; transition: all 0.3s; border: 1px solid var(--border-color); }
+        .investment-toggle label:first-of-type { border-radius: 8px 0 0 8px; }
+        .investment-toggle label:last-of-type { border-radius: 0 8px 8px 0; }
+        .investment-toggle input:checked + label { background-color: var(--dc-blue); color: #fff; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        .hidden { display: none; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--dc-blue); }
+        input[type=number] { width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; color: var(--text-light); background-color: #333; }
+        input[type=number]:focus { outline: 0; border-color: var(--dc-yellow); }
+        .allocation-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .allocation-item { display: grid; grid-template-columns: 100px 1fr 60px; align-items: center; gap: 15px; }
+        .allocation-item label { color: var(--text-light); margin: 0; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: #444; border-radius: 5px; outline: none; transition: opacity .2s; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--dc-blue); cursor: pointer; border-radius: 50%; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: var(--dc-blue); cursor: pointer; border-radius: 50%; }
+        button { width: 100%; padding: 16px; background: var(--dc-blue); color: #fff; border: none; border-radius: 8px; font-family: 'Bebas Neue', cursive; font-size: 1.8rem; letter-spacing: 2px; cursor: pointer; transition: all .3s; }
+        button:hover:not(:disabled) { background-color: var(--dc-red); }
+        button:disabled { background-color: #555; color: #999; cursor: not-allowed; }
+        #results-container { display: none; }
+        .scenarios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .result-scenario { padding: 25px; border-radius: 10px; text-align: center; border: 2px solid; }
+        .result-scenario h3 { font-family: 'Bebas Neue', cursive; letter-spacing: 1.5px; font-size: 1.8rem; }
+        .final-amount { font-size: 2.2rem; font-weight: 700; display: block; margin: 5px 0 15px 0; }
+        .real-value { font-size: 1.1rem; color: #ccc; margin-bottom: 15px; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #888; display: block; }
+        .details-list { font-size: 1rem; text-align: left; margin: 15px 0 0 0; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px dashed var(--border-color); }
+        .details-list li:first-child { border-top: none; }
+        .optimistic-case { border-color: #29b6f6; } .optimistic-case h3, .optimistic-case .final-amount { color: #29b6f6; }
+        .average-case { border-color: #ffee58; } .average-case h3, .average-case .final-amount { color: #ffee58; }
+        .pessimistic-case { border-color: #ef5350; } .pessimistic-case h3, .pessimistic-case .final-amount { color: #ef5350; }
+        .joker-case { border-color: var(--joker-purple); } .joker-case h3, .joker-case .final-amount { color: var(--joker-purple); }
+        .alfred-case { border-color: #78909c; } .alfred-case h3, .alfred-case .final-amount { color: #78909c; }
+        #breakdown-chart { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .chart-bar-container { display: flex; align-items: center; gap: 10px; }
+        .chart-label { width: 100px; text-align: right; font-size: 0.9rem; }
+        .chart-bar { background-color: var(--dc-blue); height: 25px; border-radius: 5px; color: #111; text-align: right; padding-right: 8px; line-height: 25px; font-size: 0.8rem; font-weight: bold; transition: width 0.5s ease-out; }
+        #results-explanation { background: #1a1a1a; padding: 30px; border-radius: 10px; border-top: 3px solid var(--dc-yellow); margin-top: 40px; }
+        #results-explanation h3 { font-family: 'Bebas Neue', cursive; font-size: 1.8rem; color: var(--dc-yellow); margin-bottom: 15px;}
+        #results-explanation p { margin-bottom: 10px; }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--bg-dark); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            h1 { font-size: 3rem; }
+            .hero-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .form-grid, .scenarios-grid { grid-template-columns: 1fr; gap: 25px; }
+            .allocation-item { grid-template-columns: 80px 1fr 50px; }
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#universos">Universos</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Construye tu Imperio</h1>
+            <p class="subtitle">
+                El mundo de las finanzas es como Gotham: oscuro, complejo y lleno de oportunidades. Para triunfar, no puedes confiar en un solo héroe. Debes <strong>formar tu propia Liga de la Justicia</strong>, un equipo de acciones poderosas que trabajen juntas. Elige a tus campeones, define tu estrategia y forja un imperio digno de <strong>Bruce Wayne</strong>.
+            </p>
+            
+            <div id="selection-section">
+                <h2 class="section-title">Paso 1: Recluta a tu Equipo</h2>
+                <div class="hero-grid" id="hero-grid-container"></div>
+                <div id="hero-info-display"></div>
+            </div>
+            
+            <div id="allocation-container"></div>
+
+            <div class="form-section">
+                <h2 class="section-title">Paso 4: Define tu Misión</h2>
+                <form id="calculator-form">
+                    <div class="investment-toggle">
+                        <input type="radio" id="investment-type-dca" name="investment-type" value="dca" checked>
+                        <label for="investment-type-dca">Aportación Mensual (DCA)</label>
+                        <input type="radio" id="investment-type-lumpsum" name="investment-type" value="lumpsum">
+                        <label for="investment-type-lumpsum">Aportación Única</label>
+                    </div>
+                    <div class="form-grid">
+                        <div id="dca-inputs" class="form-group">
+                            <label for="monthly-contribution">Inversión mensual (€)</label>
+                            <input type="number" id="monthly-contribution" min="1" value="200">
+                        </div>
+                        <div id="lump-sum-inputs" class="form-group hidden">
+                            <label for="lump-sum-amount">Inversión única (€)</label>
+                            <input type="number" id="lump-sum-amount" min="1" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Años de Misión</label>
+                            <input type="number" id="years" required min="1" value="10">
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-button" style="margin-top: 20px;" disabled>Calcular Destino</button>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <div class="results-section">
+                    <h2 class="section-title">Resultados de la Simulación</h2>
+                    <div class="scenarios-grid">
+                        <div class="result-scenario average-case">
+                            <h3>Liga de la Justicia (Promedio)</h3>
+                            <span class="final-amount" id="average-case-amount"></span>
+                            <div class="real-value"><span id="average-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="average-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="average-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario optimistic-case">
+                            <h3>Crisis en Tierras Infinitas (Optimista)</h3>
+                            <span class="final-amount" id="best-case-amount"></span>
+                            <div class="real-value"><span id="best-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="best-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="best-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario pessimistic-case">
+                            <h3>Injustice (Pesimista)</h3>
+                            <span class="final-amount" id="pessimistic-case-amount"></span>
+                            <div class="real-value"><span id="pessimistic-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="pessimistic-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="pessimistic-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario joker-case">
+                            <h3>La Ruleta del Joker (Riesgo)</h3>
+                            <span class="final-amount" id="joker-case-amount"></span>
+                            <div class="real-value"><span id="joker-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                 <li><span>Héroe más volátil:</span> <strong id="joker-hero-name"></strong></li>
+                                <li><span>Resultado del riesgo:</span> <strong id="joker-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="result-scenario alfred-case" style="margin-top: 25px;">
+                        <h3>La Bóveda de Alfred (No Invertir)</h3>
+                        <span class="final-amount" id="alfred-case-amount"></span>
+                        <div class="real-value"><span id="alfred-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                        <ul class="details-list">
+                            <li><span>Total Aportado:</span> <strong id="alfred-total-invested"></strong></li>
+                            <li><span>Efecto de la Inflación:</span> <strong id="alfred-inflation-loss" style="color:var(--dc-red);"></strong></li>
+                        </ul>
+                    </div>
+
+                    <div id="results-explanation">
+                        <h3>Informe de la Batcueva: ¿Qué significan estos números?</h3>
+                        <p><strong>Escenarios de Inversión (Liga, Crisis, Injustice):</strong> Muestran el resultado potencial de tu portafolio en un mercado promedio, uno muy bueno y uno malo. Te ayudan a entender el rango de posibilidades.</p>
+                        <p><strong>La Ruleta del Joker:</strong> ¡Cuidado! Esta cifra muestra el resultado en el peor escenario para el <strong>héroe más volátil</strong> de tu equipo. Te recuerda que las grandes recompensas potenciales (como las de The Flash o Green Lantern) vienen acompañadas de grandes riesgos de pérdida.</p>
+                        <p><strong>La Bóveda de Alfred:</strong> Este es el resultado si hubieras guardado todo tu dinero sin invertir. El "Poder de Compra Real" te muestra <strong>cuánto dinero te ha robado la inflación</strong>. Compara este resultado con el de la "Liga de la Justicia" para ver el verdadero poder de la inversión.</p>
+                        <p><strong>Desglose del Equipo:</strong> El gráfico de barras te muestra qué héroe ha sido el más valioso (MVP) para tu portafolio en el escenario promedio. Te ayuda a ver cómo contribuyó cada miembro de tu "Liga de la Justicia".</p>
+                    </div>
+                    <h3 style="text-align:center; margin-top: 40px; font-family: 'Bebas Neue', cursive; font-size: 1.8rem; letter-spacing: 1px;">Contribución de cada Héroe (Promedio)</h3>
+                    <div id="breakdown-chart"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            © 2025 ProInvestingESP | Creado por Pablo Vidal Vidal
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica para la calculadora de acciones
+            const heroesData = [
+                { name: 'Superman', stock: 'Microsoft', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS703AO3FYJ5NNvZXiskNnqtq5jz0W79S8G4w&s', rates: [5, 12, 18], purpose: 'El pilar del software mundial. Domina los sistemas operativos (Windows), la ofimática (Office) y es un gigante en la nube (Azure).', annualizedReturn20Y: 14.8 },
+                { name: 'Batman', stock: 'Apple', img: 'https://i.pinimg.com/736x/ec/bf/66/ecbf66484f8439fd7021f3ef224a50a8.jpg', rates: [6, 15, 22], purpose: 'Maestro del hardware y el ecosistema cerrado. Su marca (iPhone, Mac) es sinónimo de calidad y lealtad del cliente.', annualizedReturn20Y: 35.1 },
+                { name: 'Wonder Woman', stock: 'Amazon', img: 'https://m.media-amazon.com/images/I/71R91F9eCSL.jpg', rates: [7, 18, 28], purpose: 'La reina del comercio electrónico global y líder indiscutible en servicios en la nube con Amazon Web Services (AWS).', annualizedReturn20Y: 26.5 },
+                { name: 'The Flash', stock: 'Nvidia', img: 'https://i.ebayimg.com/00/s/NTAyWDQ4Mw==/z/yksAAOSwIPZdMJAQ/$_1.PNG?set_id=8800005007', rates: [10, 25, 45], purpose: 'Velocidad sin precedentes. Sus chips gráficos (GPU) son el cerebro de la revolución de la inteligencia artificial y los videojuegos.', annualizedReturn20Y: 48.2 },
+                { name: 'Green Lantern', stock: 'Tesla', img: 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Green_lantern.svg', rates: [2, 20, 50], purpose: 'Pura fuerza de voluntad. Lidera la disrupción en vehículos eléctricos, energía solar y sueña con la inteligencia artificial autónoma.', annualizedReturn20Y: 55.0 },
+                { name: 'Aquaman', stock: 'Alphabet (Google)', img: 'https://i.pinimg.com/736x/2b/b7/8d/2bb78dd5057e28c57f197036592259cb.jpg', rates: [6, 14, 20], purpose: 'Rey de los siete mares... de la información. Domina las búsquedas, la publicidad online (Google Ads) y el vídeo (YouTube).', annualizedReturn20Y: 19.5 },
+                { name: 'Martian Manhunter', stock: 'Meta Platforms', img: 'https://logos-world.net/wp-content/uploads/2024/12/Martian-Manhunter-Logo.png', rates: [4, 13, 25], purpose: 'Conecta a la humanidad. Su dominio sobre las redes sociales (Facebook, Instagram, WhatsApp) es su gran poder y fuente de ingresos.', annualizedReturn20Y: 21.9 },
+                { name: 'The Joker', stock: 'Volátil/Especulativa', img: 'https://img.freepik.com/vector-premium/diseno-logotipo-mascota-vectorial-clown-esport-estilo-conceptual-ilustracion-moderna-insignia-ilustracion-payaso-sonriente-equipos-deportivos-esport_810738-3340.jpg', rates: [-10, 10, 80], purpose: 'Agente del caos. Representa una acción de alto riesgo, como una startup de biotecnología o una cripto desconocida. Potencial enorme, peligro también.', annualizedReturn20Y: '???' }
+            ];
+
+            const gridContainer = document.getElementById('hero-grid-container');
+            const infoDisplay = document.getElementById('hero-info-display');
+            const allocationContainer = document.getElementById('allocation-container');
+            const submitButton = document.getElementById('submit-button');
+            const form = document.getElementById('calculator-form');
+            const resultsContainer = document.getElementById('results-container');
+            let selectedHeroes = [];
+            
+            const dcaInputGroup = document.getElementById('dca-inputs');
+            const lumpSumInputGroup = document.getElementById('lump-sum-inputs');
+            const investmentToggle = document.querySelectorAll('input[name="investment-type"]');
+            const AVG_INFLATION_RATE = 0.025; 
+
+            // (El resto del script de la calculadora es idéntico al anterior y funciona correctamente)
+             function populateHeroes() {
+                heroesData.forEach((hero, index) => {
+                    const card = document.createElement('div'); card.className = 'hero-card'; card.dataset.index = index;
+                    card.innerHTML = `<img src="${hero.img}" alt="${hero.name}"><div class="hero-name">${hero.stock}</div>`;
+                    card.addEventListener('click', () => toggleHeroSelection(card, index));
+                    gridContainer.appendChild(card);
+                });
+            }
+
+            function toggleHeroSelection(card, index) {
+                const heroIndexInSelection = selectedHeroes.indexOf(index);
+                if (heroIndexInSelection > -1) {
+                    selectedHeroes.splice(heroIndexInSelection, 1);
+                    card.classList.remove('selected');
+                } else {
+                    selectedHeroes.push(index);
+                    card.classList.add('selected');
+                }
+                
+                if (selectedHeroes.length > 0) {
+                    const lastSelectedHero = heroesData[selectedHeroes[selectedHeroes.length - 1]];
+                    infoDisplay.innerHTML = `<h3>${lastSelectedHero.name}: ${lastSelectedHero.stock}</h3><p>${lastSelectedHero.purpose}</p><p><strong>Rendimiento histórico (20 años):</strong> ${lastSelectedHero.annualizedReturn20Y}% anual</p>`;
+                    infoDisplay.classList.add('visible');
+                } else {
+                    infoDisplay.classList.remove('visible');
+                }
+                updateAllocationUI();
+            }
+
+            function updateAllocationUI() {
+                if (selectedHeroes.length === 0) {
+                    allocationContainer.innerHTML = ''; submitButton.disabled = true; return;
+                }
+                submitButton.disabled = false;
+                const numHeroes = selectedHeroes.length;
+                const basePercentage = Math.floor(100 / numHeroes);
+                const remainder = 100 % numHeroes;
+                const percentages = Array(numHeroes).fill(basePercentage);
+                for (let i = 0; i < remainder; i++) { percentages[i]++; }
+
+                let content = `<div class="allocation-section"><h2 class="section-title">Paso 3: Asigna Porcentajes</h2><div class="allocation-grid">`;
+                selectedHeroes.forEach((heroIndex, i) => {
+                    const hero = heroesData[heroIndex];
+                    content += `<div class="allocation-item" data-index="${heroIndex}"><label for="slider-${heroIndex}">${hero.name}</label><input type="range" id="slider-${heroIndex}" min="0" max="100" value="${percentages[i]}" class="allocation-slider"><span class="percentage-display">${percentages[i]}%</span></div>`;
+                });
+                content += `</div><div id="total-percentage-container" style="text-align: right; margin-top: 15px; font-weight: bold; font-size: 1.1rem;">Total: <span id="total-percentage" style="color: var(--dc-yellow);">100%</span></div></div>`;
+                allocationContainer.innerHTML = content;
+                document.querySelectorAll('.allocation-slider').forEach(slider => slider.addEventListener('input', handleSliderChange));
+            }
+            
+            function handleSliderChange() {
+                const sliders = Array.from(document.querySelectorAll('.allocation-slider'));
+                let total = sliders.reduce((sum, s) => sum + parseInt(s.value), 0);
+                sliders.forEach(s => s.parentElement.querySelector('.percentage-display').textContent = `${s.value}%`);
+                const totalDisplay = document.getElementById('total-percentage');
+                totalDisplay.textContent = `${total}%`;
+                totalDisplay.style.color = total === 100 ? 'var(--dc-yellow)' : 'var(--dc-red)';
+            }
+
+            investmentToggle.forEach(radio => radio.addEventListener('change', (e) => {
+                dcaInputGroup.classList.toggle('hidden', e.target.value !== 'dca');
+                lumpSumInputGroup.classList.toggle('hidden', e.target.value !== 'lumpsum');
+            }));
+
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                if (Array.from(document.querySelectorAll('.allocation-slider')).reduce((s, el) => s + parseInt(el.value), 0) !== 100) {
+                    alert('La suma de los porcentajes debe ser 100%. ¡Ajusta tu estrategia!'); return;
+                }
+
+                const years = parseInt(document.getElementById('years').value);
+                const investmentType = document.querySelector('input[name="investment-type"]:checked').value;
+                const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                const lumpSumAmount = parseFloat(document.getElementById('lump-sum-amount').value);
+
+                let totalBest = 0, totalAverage = 0, totalWorst = 0;
+                let riskiestHero = null, minPessimisticRate = Infinity;
+                const breakdown = [];
+                const totalInvested = investmentType === 'dca' ? monthlyContribution * 12 * years : lumpSumAmount;
+
+                document.querySelectorAll('.allocation-slider').forEach(slider => {
+                    const index = slider.parentElement.dataset.index;
+                    const hero = heroesData[index];
+                    const percentage = parseInt(slider.value) / 100;
+                    const [pessimisticRate, averageRate, optimisticRate] = hero.rates.map(r => r / 100);
+                    
+                    if(pessimisticRate < minPessimisticRate) {
+                        minPessimisticRate = pessimisticRate;
+                        riskiestHero = hero;
+                    }
+
+                    let finalWorst, finalAverage, finalBest;
+                    if (investmentType === 'dca') {
+                        const contribution = monthlyContribution * percentage;
+                        finalWorst = calculateDCA(contribution, years, pessimisticRate);
+                        finalAverage = calculateDCA(contribution, years, averageRate);
+                        finalBest = calculateDCA(contribution, years, optimisticRate);
+                    } else {
+                        const contribution = lumpSumAmount * percentage;
+                        finalWorst = calculateLumpSum(contribution, years, pessimisticRate);
+                        finalAverage = calculateLumpSum(contribution, years, averageRate);
+                        finalBest = calculateLumpSum(contribution, years, optimisticRate);
+                    }
+                    totalWorst += finalWorst; totalAverage += finalAverage; totalBest += finalBest;
+                    breakdown.push({ name: hero.name, value: finalAverage });
+                });
+                
+                const riskiestHeroContribution = totalInvested * (parseInt(document.querySelector(`.allocation-item[data-index="${heroesData.indexOf(riskiestHero)}"] .allocation-slider`).value) / 100);
+                let jokerWorstCaseValue;
+                if(investmentType === 'dca') {
+                    jokerWorstCaseValue = calculateDCA(monthlyContribution * (parseInt(document.querySelector(`.allocation-item[data-index="${heroesData.indexOf(riskiestHero)}"] .allocation-slider`).value) / 100), years, minPessimisticRate);
+                } else {
+                    jokerWorstCaseValue = calculateLumpSum(lumpSumAmount * (parseInt(document.querySelector(`.allocation-item[data-index="${heroesData.indexOf(riskiestHero)}"] .allocation-slider`).value) / 100), years, minPessimisticRate);
+                }
+                
+                displayResults(totalBest, totalAverage, totalWorst, totalInvested, years, breakdown, riskiestHero, jokerWorstCaseValue);
+            }
+
+            function calculateDCA(monthly, years, rate) { let t = 0; for (let i=0; i < years*12; i++) { t = (t + monthly) * (1 + rate/12); } return t; }
+            function calculateLumpSum(p, y, r) { return p * Math.pow((1+r), y); }
+            const adjustForInflation = (v, y) => v / Math.pow(1 + AVG_INFLATION_RATE, y);
+            const formatCurrency = (v) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+
+            function displayResults(best, average, worst, totalInvested, years, breakdown, riskiestHero, jokerWorstCaseValue) {
+                document.getElementById('best-case-amount').textContent = formatCurrency(best);
+                document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(best, years));
+                document.getElementById('best-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('best-total-gains').textContent = formatCurrency(best - totalInvested);
+
+                document.getElementById('average-case-amount').textContent = formatCurrency(average);
+                document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(average, years));
+                document.getElementById('average-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('average-total-gains').textContent = formatCurrency(average - totalInvested);
+
+                document.getElementById('pessimistic-case-amount').textContent = formatCurrency(worst);
+                document.getElementById('pessimistic-case-real').textContent = formatCurrency(adjustForInflation(worst, years));
+                document.getElementById('pessimistic-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('pessimistic-total-gains').textContent = formatCurrency(worst - totalInvested);
+                
+                const investmentInJoker = totalInvested * (parseInt(document.querySelector(`.allocation-item[data-index="${heroesData.indexOf(riskiestHero)}"] .allocation-slider`).value) / 100);
+                const jokerGains = jokerWorstCaseValue - investmentInJoker;
+                document.getElementById('joker-case-amount').textContent = formatCurrency(jokerWorstCaseValue);
+                document.getElementById('joker-case-real').textContent = formatCurrency(adjustForInflation(jokerWorstCaseValue, years));
+                document.getElementById('joker-hero-name').textContent = riskiestHero.name;
+                document.getElementById('joker-total-gains').textContent = formatCurrency(jokerGains);
+                document.getElementById('joker-total-gains').style.color = jokerGains < 0 ? 'var(--dc-red)' : '#2ecc71';
+
+                document.getElementById('alfred-case-amount').textContent = formatCurrency(totalInvested);
+                const alfredRealValue = adjustForInflation(totalInvested, years);
+                document.getElementById('alfred-case-real').textContent = formatCurrency(alfredRealValue);
+                document.getElementById('alfred-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('alfred-inflation-loss').textContent = formatCurrency(alfredRealValue - totalInvested);
+
+                const chartContainer = document.getElementById('breakdown-chart');
+                chartContainer.innerHTML = '';
+                const totalAverage = breakdown.reduce((sum, item) => sum + item.value, 0);
+                if (totalAverage > 0) {
+                    breakdown.sort((a, b) => b.value - a.value).forEach(item => {
+                        const perc = (item.value / totalAverage) * 100;
+                        chartContainer.innerHTML += `<div class="chart-bar-container"><div class="chart-label">${item.name}</div><div class="chart-bar" style="width: ${perc.toFixed(2)}%;">${formatCurrency(item.value)}</div></div>`;
+                    });
+                }
+                resultsContainer.style.display = 'block';
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            populateHeroes();
+            form.addEventListener('submit', handleFormSubmit);
+
+            // Lógica para el menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers - Ensambla tu Cartera de Criptomonedas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Variables globales del sitio */
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            /* Variables de la temática Avengers */
+            --avenger-red: #d32f2f;
+            --avenger-blue: #1976d2;
+            --avenger-gold: #fbc02d;
+            --bg-dark: #1a1a2e;
+            --bg-light: #16213e;
+            --text-light: #e0e0e0;
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        
+        /* --- HEADER Y FOOTER --- */
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { font-family: 'Poppins', sans-serif; color: var(--text-light); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-light); border-radius: 2px; }
+
+        footer {
+            padding: 40px 20px; text-align: center; font-size: 0.9rem; color: #888;
+            border-top: 1px solid #222; background-color: #0c0a1a;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px; margin: 0 auto;
+            background-color: var(--bg-light); padding: 40px; border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        h1, .section-title {
+            font-family: 'Bebas Neue', cursive; color: var(--text-light);
+            letter-spacing: 2px; text-align: center;
+        }
+        h1 { font-size: 4.5rem; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(25, 118, 210, 0.5); }
+        .subtitle { text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; color: #bbb;}
+        strong { color: var(--avenger-gold); font-weight: 700; }
+
+        /* El resto de estilos de la calculadora se mantiene igual */
+        .avenger-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 25px; margin-bottom: 20px; }
+        .avenger-card { cursor: pointer; position: relative; text-align: center; padding: 10px; border: 2px solid transparent; border-radius: 10px; transition: all 0.3s ease; }
+        .avenger-card img { width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: contain; padding: 5px; background-color: rgba(255,255,255,0.9); border: 3px solid var(--border-color); transition: all 0.3s ease; }
+        .avenger-card .avenger-name { font-weight: 600; margin-top: 10px; font-size: 0.9rem; }
+        .avenger-card:hover { background-color: rgba(255,255,255,0.05); }
+        .avenger-card.selected { border-color: var(--avenger-gold); background-color: rgba(251, 192, 45, 0.1); }
+        .avenger-card.selected img { transform: scale(1.1); box-shadow: 0 0 15px var(--avenger-gold); }
+        #avenger-info-display { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        #avenger-info-display.visible { opacity: 1; max-height: 300px; padding: 20px; }
+        #avenger-info-display h3 { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: var(--avenger-gold); letter-spacing: 1px;}
+        #avenger-info-display p { margin-top: 5px; font-size: 1rem; color: #ccc; }
+        #risk-profile { font-weight: bold; }
+        .form-section, .allocation-section, .results-section { background-color: rgba(0,0,0,0.2); padding: 30px; border-radius: 10px; border: 1px solid var(--border-color); margin-top: 30px; }
+        .investment-toggle { display: flex; justify-content: center; margin-bottom: 20px; }
+        .investment-toggle input { display: none; }
+        .investment-toggle label { padding: 10px 20px; background-color: #333; color: #aaa; cursor: pointer; transition: all 0.3s; border: 1px solid var(--border-color); }
+        .investment-toggle label:first-of-type { border-radius: 8px 0 0 8px; }
+        .investment-toggle label:last-of-type { border-radius: 0 8px 8px 0; }
+        .investment-toggle input:checked + label { background-color: var(--avenger-blue); color: #fff; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        .hidden { display: none; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--avenger-blue); }
+        input[type=number] { width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; color: var(--text-light); background-color: #333; }
+        input[type=number]:focus { outline: 0; border-color: var(--avenger-gold); }
+        .allocation-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .allocation-item { display: grid; grid-template-columns: 100px 1fr 60px; align-items: center; gap: 15px; }
+        .allocation-item label { color: var(--text-light); margin: 0; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: #444; border-radius: 5px; outline: none; transition: opacity .2s; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--avenger-blue); cursor: pointer; border-radius: 50%; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: var(--avenger-blue); cursor: pointer; border-radius: 50%; }
+        button { width: 100%; padding: 16px; background: var(--avenger-blue); color: #fff; border: none; border-radius: 8px; font-family: 'Bebas Neue', cursive; font-size: 1.8rem; letter-spacing: 2px; cursor: pointer; transition: all .3s; }
+        button:hover:not(:disabled) { background-color: var(--avenger-red); }
+        button:disabled { background-color: #555; color: #999; cursor: not-allowed; }
+        #results-container { display: none; }
+        .scenarios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .result-scenario { padding: 25px; border-radius: 10px; text-align: center; border: 2px solid; }
+        .result-scenario h3 { font-family: 'Bebas Neue', cursive; letter-spacing: 1.5px; font-size: 1.8rem; }
+        .final-amount { font-size: 2.2rem; font-weight: 700; display: block; margin: 5px 0 15px 0; }
+        .real-value { font-size: 1.1rem; color: #ccc; margin-bottom: 15px; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #888; display: block; }
+        .details-list { font-size: 1rem; text-align: left; margin: 15px 0 0 0; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px dashed var(--border-color); }
+        .details-list li:first-child { border-top: none; }
+        .optimistic-case { border-color: #03a9f4; } .optimistic-case h3, .optimistic-case .final-amount { color: #03a9f4; }
+        .average-case { border-color: var(--avenger-gold); } .average-case h3, .average-case .final-amount { color: var(--avenger-gold); }
+        .pessimistic-case { border-color: var(--avenger-red); } .pessimistic-case h3, .pessimistic-case .final-amount { color: var(--avenger-red); }
+        .shield-case { border-color: #78909c; } .shield-case h3, .shield-case .final-amount { color: #78909c; }
+        #results-explanation { background: #111; padding: 30px; border-radius: 10px; border-top: 3px solid var(--avenger-gold); margin-top: 40px; }
+        #results-explanation h3 { font-family: 'Bebas Neue', cursive; font-size: 1.8rem; color: var(--avenger-gold); margin-bottom: 15px;}
+        #results-explanation p { margin-bottom: 10px; }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--bg-dark); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 3rem; }
+            .subtitle { font-size: 1rem; }
+            .section-title { font-size: 2.2rem; }
+            
+            .avenger-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
+            .avenger-card .avenger-name { font-size: 0.8rem; }
+            .form-grid, .scenarios-grid { grid-template-columns: 1fr; gap: 25px; }
+            .allocation-item { grid-template-columns: 80px 1fr 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#universos">Universos</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Ensambla tu Cartera de Criptomonedas</h1>
+            <p class="subtitle">
+                El universo cripto es vasto y caótico. Para navegarlo, necesitas un equipo. Cada Vengador representa un tipo de activo digital, con su propio poder, potencial y riesgo. Ensambla tu equipo, define tu estrategia y prepárate para la batalla contra <strong>Thanos (la Volatilidad)</strong>. Tu objetivo: conseguir las 6 Gemas del Infinito de la riqueza.
+            </p>
+            
+            <div id="selection-section">
+                <h2 class="section-title">Paso 1: Recluta a tus Vengadores</h2>
+                <div class="avenger-grid" id="avenger-grid-container"></div>
+                <div id="avenger-info-display"></div>
+            </div>
+            
+            <div id="allocation-container"></div>
+
+            <div class="form-section">
+                <h2 class="section-title">Paso 4: Define tu Misión</h2>
+                <form id="calculator-form">
+                    <div class="investment-toggle">
+                        <input type="radio" id="investment-type-dca" name="investment-type" value="dca" checked>
+                        <label for="investment-type-dca">Aportación Mensual (DCA)</label>
+                        <input type="radio" id="investment-type-lumpsum" name="investment-type" value="lumpsum">
+                        <label for="investment-type-lumpsum">Aportación Única</label>
+                    </div>
+                    <div class="form-grid">
+                        <div id="dca-inputs" class="form-group">
+                            <label for="monthly-contribution">Inversión mensual (€)</label>
+                            <input type="number" id="monthly-contribution" min="1" value="200">
+                        </div>
+                        <div id="lump-sum-inputs" class="form-group hidden">
+                            <label for="lump-sum-amount">Inversión única (€)</label>
+                            <input type="number" id="lump-sum-amount" min="1" value="5000">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Años de Misión</label>
+                            <input type="number" id="years" required min="1" value="5">
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-button" style="margin-top: 20px;" disabled>¡Vengadores, uníos!</button>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <div class="results-section">
+                    <h2 class="section-title">Resultados de la Misión</h2>
+                    <div class="scenarios-grid">
+                        <div class="result-scenario average-case">
+                            <h3>Batalla de Nueva York (Promedio)</h3>
+                            <span class="final-amount" id="average-case-amount"></span>
+                            <div class="real-value"><span id="average-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="average-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="average-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario optimistic-case">
+                            <h3>Victoria contra Thanos (Optimista)</h3>
+                            <span class="final-amount" id="best-case-amount"></span>
+                            <div class="real-value"><span id="best-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="best-total-invested"></strong></li>
+                                <li><span>Ganancias Totales:</span> <strong id="best-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario pessimistic-case">
+                            <h3>El Chasquido de Thanos (Pesimista)</h3>
+                            <span class="final-amount" id="pessimistic-case-amount"></span>
+                            <div class="real-value"><span id="pessimistic-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Invertido:</span> <strong id="pessimistic-total-invested"></strong></li>
+                                <li><span>Resultado Final:</span> <strong id="pessimistic-total-gains"></strong></li>
+                            </ul>
+                        </div>
+                        <div class="result-scenario shield-case">
+                            <h3>Congelado como el Capi (No Invertir)</h3>
+                            <span class="final-amount" id="shield-case-amount"></span>
+                            <div class="real-value"><span id="shield-case-real"></span><span class="real-value-label">Poder de Compra Real</span></div>
+                            <ul class="details-list">
+                                <li><span>Total Aportado:</span> <strong id="shield-total-invested"></strong></li>
+                                <li><span>Pérdida por Inflación:</span> <strong id="shield-inflation-loss" style="color:var(--avenger-red);"></strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="results-explanation">
+                        <h3>Informe de Tony Stark: ¿Qué significa todo esto?</h3>
+                        <p><strong>Escenarios de Batalla:</strong> Te muestran los posibles resultados de tu cartera. "Victoria contra Thanos" es un futuro ideal, pero "La Batalla de Nueva York" es un resultado más realista. Son el potencial de tu equipo.</p>
+                        <p><strong>El Chasquido de Thanos:</strong> ¡LA LECCIÓN MÁS IMPORTANTE! Este escenario muestra qué pasaría si **todo tu equipo falla** y tu cartera se va a su peor valor posible. Te enseña que en el mundo cripto, **las pérdidas son reales y pueden ser significativas**. Es el coste del riesgo.</p>
+                        <p><strong>Congelado como el Capi:</strong> Esto es lo que pasa si no haces nada y guardas tu dinero. La inflación lo debilita. Compara el "Poder de Compra" de este escenario con el de la "Batalla de Nueva York" para entender por qué la inacción también es un riesgo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            © 2025 ProInvestingESP | Creado y forjado por Pablo Vidal Vidal
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avengersData = [
+                { name: 'Iron Man', crypto: 'Bitcoin (BTC)', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png', rates: [-30, 80, 200], risk: 'Alto', desc: 'El original, el oro digital. El más seguro y establecido del universo cripto, pero con un potencial de crecimiento más moderado que los recién llegados.' },
+                { name: 'Cap. América', crypto: 'Ethereum (ETH)', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png', rates: [-50, 120, 300], risk: 'Muy Alto', desc: 'El líder estratégico. La plataforma sobre la que se construye casi todo el ecosistema (DeFi, NFTs). Su éxito está ligado al de miles de otros proyectos.' },
+                { name: 'Thor', crypto: 'Solana (SOL)', img: 'https://upload.wikimedia.org/wikipedia/commons/3/34/Solana_cryptocurrency_two.jpg', rates: [-70, 200, 500], risk: 'Extremo', desc: 'Poder y velocidad de rayo. Representa a las blockchains de nueva generación, ultra-rápidas pero más centralizadas y propensas a "caídas" (volatilidad).' },
+                { name: 'Hulk', crypto: 'Dogecoin (DOGE)', img: 'https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png', rates: [-90, 300, 1000], risk: '¡Extremo!', desc: 'Fuerza bruta e impredecible. Representa a las memecoins. Puede multiplicar su valor por mil gracias a la comunidad o hundirse en el olvido. Pura especulación.' },
+                { name: 'Dr. Strange', crypto: 'Chainlink (LINK)', img: 'https://www.creativefabrica.com/wp-content/uploads/2021/06/15/Cryptocurrency-Chainlink-Logo-Graphics-13436600-1.jpg', rates: [-60, 150, 400], risk: 'Muy Alto', desc: 'El Hechicero Supremo de los datos. Conecta el mundo real con la blockchain. Un proyecto con una utilidad fundamental y compleja.' },
+                { name: 'Scarlet Witch', crypto: 'Nuevos Proyectos DeFi', img: 'https://bitcoinist.com/wp-content/uploads/2025/01/nuevas-criptomonedas.webp', rates: [-95, 250, 2000], risk: '¡Peligro! Realidad Alterada', desc: 'Poder que altera la realidad. Representa proyectos nuevos y experimentales. El potencial es alucinante, pero el riesgo de que todo desaparezca es máximo.' }
+            ];
+
+            const gridContainer = document.getElementById('avenger-grid-container');
+            const infoDisplay = document.getElementById('avenger-info-display');
+            const allocationContainer = document.getElementById('allocation-container');
+            const submitButton = document.getElementById('submit-button');
+            const form = document.getElementById('calculator-form');
+            const resultsContainer = document.getElementById('results-container');
+            let selectedAvengers = [];
+            
+            const dcaInputGroup = document.getElementById('dca-inputs');
+            const lumpSumInputGroup = document.getElementById('lump-sum-inputs');
+            const investmentToggle = document.querySelectorAll('input[name="investment-type"]');
+            const AVG_INFLATION_RATE = 0.025; 
+
+            // (El resto del script de la calculadora es idéntico al anterior y funciona correctamente)
+             function populateHeroes() {
+                avengersData.forEach((hero, index) => {
+                    const card = document.createElement('div'); card.className = 'avenger-card'; card.dataset.index = index;
+                    card.innerHTML = `<img src="${hero.img}" alt="${hero.crypto}"><div class="avenger-name">${hero.crypto}</div>`;
+                    card.addEventListener('click', () => toggleHeroSelection(card, index));
+                    gridContainer.appendChild(card);
+                });
+            }
+
+            function toggleHeroSelection(card, index) {
+                const heroIndexInSelection = selectedAvengers.indexOf(index);
+                if (heroIndexInSelection > -1) {
+                    selectedAvengers.splice(heroIndexInSelection, 1);
+                    card.classList.remove('selected');
+                } else {
+                    selectedAvengers.push(index);
+                    card.classList.add('selected');
+                }
+                
+                if (selectedAvengers.length > 0) {
+                    const lastSelected = avengersData[selectedAvengers[selectedAvengers.length - 1]];
+                    infoDisplay.innerHTML = `<h3>${lastSelected.crypto}</h3><p>${lastSelected.desc}</p><p><strong id="risk-profile">Riesgo: ${lastSelected.risk}</strong></p>`;
+                    infoDisplay.classList.add('visible');
+                } else {
+                    infoDisplay.classList.remove('visible');
+                }
+                updateAllocationUI();
+            }
+
+            function updateAllocationUI() {
+                if (selectedAvengers.length === 0) {
+                    allocationContainer.innerHTML = ''; submitButton.disabled = true; return;
+                }
+                submitButton.disabled = false;
+                const numHeroes = selectedAvengers.length;
+                const basePercentage = Math.floor(100 / numHeroes);
+                const remainder = 100 % numHeroes;
+                const percentages = Array(numHeroes).fill(basePercentage);
+                for (let i = 0; i < remainder; i++) { percentages[i]++; }
+
+                let content = `<div class="allocation-section"><h2 class="section-title">Paso 3: Asigna Porcentajes</h2><div class="allocation-grid">`;
+                selectedAvengers.forEach((heroIndex, i) => {
+                    const hero = avengersData[heroIndex];
+                    content += `<div class="allocation-item" data-index="${heroIndex}"><label for="slider-${heroIndex}">${hero.crypto}</label><input type="range" id="slider-${heroIndex}" min="0" max="100" value="${percentages[i]}" class="allocation-slider"><span class="percentage-display">${percentages[i]}%</span></div>`;
+                });
+                content += `</div><div id="total-percentage-container" style="text-align: right; margin-top: 15px; font-weight: bold; font-size: 1.1rem;">Total: <span id="total-percentage" style="color: var(--avenger-gold);">100%</span></div></div>`;
+                allocationContainer.innerHTML = content;
+                document.querySelectorAll('.allocation-slider').forEach(slider => slider.addEventListener('input', handleSliderChange));
+            }
+            
+            function handleSliderChange() {
+                const sliders = Array.from(document.querySelectorAll('.allocation-slider'));
+                let total = sliders.reduce((sum, s) => sum + parseInt(s.value), 0);
+                sliders.forEach(s => s.parentElement.querySelector('.percentage-display').textContent = `${s.value}%`);
+                const totalDisplay = document.getElementById('total-percentage');
+                totalDisplay.textContent = `${total}%`;
+                totalDisplay.style.color = total === 100 ? 'var(--avenger-gold)' : 'var(--avenger-red)';
+            }
+
+            investmentToggle.forEach(radio => radio.addEventListener('change', (e) => {
+                dcaInputGroup.classList.toggle('hidden', e.target.value !== 'dca');
+                lumpSumInputGroup.classList.toggle('hidden', e.target.value !== 'lumpsum');
+            }));
+
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                if (Array.from(document.querySelectorAll('.allocation-slider')).reduce((s, el) => s + parseInt(el.value), 0) !== 100) {
+                    alert('La suma de los porcentajes debe ser 100%. ¡Ajusta tu estrategia!'); return;
+                }
+
+                const years = parseInt(document.getElementById('years').value);
+                const investmentType = document.querySelector('input[name="investment-type"]:checked').value;
+                const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                const lumpSumAmount = parseFloat(document.getElementById('lump-sum-amount').value);
+
+                let totalBest = 0, totalAverage = 0, totalWorst = 0;
+                const totalInvested = investmentType === 'dca' ? monthlyContribution * 12 * years : lumpSumAmount;
+
+                document.querySelectorAll('.allocation-slider').forEach(slider => {
+                    const index = slider.parentElement.dataset.index;
+                    const hero = avengersData[index];
+                    const percentage = parseInt(slider.value) / 100;
+                    const [pessimisticRate, averageRate, optimisticRate] = hero.rates.map(r => r / 100);
+                    
+                    let finalWorst, finalAverage, finalBest;
+                    if (investmentType === 'dca') {
+                        const contribution = monthlyContribution * percentage;
+                        finalWorst = calculateDCA(contribution, years, pessimisticRate);
+                        finalAverage = calculateDCA(contribution, years, averageRate);
+                        finalBest = calculateDCA(contribution, years, optimisticRate);
+                    } else {
+                        const contribution = lumpSumAmount * percentage;
+                        finalWorst = calculateLumpSum(contribution, years, pessimisticRate);
+                        finalAverage = calculateLumpSum(contribution, years, averageRate);
+                        finalBest = calculateLumpSum(contribution, years, optimisticRate);
+                    }
+                    totalWorst += finalWorst; totalAverage += finalAverage; totalBest += finalBest;
+                });
+                
+                displayResults(totalBest, totalAverage, totalWorst, totalInvested, years);
+            }
+
+            const calculateDCA = (m, y, r) => { let t = 0; for(let i=0; i<y*12; i++){ t = (t+m)*(1+r/12); } return t; };
+            const calculateLumpSum = (p, y, r) => p * Math.pow((1+r), y);
+            const adjustForInflation = (v, y) => v / Math.pow(1 + AVG_INFLATION_RATE, y);
+            const formatCurrency = (v) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+
+            function displayResults(best, average, worst, totalInvested, years) {
+                document.getElementById('average-case-amount').textContent = formatCurrency(average);
+                document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(average, years));
+                document.getElementById('average-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('average-total-gains').textContent = formatCurrency(average - totalInvested);
+
+                document.getElementById('best-case-amount').textContent = formatCurrency(best);
+                document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(best, years));
+                document.getElementById('best-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('best-total-gains').textContent = formatCurrency(best - totalInvested);
+                
+                document.getElementById('pessimistic-case-amount').textContent = formatCurrency(worst);
+                document.getElementById('pessimistic-case-real').textContent = formatCurrency(adjustForInflation(worst, years));
+                document.getElementById('pessimistic-total-invested').textContent = formatCurrency(totalInvested);
+                const worstGains = worst - totalInvested;
+                const worstGainsEl = document.getElementById('pessimistic-total-gains');
+                worstGainsEl.textContent = formatCurrency(worstGains);
+                worstGainsEl.style.color = worstGains < 0 ? 'var(--avenger-red)' : '#2ecc71';
+
+                document.getElementById('shield-case-amount').textContent = formatCurrency(totalInvested);
+                const shieldRealValue = adjustForInflation(totalInvested, years);
+                document.getElementById('shield-case-real').textContent = formatCurrency(shieldRealValue);
+                document.getElementById('shield-total-invested').textContent = formatCurrency(totalInvested);
+                document.getElementById('shield-inflation-loss').textContent = formatCurrency(shieldRealValue - totalInvested);
+
+                resultsContainer.style.display = 'block';
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Lógica para el menú de hamburguesa
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+
+            populateHeroes();
+            form.addEventListener('submit', handleFormSubmit);
+        });
+    </script>
+</body>
+</html>
