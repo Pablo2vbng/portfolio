@@ -52,8 +52,8 @@
             background: radial-gradient(circle, rgba(12,10,26,0) 0%, var(--background-color) 70%), 
                         url('https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
         }
-        .hero-content h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #fff, #c3c3c3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
-        .hero-content p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px auto; font-weight: 300; }
+        .hero-content h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #fff, #c3c3c3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
+        .hero-content p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px auto; font-weight: 300; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
         .cta-button { display: inline-block; padding: 15px 35px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .cta-button:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3); }
 
@@ -69,12 +69,13 @@
         .intro-text h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         .intro-text h3 { font-size: 1.5rem; font-weight: 400; color: var(--secondary-color); margin-bottom: 20px; }
 
+        /* --- CAMBIO AQUÍ --- */
         .universe-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
             gap: 30px; 
             perspective: 1000px; 
-            justify-content: center;
+            justify-content: center; /* Centra los elementos de la rejilla */
         }
         .universe-card {
             min-height: 280px;
@@ -179,7 +180,7 @@
     <main>
         <section class="hero-section">
             <div class="hero-content">
-                <h1>Donde las Finanzas y la Fantasía se Unen</h1>
+                <h1>Aprender Finanzas Nunca Fue Tan Épico</h1>
                 <p>Descubre los secretos del interés compuesto y la inversión a largo plazo a través de los mundos que ya amas. ¡Tu aventura financiera comienza ahora!</p>
                 <a href="#fondos-indexados" class="cta-button">Explorar Activos</a>
             </div>
@@ -201,14 +202,11 @@
         </section>
 
         <section id="fondos-indexados">
-            <div class="container">
+            <div class="container" style="text-align: center;">
                 <h2 class="section-title">Calculadoras de <span>Fondos Indexados</span></h2>
-                <p class="section-subtitle">Usa nuestras calculadoras para simular tu inversión en fondos indexados.</p>
+                <p class="section-subtitle">Usa nuestras calculadoras temáticas para simular tu inversión en fondos indexados.</p>
                 <div class="universe-grid">
-                    <a href="calculadorasimple.html" class="universe-card">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3731/3731802.png" alt="Icono de calculadora">
-                        <div class="series-name">Calculadora Simple</div>
-                    </a>
+                    <!-- --- CAMBIO AQUÍ: Se ha eliminado la calculadora simple de esta rejilla --- -->
                     <a href="indexados_dragon_ball.html" class="universe-card">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Dragon_Ball_Z_logo.svg" alt="Logo Dragon Ball Z">
                         <div class="series-name">Dragon Ball</div>
@@ -230,6 +228,8 @@
                         <div class="series-name">Star Wars</div>
                     </a>
                 </div>
+                <!-- --- CAMBIO AQUÍ: Se ha añadido la calculadora simple como un botón CTA --- -->
+                <a href="calculadorasimple.html" class="cta-button" style="margin-top: 40px;">Probar Calculadora Simple de Fondos</a>
             </div>
         </section>
         
@@ -242,8 +242,9 @@
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/1200px-DC_Comics_logo.svg.png" alt="Logo DC Comics">
                         <div class="series-name">Construye tu Liga<br><small style="font-size: 1rem;">(Universo DC)</small></div>
                     </a>
-                    <!-- NUEVO ENLACE A LA CALCULADORA SIMPLE DE ACCIONES -->
-                    <a href="accionessimple.html" class="cta-button" style="margin-top: 20px;">Probar Calculadora Simple de Acciones</a>
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="accionessimple.html" class="cta-button">Probar Calculadora Simple de Acciones</a>
                 </div>
             </div>
         </section>
@@ -257,8 +258,9 @@
                         <img src="https://i.pinimg.com/736x/c7/4b/98/c74b98df344abb976c93899b5376c102.jpg" alt="Logo Vengadores">
                         <div class="series-name">Ensambla tu Cartera<br><small style="font-size: 1rem;">(Universo Vengadores)</small></div>
                     </a>
-                    <!-- NUEVO ENLACE A LA CALCULADORA SIMPLE DE CRIPTOMONEDAS -->
-                    <a href="criptosimple.html" class="cta-button" style="margin-top: 20px;">Probar Calculadora Simple de Criptomonedas</a>
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="criptosimple.html" class="cta-button">Probar Calculadora Simple de Criptomonedas</a>
                 </div>
             </div>
         </section>
