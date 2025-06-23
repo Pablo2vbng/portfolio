@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Códice Financiero - ProInvestingESP</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --background-color: #0c0a1a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --highlight-color: #f9c74f;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 0; background: rgba(12, 10, 26, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #fff; }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-color); border-radius: 2px; }
+        section { padding: 80px 0; }
+        .section-title { text-align: center; font-size: 2.8rem; font-weight: 700; margin-bottom: 60px; }
+        .section-title span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-subtitle { text-align: center; font-size: 1.2rem; font-weight: 300; max-width: 800px; margin: -40px auto 40px auto; color: #aab; }
+        
+        .category-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 60px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--card-border);
+        }
+        .category-title:first-of-type { margin-top: 0; }
+        
+        .accordion-item { border-bottom: 1px solid var(--card-border); }
+        .accordion-header {
+            width: 100%; background: none; border: none; text-align: left;
+            padding: 20px 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: color 0.3s ease;
+        }
+        .accordion-header:hover { color: var(--secondary-color); }
+        .accordion-header .icon { font-size: 1.5rem; transition: transform 0.3s ease; }
+        .accordion-item.active .accordion-header .icon { transform: rotate(45deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; color: #bbb; }
+        .accordion-content-inner { padding-bottom: 20px; }
+        .accordion-content p { margin-bottom: 15px; }
+        .definition-thematic { margin-top: 20px; padding-left: 15px; border-left: 3px solid var(--primary-color); font-style: italic; }
+        .definition-thematic h4 { color: var(--highlight-color); margin-bottom: 5px; font-weight: 700; }
+        footer { padding: 40px 20px; text-align: center; font-size: 0.9rem; color: #888; border-top: 1px solid #222; }
+        @media screen and (max-width: 800px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--background-color); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--card-border); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; } .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <h1 class="section-title">El <span>Códice</span> Financiero</h1>
+                <p class="section-subtitle">Aquí yace el conocimiento de eras. Cada término es una llave que abre una puerta a la comprensión de tu viaje financiero. Consulta con sabiduría.</p>
+                <div id="accordion-container" class="accordion-container">
+                    <!-- El contenido se generará aquí con JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                Pablo Vidal Vidal<br>
+                Teléfono: 670315792 | Dirección: C/Sol 6, Beniganim (Valencia)<br>
+                Portfolio Web: <a href="https://pablo2vbng.github.io/portfolio.html" target="_blank" rel="noopener noreferrer">pablo2vbng.github.io/portfolio.html</a>
+            </div>
+            <p class="disclaimer">
+                <strong>Disclaimer:</strong> Esta página web y sus herramientas son de carácter meramente educativo y demostrativo. Las proyecciones se basan en datos históricos y supuestos que pueden no cumplirse en el futuro. No nos hacemos responsables de las decisiones de inversión ni de los rendimientos obtenidos por nuestros visitantes. Estamos para ayudar a visualizar conceptos, no para dar consejo financiero.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            if (navToggle) {
+                navToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('nav-active');
+                    navToggle.classList.toggle('toggle');
+                });
+            }
+
+            const categorizedConcepts = {
+                "Conceptos Fundamentales del Reino": [
+                    { term: 'Ahorro', plain: 'La porción de tus ingresos que no gastas y guardas para el futuro.', thematic: 'Acumular grano en el silo para pasar el largo invierno. Es el primer paso para sobrevivir, pero no para prosperar.' },
+                    { term: 'Capital', plain: 'Dinero u otros activos financieros que se utilizan para iniciar o mantener un negocio o inversión.', thematic: 'El tesoro inicial en tus arcas, listo para ser usado para reclutar soldados, forjar armas y construir tu imperio.' },
+                    { term: 'Deuda', plain: 'Dinero que una parte debe a otra.', thematic: 'Una promesa de sangre a un poder superior. Te da fuerza ahora, pero siempre volverá para reclamar lo que es suyo.' },
+                    { term: 'Finanzas Personales', plain: 'La gestión del dinero y otros activos de un individuo o familia.', thematic: 'El arte de gobernar tu propio pequeño reino: administrar tus arcas, tus recursos y planificar para las futuras generaciones de tu Casa.' },
+                    { term: 'Inflación', plain: 'El aumento general de los precios que reduce el poder de compra del dinero con el tiempo.', thematic: 'La herrumbre que consume lentamente tu tesoro. Cada año que pasa, tu oro compra menos espadas y escudos.' },
+                    { term: 'Interés Compuesto', plain: 'El efecto "bola de nieve" de la inversión: ganas intereses no solo sobre tu capital inicial, sino también sobre los intereses acumulados.', thematic: 'La magia más poderosa del reino. Tu ejército no solo conquista tierras, sino que los guerreros de esas tierras se unen a tu causa, haciéndote cada vez más fuerte.' },
+                    { term: 'Inversión', plain: 'El acto de destinar recursos (como dinero) con el objetivo de obtener un beneficio futuro.', thematic: 'Plantar la semilla de un árbol mágico. Requiere paciencia y cuidado, pero con el tiempo, te dará frutos de oro.' },
+                    { term: 'Liquidez', plain: 'La facilidad con la que un activo puede convertirse en dinero en efectivo sin afectar su precio de mercado.', thematic: 'La habilidad de un pícaro para convertir un collar de joyas en una bolsa de oro rápidamente en cualquier mercado de la ciudad.' },
+                    { term: 'Patrimonio Neto', plain: 'El valor total de tus activos menos el valor total de tus pasivos. Es tu verdadera riqueza.', thematic: 'La verdadera fuerza de tu reino: todo el oro de tus arcas menos todas las deudas que tienes con el Banco de Hierro.' },
+                    { term: 'Riesgo', plain: 'La probabilidad de que el rendimiento real de una inversión sea diferente al esperado. Incluye la posibilidad de perder parte o la totalidad de la inversión.', thematic: 'El número de dragones que custodian el tesoro que intentas conseguir. A mayor tesoro, más feroces los dragones.' }
+                ],
+                "El Arsenal del Inversor: Tipos de Activos": [
+                    { term: 'Acción (Stock)', plain: 'Una parte de la propiedad de una empresa. Comprarla te convierte en un pequeño dueño.', thematic: 'El blasón de una Casa menor que te otorga lealtad y una parte de las riquezas de una Gran Casa (la empresa).' },
+                    { term: 'Acción de Crecimiento', plain: 'Acción de una empresa que se espera que crezca a un ritmo más rápido que el mercado. Suelen reinvertir sus beneficios en lugar de pagar dividendos.', thematic: 'Un joven y ambicioso reino que usa todo su oro para expandir sus fronteras y ejércitos, en lugar de organizar fiestas.' },
+                    { term: 'Acción de Valor', plain: 'Acción que cotiza a un precio inferior a su valor intrínseco. Es como encontrar una "ganga" en el mercado.', thematic: 'Un antiguo castillo olvidado que todos creen en ruinas, pero que tú sabes que esconde un gran tesoro en sus mazmorras.' },
+                    { term: 'Activo', plain: 'Cualquier recurso con valor económico que posees y que puede generar ingresos futuros.', thematic: 'Un soldado en tu ejército, un castillo en tus tierras, o una mina de oro. Algo que lucha y produce para ti.' },
+                    { term: 'Bitcoin', plain: 'La primera y más conocida criptomoneda, basada en un sistema descentralizado (blockchain).', thematic: 'El "Primer Dragón", una bestia legendaria y digital cuyo poder inspiró la creación de todas las demás criaturas mágicas (criptomonedas).' },
+                    { term: 'Blockchain', plain: 'Un libro de contabilidad digital, distribuido y descentralizado, que registra transacciones de forma segura e inmutable.', thematic: 'Un antiguo grimorio mágico donde cada hechizo (transacción) se escribe con una tinta que no puede ser borrada, y cada mago del círculo tiene una copia exacta del libro.' },
+                    { term: 'Bono', plain: 'Un instrumento de deuda. Cuando compras un bono, le estás prestando dinero a una entidad (gobierno o empresa) a cambio de pagos de intereses periódicos y la devolución del principal al vencimiento.', thematic: 'Un pacto de sangre con un reino. Le prestas tus soldados (dinero) y a cambio te paga un tributo anual (interés) y te los devuelve al final de la guerra.' },
+                    { term: 'Criptomoneda', plain: 'Una moneda digital o virtual que utiliza criptografía para su seguridad y opera de forma descentralizada.', thematic: 'Oro de duendes o monedas de hadas. Es un tesoro digital, forjado con magia y protegido por complejos hechizos criptográficos.' },
+                    { term: 'Derivados', plain: 'Contratos financieros cuyo valor se deriva de un activo subyacente. Son instrumentos complejos y de alto riesgo.', thematic: 'Hechizos arcanos que no controlan a los dragones directamente, sino a sus sombras. Extremadamente poderosos, pero un error puede hacer que la sombra te devore.' },
+                    { term: 'Dividendo', plain: 'Una parte de los beneficios de una empresa que se reparte entre sus accionistas.', thematic: 'El tributo que un reino próspero paga a sus leales señores vasallos como recompensa por su apoyo.' },
+                    { term: 'Ethereum', plain: 'Una plataforma de blockchain descentralizada famosa por su funcionalidad de contratos inteligentes (smart contracts). Su criptomoneda es el Ether (ETH).', thematic: 'La "Torre del Archimago", una estructura mágica donde no solo se guarda tesoro (ETH), sino que se pueden forjar pactos mágicos automáticos (contratos inteligentes).' },
+                    { term: 'ETF (Exchange Traded Fund)', plain: 'Un fondo que se negocia en bolsa como una acción. Generalmente sigue un índice y combina la diversificación de un fondo con la facilidad de compraventa de una acción.', thematic: 'Un cofre mágico que contiene reliquias de cientos de héroes. En lugar de buscar cada reliquia por separado, puedes comprar el cofre entero en el gran mercado.' },
+                    { term: 'Fondo de Inversión', plain: 'Un vehículo que agrupa el dinero de muchos inversores para invertir en una cartera diversificada de activos.', thematic: 'Una gran alianza de señores menores que juntan sus ejércitos para poder competir con las grandes Casas.' },
+                    { term: 'Fondo Indexado', plain: 'Un tipo de fondo de inversión de bajo coste que busca replicar el rendimiento de un índice de mercado específico.', thematic: 'Una legión de soldados clones, perfectamente entrenados para marchar al mismo paso que el ejército principal del Imperio.' },
+                    { term: 'Materias Primas (Commodities)', plain: 'Bienes básicos utilizados en el comercio que son intercambiables con otros bienes del mismo tipo, como el oro, el petróleo o el trigo.', thematic: 'Los recursos primordiales del reino: el hierro de tus minas, el grano de tus campos y el oro de tus ríos.' },
+                    { term: 'NFT (Non-Fungible Token)', plain: 'Un activo digital único que representa la propiedad de un objeto (como arte o coleccionables) y está registrado en una blockchain.', thematic: 'Una espada legendaria y única como "Excalibur". Puede haber muchas espadas, pero solo esta tiene un alma y un dueño verificados por la magia antigua (blockchain).' },
+                    { term: 'Pasivo', plain: 'Una obligación financiera o deuda que tienes con otra parte.', thematic: 'Una deuda de sangre o un tributo pendiente. Es un peso que resta fuerza a tu reino.' },
+                    { term: 'Renta Fija', plain: 'Tipo de inversión donde el emisor está obligado a realizar pagos de una cantidad fija en un calendario fijo. Los bonos son el ejemplo más común.', thematic: 'Un pacto con el Rey Elfo. Te garantiza un tributo estable y predecible cada luna llena. No te hará rico de la noche a la mañana, pero es seguro como la luz de las estrellas.' },
+                    { term: 'Renta Variable', plain: 'Tipo de inversión cuyo rendimiento no está garantizado y fluctúa según el mercado. Las acciones son el ejemplo principal.', thematic: 'Una expedición a las Montañas del Caos. Puedes encontrar una veta de mithril y volverte inmensamente rico, o despertar a un Balrog y perderlo todo.' }
+                ],
+                "El Campo de Batalla: El Mercado": [
+                    { term: 'Bear Market (Mercado Bajista)', plain: 'Un período prolongado en el que los precios de los activos caen de forma generalizada (normalmente un 20% o más).', thematic: 'El Largo Invierno ha llegado. Los ejércitos se retiran, los reinos se debilitan y la sombra del Rey de la Noche se cierne sobre el mapa.' },
+                    { term: 'Benchmark (Índice de Referencia)', plain: 'Un estándar contra el cual se mide el rendimiento de una inversión. Para un fondo de acciones de EE.UU., suele ser el S&P 500.', thematic: 'La fuerza del ejército del Rey. Para saber si tu propio ejército es fuerte, lo comparas con el del Rey.' },
+                    { term: 'Bróker', plain: 'Una persona o empresa que actúa como intermediario para facilitar la compra y venta de activos financieros.', thematic: 'El heraldo del Rey que te permite acceder a la sala del trono para negociar directamente con los señores de los activos.' },
+                    { term: 'Bull Market (Mercado Alcista)', plain: 'Un período prolongado en el que los precios de los activos suben de forma generalizada.', thematic: 'La Gran Primavera. El sol brilla, los reinos prosperan, los ejércitos avanzan y la abundancia reina en todas las tierras.' },
+                    { term: 'Capitalización de Mercado', plain: 'El valor total de mercado de las acciones en circulación de una empresa. Se calcula multiplicando el precio de la acción por el número de acciones.', thematic: 'La medida del poder total de un reino. No solo la fuerza de su castillo principal, sino la suma de todos sus ejércitos, tierras y vasallos.' },
+                    { term: 'Custodia', plain: 'El servicio de guardar de forma segura los activos financieros de un inversor.', thematic: 'La cámara acorazada de Gringotts o la fortaleza de un dragón, donde tu tesoro está a salvo de los ladrones.' },
+                    { term: 'Deflación', plain: 'Lo contrario de la inflación. Una caída generalizada de los precios, que aumenta el poder de compra del dinero. Puede ser perjudicial para la economía.', thematic: 'Una extraña bendición que se convierte en maldición. Tu oro se vuelve más poderoso, pero nadie quiere gastarlo, y los reinos dejan de comerciar y se marchitan.' },
+                    { term: 'Dow Jones (DJIA)', plain: 'Un índice bursátil que representa a 30 de las empresas más grandes y consolidadas de Estados Unidos.', thematic: 'El Consejo de los 30 Titanes, los señores más antiguos y poderosos de la Alianza Industrial.' },
+                    { term: 'Exchange (Intercambio)', plain: 'Una plataforma donde se compran y venden activos financieros, como acciones o criptomonedas.', thematic: 'El Gran Zoco de Marrakesh o el Puerto de King\'s Landing, un bullicioso mercado donde se comercia con todos los tesoros de los Siete Reinos.' },
+                    { term: 'Índice Bursátil', plain: 'Un indicador que muestra la variación del precio de un conjunto de activos representativos de un mercado. Ej: S&P 500, IBEX 35.', thematic: 'El Estandarte Real. Si el estandarte avanza, significa que el ejército en su conjunto está ganando terreno.' },
+                    { term: 'Mercado de Valores (Bolsa)', plain: 'Un mercado donde se compran y venden acciones de empresas que cotizan en bolsa.', thematic: 'La Gran Arena de los Campeones, donde los escudos (acciones) de los grandes reinos (empresas) se intercambian y su valor se decide en combate diario.' },
+                    { term: 'Mercado Primario', plain: 'El mercado donde se emiten y venden por primera vez nuevos valores, como en una Oferta Pública Inicial (IPO).', thematic: 'La forja del rey, donde se crean nuevas espadas legendarias y se ofrecen por primera vez a los señores más poderosos.' },
+                    { term: 'Mercado Secundario', plain: 'El mercado donde los inversores compran y venden valores que ya existen entre ellos.', thematic: 'El campo de batalla, donde las espadas legendarias ya forjadas cambian de manos entre guerreros.' },
+                    { term: 'NASDAQ', plain: 'Un índice bursátil que agrupa a más de 3,000 empresas, con un fuerte enfoque en el sector tecnológico.', thematic: 'El Concilio de los ArchimagoS y Tecnomantes, donde residen los reinos más innovadores y mágicos de la galaxia.' },
+                    { term: 'Recesión', plain: 'Un período de declive económico general, generalmente identificado por una caída del PIB en dos trimestres consecutivos.', thematic: 'Una plaga que recorre los reinos. Las cosechas se marchitan, el comercio se detiene y los castillos cierran sus puertas.' },
+                    { term: 'S&P 500', plain: 'Un índice bursátil que representa a las 500 empresas más grandes y de mayor capitalización que cotizan en las bolsas de EE.UU.', thematic: 'La "Alianza de los 500", un pacto que une a los 500 reinos más poderosos del continente occidental. Su fuerza conjunta es el pulso de la economía.' },
+                    { term: 'Stagflation (Estanflación)', plain: 'Una situación económica con inflación alta, alto desempleo y bajo crecimiento económico.', thematic: 'El peor de los mundos: una plaga asola tus campos (recesión) mientras un dragón quema tus aldeas y exige más oro (inflación).' },
+                    { term: 'Volatilidad', plain: 'La medida de la frecuencia e intensidad de los cambios en el precio de un activo.', thematic: 'El temperamento de tu dragón. Un dragón dócil apenas se mueve (baja volatilidad). Un dragón salvaje puede llevarte a los cielos o reducirte a cenizas en un instante (alta volatilidad).' }
+                ],
+                "Estrategias y Órdenes de Batalla": [
+                    { term: 'Apalancamiento', plain: 'Usar dinero prestado para aumentar el potencial de retorno de una inversión. Aumenta tanto las ganancias como las pérdidas potenciales.', thematic: 'Usar la magia de un dragón para potenciar tu espada. Puede permitirte derrotar a un gigante, pero si fallas, la explosión te aniquilará.' },
+                    { term: 'Arbitraje', plain: 'La práctica de comprar y vender simultáneamente un activo en diferentes mercados para beneficiarse de pequeñas diferencias de precio.', thematic: 'Un comerciante astuto que compra seda barata en el Este para venderla al instante por más oro en el Oeste, sin riesgo alguno.' },
+                    { term: 'Cartera de Inversión (Portfolio)', plain: 'El conjunto de todos los activos financieros que posee un inversor.', thematic: 'Tu "Consejo de Guerra" personal: el conjunto de todos tus campeones, ejércitos y alianzas que luchan por ti.' },
+                    { term: 'DCA (Dollar Cost Averaging)', plain: 'La estrategia de invertir una cantidad fija de dinero a intervalos regulares, independientemente del precio del activo.', thematic: 'El entrenamiento constante del guerrero. No importa si llueve o hace sol, cada día afila su espada. Así, compra más acero cuando es barato y menos cuando es caro, promediando un gran poder.' },
+                    { term: 'Diversificación', plain: 'La estrategia de no poner "todos los huevos en la misma cesta". Repartes tus inversiones para reducir el riesgo.', thematic: 'Un rey sabio no construye un solo castillo. Construye fortalezas en el norte, en el sur y en el oeste. Si una es atacada, las demás protegen el reino.' },
+                    { term: 'Especulación', plain: 'La práctica de realizar inversiones de alto riesgo con la esperanza de obtener grandes beneficios a corto plazo.', thematic: 'Apostar todo tu oro a que un solo caballero desconocido ganará el gran torneo. La gloria puede ser inmensa, pero la ruina es más probable.' },
+                    { term: 'FOMO (Fear Of Missing Out)', plain: 'El miedo a quedarse fuera de una oportunidad de inversión rentable, lo que puede llevar a tomar decisiones impulsivas y arriesgadas.', thematic: 'Ver a todos los señores cabalgar hacia una batalla gloriosa y lanzarte a la carga sin pensar, por miedo a perderte el botín y la gloria.' },
+                    { term: 'FUD (Fear, Uncertainty, and Doubt)', plain: 'Miedo, incertidumbre y duda. Tácticas para influir en la percepción del mercado difundiendo información negativa.', thematic: 'Los susurros en los pasillos de la corte, las profecías oscuras y los rumores de traición que debilitan la moral de un reino antes de la batalla.' },
+                    { term: 'Gestión Activa', plain: 'Una estrategia de inversión donde un gestor toma decisiones activas de compra y venta con el objetivo de superar a un índice de referencia. Suele tener comisiones más altas.', thematic: 'Contratar a un estratega legendario que mueve tus ejércitos constantemente en el mapa, buscando siempre la mejor posición para atacar.' },
+                    { term: 'Gestión Pasiva', plain: 'Una estrategia de inversión que busca replicar un índice de mercado, como en los fondos indexados. Tiene costes muy bajos y requiere pocas decisiones.', thematic: 'Forjar una alianza con el ejército más grande y simplemente seguir su avance. No intentas ser más listo que el general, solo participas de su victoria.' },
+                    { term: 'HODL', plain: 'Término del mundo cripto que significa "Hold On for Dear Life". Mantener una inversión a largo plazo sin vender, a pesar de la volatilidad.', thematic: 'El juramento de un enano de no abandonar jamás su montaña de oro, sin importar cuántos dragones o ejércitos de orcos la asedien.' },
+                    { term: 'Largo Plazo', plain: 'Una estrategia de inversión que implica mantener los activos durante muchos años, ignorando el "ruido" del mercado a corto plazo.', thematic: 'El camino del sabio elfo. Piensa en siglos, no en días. Planta un bosque sabiendo que serán sus descendientes quienes disfrutarán de su sombra.' },
+                    { term: 'Orden de Mercado', plain: 'Una orden para comprar o vender un activo al mejor precio disponible en el mercado en ese momento.', thematic: 'Gritar al mercader: "¡Dame la mejor espada que tengas, no me importa el precio, la quiero ahora!".' },
+                    { term: 'Orden Límite', plain: 'Una orden para comprar o vender un activo a un precio específico o mejor.', thematic: 'Decirle al herrero: "Forja esta espada para mí, pero solo si el coste del acero no supera las 10 monedas de plata".' },
+                    { term: 'Stop-loss', plain: 'Una orden para vender un activo automáticamente si su precio cae a un nivel determinado, con el fin de limitar las pérdidas.', thematic: 'Un hechizo de retirada automática. Si tu campeón pierde la mitad de su vida, es teletransportado fuera de la arena para que pueda luchar otro día.' },
+                    { term: 'Trading', plain: 'La actividad de comprar y vender activos financieros a corto plazo para obtener beneficios de las fluctuaciones del mercado.', thematic: 'El camino del duelista. Vive de batalla en batalla, buscando ganancias rápidas en la arena. Una vida de adrenalina, pero pocos llegan a viejos.' }
+                ],
+                "Inteligencia y Espionaje: Análisis y Métricas": [
+                    { term: 'Alfa', plain: 'Medida del rendimiento de una inversión en comparación con un índice de referencia. Un alfa positivo significa que ha superado al mercado.', thematic: 'La habilidad de un héroe legendario para encontrar un atajo en el mapa del tesoro que nadie más conocía.' },
+                    { term: 'Amortización', plain: 'El proceso de pagar una deuda a lo largo del tiempo en cuotas regulares.', thematic: 'Pagar el tributo al Rey Dragón poco a poco, hasta que tu pueblo finalmente es libre de su yugo.' },
+                    { term: 'Análisis Fundamental', plain: 'Método para evaluar el valor intrínseco de un activo analizando factores económicos y financieros.', thematic: 'El trabajo de un maestre que estudia los libros de cuentas, las cosechas y las alianzas de un reino para determinar su verdadera fuerza.' },
+                    { term: 'Análisis Técnico', plain: 'Método para predecir movimientos futuros de precios basándose en datos históricos del mercado, como precios y volúmenes.', thematic: 'Un vidente que lee los patrones en las estrellas y el vuelo de los cuervos para predecir la próxima batalla.' },
+                    { term: 'Apreciación', plain: 'El aumento del valor de un activo a lo largo del tiempo.', thematic: 'Cuando tu reino se vuelve más próspero y poderoso, y su fama se extiende por todas las tierras.' },
+                    { term: 'Beta', plain: 'Medida de la volatilidad de un activo en relación con el mercado. Un beta de 1 significa que se mueve con el mercado; >1 es más volátil; <1 es menos volátil.', thematic: 'La lealtad de un vasallo. Si el Rey avanza, él avanza (Beta=1). Si es un bárbaro impredecible, se mueve el doble de rápido (Beta=2).' },
+                    { term: 'Comisión', plain: 'Una tarifa que se cobra por realizar una transacción o prestar un servicio financiero.', thematic: 'El peaje que debes pagar al guardián del puente para cruzar al reino de las inversiones.' },
+                    { term: 'Depreciación', plain: 'La disminución del valor de un activo a lo largo del tiempo debido al uso, desgaste u obsolescencia.', thematic: 'La herrumbre que consume una armadura con cada batalla, perdiendo poco a poco su valor y protección.' },
+                    { term: 'EBITDA', plain: 'Acrónimo de "Earnings Before Interest, Taxes, Depreciation, and Amortization". Una medida de la rentabilidad operativa de una empresa.', thematic: 'La verdadera fuerza de un dragón antes de que los magos del rey le resten poder con hechizos de impuestos y ataduras mágicas.' },
+                    { term: 'Impuestos', plain: 'Una contribución obligatoria a los ingresos del estado, que se aplica sobre los beneficios de las inversiones.', thematic: 'El tributo que el Rey reclama sobre tu botín de guerra. Siempre debes guardar una parte para él, o enviará a sus recaudadores.' },
+                    { term: 'Interés Simple', plain: 'Interés que se calcula únicamente sobre el capital inicial.', thematic: 'Un tributo fijo. El dragón te exige 10 monedas de oro al año, siempre la misma cantidad, sin importar cuánto crezca tu tesoro.' },
+                    { term: 'PER (Price-to-Earnings Ratio)', plain: 'Una métrica para valorar una empresa que mide el precio de su acción en relación con sus beneficios por acción.', thematic: 'El número de años de cosecha que un señor te pide a cambio de sus tierras. Un número bajo puede ser una ganga.' },
+                    { term: 'Rentabilidad (Return)', plain: 'La ganancia o pérdida total de una inversión durante un período de tiempo, expresada como un porcentaje.', thematic: 'El botín obtenido tras una exitosa campaña militar, medido en comparación con el tamaño del ejército que enviaste.' },
+                    { term: 'Yield (Rendimiento)', plain: 'Los ingresos generados por una inversión, generalmente expresados como un porcentaje. En los bonos, es el interés; en las acciones, el dividendo.', thematic: 'La cantidad de grano que una parcela de tierra produce cada cosecha.' }
+                ]
+            };
+
+            const accordionContainer = document.getElementById('accordion-container');
+            
+            // Generar HTML para cada categoría y sus conceptos
+            for (const category in categorizedConcepts) {
+                // Crear el título de la categoría
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.className = 'category-title';
+                categoryTitle.textContent = category;
+                accordionContainer.appendChild(categoryTitle);
+
+                // Ordenar los conceptos de la categoría alfabéticamente
+                const concepts = categorizedConcepts[category].sort((a, b) => a.term.localeCompare(b.term, 'es'));
+                
+                // Crear los items del acordeón para la categoría
+                concepts.forEach(concept => {
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item';
+                    item.innerHTML = `
+                        <button class="accordion-header">
+                            ${concept.term}
+                            <span class="icon">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <h4>En lenguaje llano:</h4>
+                                <p>${concept.plain}</p>
+                                <div class="definition-thematic">
+                                    <h4>En el idioma de los Antiguos:</h4>
+                                    <p>${concept.thematic}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    accordionContainer.appendChild(item);
+                });
+            }
+
+            // --- LÓGICA DEL ACORDEÓN ---
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                        }
+                    });
+
+                    if (!isActive) {
+                        item.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } else {
+                        item.classList.remove('active');
+                        content.style.maxHeight = null;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
