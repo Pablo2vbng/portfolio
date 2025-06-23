@@ -72,8 +72,9 @@
 
         .container {
             background-color: var(--container-bg); padding: 40px; border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,.5); max-width: 1200px; width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,.5); width: 100%;
             text-align: center; border: 2px solid var(--border-color);
+            /* Se eliminó 'max-width' para que ocupe toda la página */
         }
         .header { margin-bottom: 20px; }
         h1 {
@@ -294,11 +295,11 @@
                 const pillarsData = [
                     { name: 'Kyojuro Rengoku', pillar: 'Llama', fund: 'S&P 500', description: 'El poder de las 500 empresas más grandes de EE.UU. ¡Potente y ardiente!', rates: [9.8, 12.0, 6.5], img: 'https://i.pinimg.com/736x/da/45/ac/da45ac41d573af37fd78fd3579c981f5.jpg' },
                     { name: 'Tengen Uzui', pillar: 'Sonido', fund: 'Nasdaq 100', description: 'La extravagancia y velocidad de las 100 mayores tecnológicas. ¡Llamativo y explosivo!', rates: [13.5, 16.5, 9.5], img: 'https://img.wattpad.com/d21c0b8266657c13fb5350004394f8c316ad69b4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f717139766f615835777171794c773d3d2d31372e313636306639393737316232383336373132393430343835333135382e6a7067?s=fit&w=720&h=720' },
-                    { name: 'Giyu Tomioka', pillar: 'Agua', fund: 'MSCI World', description: 'Fluye con las mayores empresas del mundo. Versátil y adaptable.', rates: [8.5, 10.5, 5.5], img: 'https://img.wattpad.com/719e5354ae9dd82e2788d9ccbed32d7ce02b40ea/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f424b3233654a35746e57427738673d3d2d313031383433383231382e313635663261363631653138356537353233313336333832353638342e6a7067?s=fit&w=720&h=720' },
+                    { name: 'Giyu Tomioka', pillar: 'Agua', fund: 'MSCI World', description: 'Fluye con las mayores empresas del mundo. Versátil y adaptable.', rates: [8.5, 10.5, 5.5], img: 'https://img.wattpad.com/719e5354ae9dd82e2788d9ccbed32d7ce02b40ea/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f424b3233654a35746e57427738673d3d2d3130313433383231382e3136356632613636316531383565373532333133363338323536342e6a7067?s=fit&w=720&h=720' },
                     { name: 'Shinobu Kocho', pillar: 'Insecto', fund: 'MSCI EM', description: 'El potencial de mercados emergentes. Preciso y letal a largo plazo.', rates: [7.5, 11.5, 4.0], img: 'https://i.pinimg.com/236x/65/b1/f9/65b1f99e2e2523b2d61dd75e47ed6cb0.jpg' },
                     { name: 'Gyomei Himejima', pillar: 'Roca', fund: 'All-Weather', description: 'Una cartera diversificada y sólida que resiste cualquier tormenta.', rates: [6.0, 8.0, 3.5], img: 'https://i.pinimg.com/736x/8c/c4/8b/8cc48b38b1d439f49ed50d65d0c04175.jpg' },
                     { name: 'Mitsuri Kanroji', pillar: 'Amor', fund: 'Socially Responsible', description: 'Invierte en empresas con impacto positivo. ¡Un futuro adorable!', rates: [8.0, 10.0, 5.0], img: 'https://i.pinimg.com/564x/a7/83/12/a783126ea17bdc065aabfdfaf9abc3f5.jpg' },
-                    { name: 'Obanai Iguro', pillar: 'Serpiente', fund: 'Small Caps', description: 'Empresas pequeñas con gran potencial. Arriesgado pero sinuoso.', rates: [11.0, 15.0, 6.0], img: 'https://img.wattpad.com/2d8069735e676bfec774f8eddfe8fe16c4b4c263/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f2d4372466f596c3936516e5139413d3d2d31312e313635663239643733613063666666363739303433343236393432352e6a7067?s=fit&w=720&h=720' },
+                    { name: 'Obanai Iguro', pillar: 'Serpiente', fund: 'Small Caps', description: 'Empresas pequeñas con gran potencial. Arriesgado pero sinuoso.', rates: [11.0, 15.0, 6.0], img: 'https://img.wattpad.com/2d8069735e676bfec774f8eddfe8fe16c4b4c263/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f2d4372466f596c3936516e5139413d3d2d31312e313635663239643733613063666666363739303433343232352e6a7067?s=fit&w=720&h=720' },
                     { name: 'Sanemi Shinazugawa', pillar: 'Viento', fund: 'High Dividend', description: 'Empresas que reparten beneficios. Un ataque constante y agresivo.', rates: [7.0, 9.0, 4.5], img: 'https://ih1.redbubble.net/image.5597904750.0244/st,small,507x507-pad,600x600,f8f8f8.jpg' },
                     { name: 'Muichiro Tokito', pillar: 'Niebla', fund: 'Global Bonds', description: 'Una estrategia defensiva y diversificada. Difícil de predecir pero estable.', rates: [4.0, 5.5, 2.5], img: 'https://ih1.redbubble.net/image.5599152301.9609/st,small,507x507-pad,600x600,f8f8f8.jpg' },
                 ];
