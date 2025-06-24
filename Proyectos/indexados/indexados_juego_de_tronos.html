@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoT: El Juego Financiero de Zeus</title>
+    <title>GoT: El Juego Financiero</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,20 +73,30 @@
             background-color: var(--container-bg); padding: 40px; border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,.3); width: 100%;
             text-align: center; border: 2px solid #888;
-            /* Se eliminó 'max-width' para que ocupe toda la página */
         }
-        h1, .section-title { font-family: 'Cinzel Decorative', cursive; color: var(--got-dark); text-shadow: 1px 1px 2px #fff; }
+        h1, .section-title { font-family: 'Cinzel Decorative', cursive; color: var(--text-dark); text-shadow: 1px 1px 2px #fff; }
         h1 { font-size: 3.2rem; margin: 0 0 10px 0; }
         .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
         strong { color: var(--got-red); font-weight: 700; }
-        .house-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 20px; margin-bottom: 20px; width: 100%; }
-        .house-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; }
+        
+        /* ===== INICIO DE LA CORRECCIÓN ===== */
+        .house-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        /* ===== FIN DE LA CORRECCIÓN ===== */
+        
+        .house-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; flex-shrink: 0; }
         .house-card img { width: 100px; height: 100px; border: 3px solid var(--border-color); border-radius: 8px; background-color: #fff; padding: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s ease; }
-        .house-card .house-name { font-weight: 600; margin-top: 8px; color: var(--text-dark); }
+        .house-card .house-name { font-weight: 600; margin-top: 8px; color: var(--text-dark); max-width: 100px; }
         .house-card:hover img { transform: scale(1.1); border-color: var(--got-gold); }
         .house-card.selected img { border-color: var(--got-gold); animation: pulse-glow 2s infinite; transform: scale(1.1); }
         .house-card.dimmed { opacity: 0.5; filter: grayscale(50%); }
-        #house-info-display { width: 100%; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; background: #e9e9e9; border-radius: 10px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.4s ease, max-height 0.4s ease, padding 0.4s ease; }
+        #house-info-display { width: 100%; max-width: 600px; margin: 30px auto; padding: 20px; background: #e9e9e9; border-radius: 10px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.4s ease, max-height 0.4s ease, padding 0.4s ease; }
         #house-info-display.visible { opacity: 1; max-height: 200px; }
         #house-info-display h3 { font-family: 'Cinzel Decorative', cursive; margin: 0 0 5px 0; font-size: 1.6rem; }
         .form-section { background-color: rgba(0,0,0,0.05); padding: 30px; border-radius: 18px; border: 1px solid #ccc; width: 100%;}
@@ -134,7 +144,7 @@
             h1 { font-size: 2rem; }
             .subtitle { font-size: 1rem; margin-bottom: 30px; }
             .section-title { font-size: 1.6rem; }
-            .house-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
+            .house-grid { gap: 15px; }
             .house-card img { width: 80px; height: 80px; }
             #house-info-display h3 { font-size: 1.4rem; }
             #house-info-display p { font-size: 0.9rem; }
@@ -149,7 +159,7 @@
     </style>
 </head>
 <body>
-
+    <!-- El resto del HTML y el Javascript se mantienen sin cambios -->
     <header>
         <nav>
             <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
@@ -276,33 +286,21 @@
 
     <footer>
         <div class="container">
-            <!-- SECCIÓN DE CONTACTO (Mantenida) -->
             <div class="footer-contact">
                 Pablo Vidal Vidal<br>
                 Portfolio: <a href="https://pablo2vbng.github.io/portfolio/index.html" target="_blank" rel="noopener noreferrer">Pablo2vbng</a> | Contacto: <a href="mailto:pablo2vbngdaw@gmail.com">pablo2vbngdaw@gmail.com</a>
             </div>
-            
-            <!-- LÍNEA DIVISORIA PARA SEPARAR VISUALMENTE LOS AVISOS LEGALES -->
             <hr style="border: 0; height: 1px; background-color: var(--card-border); margin: 40px auto; max-width: 800px;">
-    
-            <!-- NUEVOS AVISOS LEGALES (MUY IMPORTANTE) -->
             <div class="disclaimers-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                
-                <!-- AVISO SOBRE COPYRIGHT (CLAVE PARA TU CONSULTA) -->
                 <div class="disclaimer">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso sobre Copyright y Fines No Lucrativos</h4>
                     <p>ProInvestingESP es un proyecto personal, no comercial y <strong>sin ánimo de lucro</strong>. Todos los nombres de franquicias, personajes, logotipos y marcas registradas (como Dragon Ball, Star Wars, Marvel, DC Comics, etc.) son propiedad de sus respectivos dueños. Su uso en este sitio es con fines de parodia, comentario y educación, bajo el principio de "uso legítimo" (fair use). Este sitio web no está afiliado, patrocinado ni respaldado por ninguna de estas compañías y no pretende infringir ningún derecho de autor.</p>
                 </div>
-    
-                <!-- AVISO DE RIESGO FINANCIERO (Versión mejorada del que ya tenías) -->
                 <div class="disclaimer" style="margin-top: 30px;">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso de Riesgo y Carácter Educativo</h4>
                     <p>La información y herramientas en ProInvestingESP tienen fines <strong>puramente educativos y de entretenimiento</strong>. No constituyen asesoramiento financiero. Las proyecciones se basan en datos históricos y no garantizan rendimientos futuros. Toda inversión conlleva riesgos. Consulta siempre a un profesional cualificado antes de tomar decisiones financieras.</p>
                 </div>
-    
             </div>
-    
-            <!-- COPYRIGHT DEL SITIO -->
             <div class="footer-copyright" style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
                 © 2025 ProInvestingESP. Todos los derechos reservados sobre el diseño y contenido original.
             </div>
@@ -311,7 +309,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Lógica de la calculadora de Juego de Tronos
             try {
                 const AVG_INFLATION_RATE = 0.022;
                 let selectedHouseIndex = null;
@@ -350,7 +347,7 @@
                 }
                 function handleFormSubmit(event) {
                     event.preventDefault();
-                    if (selectedHouseIndex === null) { alert("¡Lord Zeus, primero debe jurar lealtad a una Casa!"); return; }
+                    if (selectedHouseIndex === null) { alert("¡Mi Señor, primero debe jurar lealtad a una Casa!"); return; }
                     const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value); const years = parseInt(document.getElementById('years').value, 10);
                     if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) { alert("¡Revisad vuestros planes! Los números del tributo no son correctos."); return; }
                     const selectedHouse = housesData[selectedHouseIndex]; const [avgRate, bestRate, worstRate] = selectedHouse.rates.map(r => parseFloat(r) / 100);
@@ -367,7 +364,6 @@
                 alert("¡ERROR! Un cuervo se ha perdido en la tormenta. Avisa al Gran Maestre. Error: " + e.message);
             }
 
-            // Lógica del menú de hamburguesa
             const navToggle = document.querySelector('.nav-toggle');
             const navLinks = document.querySelector('.nav-links');
 

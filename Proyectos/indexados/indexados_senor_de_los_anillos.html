@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Señor de los Anillos: La Comunidad del Ahorro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES GLOBALES (TEMA TIERRA MEDIA) --- */
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --lotr-brown: #5a4e3a; /* Marrón cuero/madera */
+            --lotr-green: #4f6f52; /* Verde bosque */
+            --lotr-gold: #c5a76a; /* Oro antiguo, menos brillante */
+            --lotr-dark: #1a1a1a; /* Fondo muy oscuro */
+            --lotr-light: #e8e4d8; /* Color pergamino claro */
+            --container-bg: #2d2d2d; /* Fondo contenedor, como piedra oscura */
+            --text-light: #dcdcdc;
+            --border-color: rgba(200, 180, 140, 0.2);
+            --gandalf-color: #f0f0f0; /* Blanco */
+            --aragorn-color: #6495ed; /* Azul acero */
+            --gollum-color: #8f9779; /* Verde musgo */
+            --smaug-color: #b22222; /* Rojo fuego */
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 7px var(--lotr-gold), 0 0 14px var(--lotr-gold); }
+            50% { box-shadow: 0 0 14px var(--lotr-gold), 0 0 28px var(--lotr-gold); }
+            100% { box-shadow: 0 0 7px var(--lotr-gold), 0 0 14px var(--lotr-gold); }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Merriweather', serif;
+            background-color: var(--lotr-dark);
+            background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+        
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 20px; background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .nav-logo { font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; text-decoration: none; z-index: 10; }
+        .nav-logo span { color: var(--lotr-gold); background: none; -webkit-text-fill-color: unset; }
+        .nav-links { list-style: none; display: flex; gap: 30px; }
+        .nav-links a { font-family: 'Merriweather', serif; color: var(--text-light); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--lotr-gold); }
+        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-light); border-radius: 2px; }
+        
+        footer { padding: 40px 20px; text-align: center; font-size: .9rem; color: #888; background-color: #111; line-height: 1.6; }
+
+        main { padding: 40px 20px; }
+        .container {
+            display: flex; flex-direction: column; align-items: center;
+            background-color: var(--container-bg); padding: 40px; border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.5); width: 100%;
+            text-align: center; border: 1px solid var(--border-color);
+            border-image: linear-gradient(to bottom, var(--lotr-gold), var(--lotr-brown)) 1;
+        }
+        
+        h1, .section-title {
+            font-family: 'Cinzel', serif;
+            color: var(--lotr-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+        h1 { font-size: 3.2rem; margin: 0 0 10px 0; font-weight: 700; }
+        .subtitle { margin-bottom: 40px; font-size: 1.1rem; max-width: 800px; margin: 0 auto 40px auto; }
+        strong { color: var(--lotr-gold); font-weight: 700; }
+        
+        /* ===== INICIO DE LA CORRECCIÓN ===== */
+        .path-grid { 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        /* ===== FIN DE LA CORRECCIÓN ===== */
+
+        .path-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; flex-shrink: 0; }
+        .path-card img { height: 100px; width: 100px; object-fit: cover; border-radius: 10px; transition: all 0.3s ease; background-color: #111; border: 2px solid transparent; }
+        .path-card .path-name { font-weight: 600; margin-top: 8px; color: var(--text-light); font-size: 0.9rem; font-family: 'Merriweather', serif; max-width: 110px; }
+        .path-card:hover img { border-color: var(--lotr-gold); transform: scale(1.05); }
+        .path-card.selected img { border-color: var(--lotr-gold); box-shadow: 0 0 15px var(--lotr-gold); animation: pulse-glow 2s infinite; }
+        .path-card.dimmed { opacity: 0.5; filter: grayscale(70%); }
+        
+        #path-info-display { width: 100%; max-width: 600px; margin: 30px auto; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        #path-info-display.visible { opacity: 1; max-height: 200px; }
+        #path-info-display h3 { font-family: 'Cinzel', serif; margin: 0 0 5px 0; font-size: 1.6rem; color: var(--lotr-gold); text-shadow: none; }
+        
+        .form-section { background-color: rgba(0,0,0,0.2); padding: 30px; border-radius: 10px; border: 1px solid var(--border-color); width: 100%;}
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { text-align: left; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem; color: var(--text-light); }
+        input[type=number] { width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; color: var(--text-light); background-color: rgba(0,0,0,0.3); transition: border-color .2s, box-shadow .2s; }
+        input[type=number]:focus { outline: 0; border-color: var(--lotr-gold); box-shadow: 0 0 10px rgba(197, 167, 106, .5); }
+        
+        button { 
+            width: 100%; padding: 16px 40px; 
+            background: var(--lotr-brown); color: var(--lotr-light); 
+            border: 2px solid var(--lotr-gold);
+            border-radius: 8px; font-family: 'Cinzel', serif; font-size: 1.2rem; cursor: pointer; 
+            transition: all .2s; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+        }
+        button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 15px var(--lotr-gold); background-color: var(--lotr-green); }
+        button:disabled { background-color: #444; color: #888; cursor: not-allowed; border-color: #555; }
+        
+        #results-container { margin-top: 40px; display: none; opacity: 0; width: 100%; }
+        #results-container.visible { display: block; opacity: 1; transition: opacity .5s ease-out; }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .result-scenario { padding: 20px; border-radius: 10px; text-align: center; border-width: 2px; border-style: solid; transition: transform 0.3s; display: flex; flex-direction: column; background-color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .result-scenario:hover { transform: translateY(-10px); }
+        .character-portrait { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: center; margin: 0 auto 15px; border: 3px solid; display: block; }
+        .result-scenario h3 { font-family: 'Cinzel', serif; margin-top: 0; font-size: 1.3rem; letter-spacing: 1px; }
+        .final-amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; display: block; margin: 10px 0 5px; color: var(--lotr-gold); font-family: 'Merriweather', serif; }
+        .real-value { font-size: 1.1rem; color: #ccc; margin-top: 5px; display: block; margin-bottom: auto; }
+        .real-value-label { font-size: 0.8rem; text-transform: uppercase; color: #888; }
+        .details-list { font-size: .9rem; text-align: left; margin-top: 20px; padding: 0; list-style: none; }
+        .details-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px dashed var(--border-color); }
+        .details-list strong { color: var(--text-light); }
+        .gandalf-case { border-color: var(--gandalf-color); } .gandalf-case h3 { color: var(--gandalf-color); } .gandalf-case .character-portrait { border-color: var(--gandalf-color); }
+        .aragorn-case { border-color: var(--aragorn-color); } .aragorn-case h3 { color: var(--aragorn-color); } .aragorn-case .character-portrait { border-color: var(--aragorn-color); }
+        .gollum-case { border-color: var(--gollum-color); } .gollum-case h3 { color: var(--gollum-color); } .gollum-case .character-portrait { border-color: var(--gollum-color); }
+        .smaug-case { border-color: var(--smaug-color); } .smaug-case h3 { color: var(--smaug-color); } .smaug-case .character-portrait { border-color: var(--smaug-color); }
+        .guide-section { margin-top: 50px; padding: 30px; border-top: 2px solid var(--border-color); text-align: left; line-height: 1.7; background-color: rgba(0,0,0,0.2); border-radius: 10px; width: 100%;}
+        .guide-section h3 { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--lotr-gold); margin-bottom: 10px; }
+        .guide-section p { margin-bottom: 20px; }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background-color: var(--lotr-dark); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--border-color); }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { padding: 20px 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            main { padding: 20px 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
+            .section-title { font-size: 1.8rem; }
+            .form-section { padding: 20px; }
+            .form-grid { gap: 25px; }
+            .hidden-mobile { display: none; }
+            .character-portrait { width: 90px; height: 90px; }
+            .final-amount { font-size: 1.8rem; }
+            .guide-section { padding: 20px; }
+            .guide-section h3 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- El resto del HTML (body) y el Javascript se mantienen exactamente igual que en la versión anterior -->
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#universos">Universos</a></li>
+                <li><a href="index.html#fondos-indexados">Fondos</a></li>
+                <li><a href="index.html#acciones">Acciones</a></li>
+                <li><a href="index.html#criptomonedas">Criptomonedas</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>La Comunidad del Ahorro</h1>
+            <p class="subtitle">
+                En la Tierra Media, hasta la persona más pequeña puede cambiar el curso del futuro. El <strong>Anillo Único de la Inflación</strong> busca corromper el valor de tu tesoro, mientras la <strong>Magia Antigua del Interés Compuesto</strong> espera ser desatada. Elige tu alianza, comienza tu viaje y que la fortuna de los Valar te acompañe.
+            </p>
+            
+            <div id="path-section" style="width: 100%;">
+                <h2 class="section-title">Paso 1: Elige tu Alianza</h2>
+                <div class="path-grid" id="path-grid-container"></div>
+            </div>
+            
+            <div id="path-info-display"></div>
+            
+            <div class="form-section">
+                <form id="calculator-form">
+                     <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 20px;">Paso 2: Define tu Viaje</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="monthly-contribution">Aportación mensual (Monedas)</label>
+                            <input type="number" id="monthly-contribution" name="contribution" required min="1" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Años de Viaje</label>
+                            <input type="number" id="years" name="years" required min="1" value="15">
+                        </div>
+                        <div class="form-group">
+                            <label class="hidden-mobile"> </label> 
+                            <button type="submit" id="submit-button" disabled>¡Forma la Comunidad!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="results-container">
+                <h2 class="section-title">Tu Destino en la Tierra Media</h2>
+                <div class="scenarios-grid">
+                     <div class="result-scenario gandalf-case">
+                        <img id="gandalf-img" class="character-portrait">
+                        <h3>Mago Istari</h3>
+                        <span class="final-amount" id="best-case-amount"></span>
+                        <div class="real-value">
+                            <span id="best-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancias del viaje:</span> <strong id="best-total-interest"></strong></li>
+                            <li><span>Monedas aportadas:</span> <strong id="best-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario aragorn-case">
+                        <img id="aragorn-img" class="character-portrait">
+                        <h3>Rey de Gondor</h3>
+                        <span class="final-amount" id="average-case-amount"></span>
+                        <div class="real-value">
+                            <span id="average-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                         <ul class="details-list">
+                            <li><span>Ganancias del viaje:</span> <strong id="average-total-interest"></strong></li>
+                            <li><span>Monedas aportadas:</span> <strong id="average-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario gollum-case">
+                        <img id="gollum-img" class="character-portrait">
+                        <h3>Corrompido por el Anillo</h3>
+                        <span class="final-amount" id="worst-case-amount"></span>
+                        <div class="real-value">
+                            <span id="worst-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancias del viaje:</span> <strong id="worst-total-interest"></strong></li>
+                            <li><span>Monedas aportadas:</span> <strong id="worst-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                    <div class="result-scenario smaug-case">
+                        <img id="smaug-img" class="character-portrait">
+                        <h3>El Tesoro del Dragón</h3>
+                        <span class="final-amount" id="bank-case-amount"></span>
+                        <div class="real-value">
+                             <span id="bank-case-real"></span>
+                            <div class="real-value-label">Poder de compra real</div>
+                        </div>
+                        <ul class="details-list">
+                            <li><span>Ganancias del viaje:</span> <strong>0 monedas</strong></li>
+                            <li><span>Monedas aportadas:</span> <strong id="bank-total-invested"></strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <h2 class="section-title">Los Pergaminos de Rivendel</h2>
+                <h3>La Sombra de Mordor (Inflación)</h3>
+                <p>
+                    La <strong>Sombra de Mordor</strong> se extiende con la inacción. Si dejas tu tesoro acumulado bajo la montaña, como hizo el dragón <strong>Smaug</strong>, su poder de compra se irá debilitando año tras año. La inflación, como el veneno de Morgul, corrompe el valor de tu oro. Lo que hoy te compra un poney de la Comarca, en el futuro apenas te alcanzará para una hogaza de lembas. No hacer nada es dejar que la Sombra gane terreno.
+                </p>
+                <h3>El Poder de la Comunidad (Fondos Indexados)</h3>
+                <p>
+                    Confiar en un solo guerrero, por muy valiente que sea, para ganar la guerra es un riesgo inmenso. Un <strong>Fondo Indexado</strong> es como formar la <strong>Comunidad del Anillo</strong>. Al unir las fortalezas de Elfos, Enanos, Hombres y Hobbits (las mejores empresas del mundo), tu destino no depende de un solo héroe, sino de la fuerza combinada de la alianza. Es la estrategia más sabia para derrotar a Sauron y traer la paz y prosperidad a tus arcas.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-contact">
+                Pablo Vidal Vidal<br>
+                Portfolio: <a href="https://pablo2vbng.github.io/portfolio/index.html" target="_blank" rel="noopener noreferrer">Pablo2vbng</a> | Contacto: <a href="mailto:pablo2vbngdaw@gmail.com">pablo2vbngdaw@gmail.com</a>
+            </div>
+            <hr style="border: 0; height: 1px; background-color: var(--border-color); margin: 40px auto; max-width: 800px;">
+            <div class="disclaimers-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <div class="disclaimer">
+                    <h4 style="color: var(--lotr-gold); margin-bottom: 10px; font-size: 1rem;">Aviso sobre Copyright y Fines No Lucrativos</h4>
+                    <p>ProInvestingESP es un proyecto personal, no comercial y <strong>sin ánimo de lucro</strong>. Todos los nombres de franquicias, personajes, logotipos y marcas registradas (como El Señor de los Anillos, Star Wars, etc.) son propiedad de sus respectivos dueños. Su uso en este sitio es con fines de parodia, comentario y educación, bajo el principio de "uso legítimo" (fair use). Este sitio web no está afiliado, patrocinado ni respaldado por ninguna de estas compañías y no pretende infringir ningún derecho de autor.</p>
+                </div>
+                <div class="disclaimer" style="margin-top: 30px;">
+                    <h4 style="color: var(--lotr-gold); margin-bottom: 10px; font-size: 1rem;">Aviso de Riesgo y Carácter Educativo</h4>
+                    <p>La información y herramientas en ProInvestingESP tienen fines <strong>puramente educativos y de entretenimiento</strong>. No constituyen asesoramiento financiero. Las proyecciones se basan en datos históricos y no garantizan rendimientos futuros. Toda inversión conlleva riesgos. Consulta siempre a un profesional cualificado antes de tomar decisiones financieras.</p>
+                </div>
+            </div>
+            <div class="footer-copyright" style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
+                © 2025 ProInvestingESP. Todos los derechos reservados sobre el diseño y contenido original.
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const AVG_INFLATION_RATE = 0.022;
+                let selectedPathIndex = null;
+                const resultLevels = { 
+                    gandalf: 'https://i.blogs.es/02b2f9/senor-de-los-anillos-gandalf-el-blanco-tolkien/650_1200.jpeg', 
+                    aragorn: 'https://sm.ign.com/ign_latam/screenshot/default/aragorn11_rmuk.jpg', 
+                    gollum: 'https://static.wikia.nocookie.net/sranillos/images/8/8d/Gollum.jpg', 
+                    smaug: 'https://m.media-amazon.com/images/M/MV5BYWRhY2RhOWQtMWJkNi00YmRkLTg5Y2UtZWNmNWQ4MDkxZjQ5XkEyXkFqcGc@._V1_QL75_UY281_CR31,0,500,281_.jpg' 
+                };
+                const pathData = [
+                    { name: 'El Concilio de Elrond', fund: 'MSCI World', rates: [8.5, 10.5, 5.5], img: 'https://img.asmedia.epimg.net/resizer/v2/ON7WAGGPVRHUDHYHFPPRDMTTE4.jpg?auth=fe663035e9c019af6d028c74a611857a7ba656078d0e740264f790d339441c46&width=1472&height=828&smart=true', annualizedReturn20Y: 8.9 },
+                    { name: 'La Senda de Isengard', fund: 'Nasdaq 100', rates: [13.5, 16.5, 9.5], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrguYs_xUBfeOZoAv52lCoO1OV7hRkReUX5g&s', annualizedReturn20Y: 14.5 },
+                    { name: 'Árbol Blanco de Gondor', fund: 'S&P 500', rates: [9.8, 12.0, 6.5], img: 'https://elanillounico.com/wp-content/uploads/2022/07/Arbol-blanco-gondor.jpg', annualizedReturn20Y: 10.2 },
+                    { name: 'Los Puertos Grises', fund: 'MSCI EM', rates: [7.5, 11.5, 4.0], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkD9HAYIJxrgFhKIsC8hpDCN2Oc1-TN2-zyg&s', annualizedReturn20Y: 9.5 },
+                    { name: 'La Fortaleza de Erebor', fund: 'High Dividend', rates: [7.0, 9.0, 4.5], img: 'https://lh4.googleusercontent.com/proxy/bCoL_hBbKFGFDTS2TnxDVdJtpnc8FTRJxGajoew1fbW6-qd8Vl5vNrSwSlO3pUapW5SnPk4eQzE5y1jhvWeeXiH4LGT9nthTOd0nEv70eFmd29vwWDETKHVeIw', annualizedReturn20Y: 7.5 },
+                    { name: 'Los Jinetes de Rohan', fund: 'Small Caps', rates: [11.0, 15.0, 6.0], img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSwiwSSyd_HZ46dMG2jV_uBDSHu0PFf49_uw&s', annualizedReturn20Y: 11.8 },
+                    { name: 'La Comarca', fund: 'Global Bonds', rates: [4.0, 5.5, 2.5], img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Cul_de_Sac.jpg', annualizedReturn20Y: 3.1 },
+                    { name: 'La Compañía del Anillo', fund: 'All-Weather', rates: [6.0, 8.0, 3.5], img: 'https://sm.ign.com/t/ign_es/screenshot/default/anillo_7j84.1200.jpg', annualizedReturn20Y: 6.2 },
+                ];
+                
+                const formatCurrency = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+                function calculateCompoundInterest(monthlyContribution, years, annualRate) { if (annualRate === 0) return monthlyContribution * years * 12; const monthlyRate = annualRate / 12; const numMonths = years * 12; let futureValue = 0; for (let i = 0; i < numMonths; i++) { futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate); } return futureValue; }
+                const adjustForInflation = (value, years) => value / Math.pow(1 + AVG_INFLATION_RATE, years);
+                function populatePage() {
+                    document.getElementById('gandalf-img').src = resultLevels.gandalf; 
+                    document.getElementById('aragorn-img').src = resultLevels.aragorn; 
+                    document.getElementById('gollum-img').src = resultLevels.gollum; 
+                    document.getElementById('smaug-img').src = resultLevels.smaug;
+                    const gridContainer = document.getElementById('path-grid-container'); 
+                    const submitButton = document.getElementById('submit-button'); 
+                    const infoDisplay = document.getElementById('path-info-display');
+                    pathData.forEach((path, index) => {
+                        const card = document.createElement('div'); card.classList.add('path-card'); card.dataset.index = index;
+                        card.innerHTML = `<img src="${path.img}" alt="${path.name}"><div class="path-name">${path.name}</div>`;
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.path-card').forEach(c => { c.classList.remove('selected'); c.classList.add('dimmed'); });
+                            card.classList.add('selected'); card.classList.remove('dimmed');
+                            selectedPathIndex = index; submitButton.disabled = false;
+                            const selectedPath = pathData[selectedPathIndex];
+                            infoDisplay.innerHTML = `<h3>${selectedPath.name}</h3><p style="margin-bottom: 8px;">Estrategia de inversión: <strong>${selectedPath.fund}</strong></p><p style="margin-top: 0;">Poder histórico (20 años): <strong style="color:var(--lotr-gold);">${selectedPath.annualizedReturn20Y}% anual</strong></p>`;
+                            infoDisplay.classList.add('visible');
+                        });
+                        gridContainer.appendChild(card);
+                    });
+                }
+                function handleFormSubmit(event) {
+                    event.preventDefault();
+                    if (selectedPathIndex === null) { alert("¡Viajero, primero debes elegir una alianza!"); return; }
+                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value); const years = parseInt(document.getElementById('years').value, 10);
+                    if (isNaN(monthlyContribution) || isNaN(years) || monthlyContribution <= 0 || years <= 0) { alert("¡Los mapas de la Tierra Media están incompletos! Revisa tus datos."); return; }
+                    const selectedPath = pathData[selectedPathIndex]; const [avgRate, bestRate, worstRate] = selectedPath.rates.map(r => parseFloat(r) / 100);
+                    const results = { best: calculateCompoundInterest(monthlyContribution, years, bestRate), average: calculateCompoundInterest(monthlyContribution, years, avgRate), worst: calculateCompoundInterest(monthlyContribution, years, worstRate), totalInvested: calculateCompoundInterest(monthlyContribution, years, 0) };
+                    document.getElementById('best-case-amount').textContent = formatCurrency(results.best); document.getElementById('best-case-real').textContent = formatCurrency(adjustForInflation(results.best, years)); document.getElementById('best-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('best-total-interest').textContent = formatCurrency(results.best - results.totalInvested);
+                    document.getElementById('average-case-amount').textContent = formatCurrency(results.average); document.getElementById('average-case-real').textContent = formatCurrency(adjustForInflation(results.average, years)); document.getElementById('average-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('average-total-interest').textContent = formatCurrency(results.average - results.totalInvested);
+                    document.getElementById('worst-case-amount').textContent = formatCurrency(results.worst); document.getElementById('worst-case-real').textContent = formatCurrency(adjustForInflation(results.worst, years)); document.getElementById('worst-total-invested').textContent = formatCurrency(results.totalInvested); document.getElementById('worst-total-interest').textContent = formatCurrency(results.worst - results.totalInvested);
+                    document.getElementById('bank-case-amount').textContent = formatCurrency(results.totalInvested); document.getElementById('bank-case-real').textContent = formatCurrency(adjustForInflation(results.totalInvested, years)); document.getElementById('bank-total-invested').textContent = formatCurrency(results.totalInvested);
+                    const resultsContainer = document.getElementById('results-container'); resultsContainer.classList.add('visible'); resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                populatePage();
+                document.getElementById('calculator-form').addEventListener('submit', handleFormSubmit);
+
+            } catch (e) {
+                alert("¡Una sombra se cierne desde el Este! Avisa al Concilio. Error: " + e.message);
+            }
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                navToggle.classList.toggle('toggle');
+            });
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        navToggle.classList.remove('toggle');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

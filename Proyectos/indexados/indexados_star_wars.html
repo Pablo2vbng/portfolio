@@ -74,7 +74,6 @@
             background-color: var(--container-bg); padding: 40px; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,.5); width: 100%;
             text-align: center; border: 2px solid var(--border-color);
-            /* Se eliminó 'max-width' para que ocupe toda la página */
         }
         h1, .section-title {
             font-family: 'Orbitron', sans-serif; color: var(--text-light);
@@ -84,15 +83,27 @@
         h1 { font-size: 3.5rem; margin: 0 0 10px 0; }
         .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
         strong { color: var(--sw-gold); font-weight: 700; }
-        .path-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 25px; margin-bottom: 20px; width: 100%; }
-        .path-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; }
+        
+        /* ===== INICIO DE LA CORRECCIÓN ===== */
+        .path-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        /* ===== FIN DE LA CORRECCIÓN ===== */
+
+        .path-card { cursor: pointer; position: relative; text-align: center; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; flex-shrink: 0; }
         .path-card img { height: 100px; width: 100px; object-fit: contain; filter: invert(90%) sepia(10%) saturate(600%) hue-rotate(180deg); transition: all 0.3s ease; }
-        .path-card .path-name { font-weight: 600; margin-top: 8px; color: var(--text-light); font-size: 0.9rem;}
+        .path-card .path-name { font-weight: 600; margin-top: 8px; color: var(--text-light); font-size: 0.9rem; max-width: 110px; }
         .path-card:hover img { filter: none; filter: drop-shadow(0 0 5px var(--sw-gold)); transform: scale(1.1); }
         .path-card.selected { transform: scale(1.1); }
         .path-card.selected img { filter: none; filter: drop-shadow(0 0 10px var(--sw-gold)); animation: pulse-glow 2s infinite; }
         .path-card.dimmed { opacity: 0.5; filter: grayscale(70%); }
-        #path-info-display { width: 100%; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        
+        #path-info-display { width: 100%; max-width: 600px; margin: 30px auto; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; border: 1px solid var(--border-color); opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s ease; }
         #path-info-display.visible { opacity: 1; max-height: 200px; }
         #path-info-display h3 { font-family: 'Orbitron', sans-serif; margin: 0 0 5px 0; font-size: 1.6rem; color: var(--sw-blue); text-shadow: none; }
         .form-section { background-color: rgba(0,0,0,0.2); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); width: 100%;}
@@ -140,8 +151,6 @@
             h1 { font-size: 2.2rem; }
             .subtitle { font-size: 1rem; }
             .section-title { font-size: 1.8rem; }
-            .path-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 20px; }
-            .path-card img { width: 80px; height: 80px; }
             .form-section { padding: 20px; }
             .form-grid { gap: 25px; }
             .hidden-mobile { display: none; }
@@ -279,33 +288,21 @@
     
     <footer>
         <div class="container">
-            <!-- SECCIÓN DE CONTACTO (Mantenida) -->
             <div class="footer-contact">
                 Pablo Vidal Vidal<br>
                 Portfolio: <a href="https://pablo2vbng.github.io/portfolio/index.html" target="_blank" rel="noopener noreferrer">Pablo2vbng</a> | Contacto: <a href="mailto:pablo2vbngdaw@gmail.com">pablo2vbngdaw@gmail.com</a>
             </div>
-            
-            <!-- LÍNEA DIVISORIA PARA SEPARAR VISUALMENTE LOS AVISOS LEGALES -->
             <hr style="border: 0; height: 1px; background-color: var(--card-border); margin: 40px auto; max-width: 800px;">
-    
-            <!-- NUEVOS AVISOS LEGALES (MUY IMPORTANTE) -->
             <div class="disclaimers-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                
-                <!-- AVISO SOBRE COPYRIGHT (CLAVE PARA TU CONSULTA) -->
                 <div class="disclaimer">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso sobre Copyright y Fines No Lucrativos</h4>
                     <p>ProInvestingESP es un proyecto personal, no comercial y <strong>sin ánimo de lucro</strong>. Todos los nombres de franquicias, personajes, logotipos y marcas registradas (como Dragon Ball, Star Wars, Marvel, DC Comics, etc.) son propiedad de sus respectivos dueños. Su uso en este sitio es con fines de parodia, comentario y educación, bajo el principio de "uso legítimo" (fair use). Este sitio web no está afiliado, patrocinado ni respaldado por ninguna de estas compañías y no pretende infringir ningún derecho de autor.</p>
                 </div>
-    
-                <!-- AVISO DE RIESGO FINANCIERO (Versión mejorada del que ya tenías) -->
                 <div class="disclaimer" style="margin-top: 30px;">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso de Riesgo y Carácter Educativo</h4>
                     <p>La información y herramientas en ProInvestingESP tienen fines <strong>puramente educativos y de entretenimiento</strong>. No constituyen asesoramiento financiero. Las proyecciones se basan en datos históricos y no garantizan rendimientos futuros. Toda inversión conlleva riesgos. Consulta siempre a un profesional cualificado antes de tomar decisiones financieras.</p>
                 </div>
-    
             </div>
-    
-            <!-- COPYRIGHT DEL SITIO -->
             <div class="footer-copyright" style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
                 © 2025 ProInvestingESP. Todos los derechos reservados sobre el diseño y contenido original.
             </div>
@@ -313,8 +310,8 @@
     </footer>
 
     <script>
+        // El Javascript se mantiene exactamente igual, ya que el cambio es solo de CSS.
         document.addEventListener('DOMContentLoaded', () => {
-            // Lógica de la calculadora de Star Wars
             try {
                 const AVG_INFLATION_RATE = 0.022;
                 let selectedPathIndex = null;
@@ -368,16 +365,12 @@
             } catch (e) {
                 alert("¡Hay una perturbación en la Fuerza! Avisa al Consejo Jedi. Error: " + e.message);
             }
-
-            // Lógica del menú de hamburguesa
             const navToggle = document.querySelector('.nav-toggle');
             const navLinks = document.querySelector('.nav-links');
-
             navToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('nav-active');
                 navToggle.classList.toggle('toggle');
             });
-
             document.querySelectorAll('.nav-links li a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (navLinks.classList.contains('nav-active')) {

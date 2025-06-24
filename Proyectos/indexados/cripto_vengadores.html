@@ -73,9 +73,21 @@
         .subtitle { text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; color: #bbb;}
         strong { color: var(--avenger-gold); font-weight: 700; }
 
-        /* El resto de estilos de la calculadora se mantiene igual */
-        .avenger-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 25px; margin-bottom: 20px; }
-        .avenger-card { cursor: pointer; position: relative; text-align: center; padding: 10px; border: 2px solid transparent; border-radius: 10px; transition: all 0.3s ease; }
+        /* ===== INICIO DE LA CORRECCIÓN ===== */
+        .avenger-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .avenger-card {
+            cursor: pointer; position: relative; text-align: center; padding: 10px; border: 2px solid transparent; border-radius: 10px; transition: all 0.3s ease;
+            flex-shrink: 0; /* Evita que las tarjetas se encojan */
+            width: 130px; /* Ancho base para consistencia */
+        }
+        /* ===== FIN DE LA CORRECCIÓN ===== */
+
         .avenger-card img { width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: contain; padding: 5px; background-color: rgba(255,255,255,0.9); border: 3px solid var(--border-color); transition: all 0.3s ease; }
         .avenger-card .avenger-name { font-weight: 600; margin-top: 10px; font-size: 0.9rem; }
         .avenger-card:hover { background-color: rgba(255,255,255,0.05); }
@@ -142,15 +154,14 @@
             .subtitle { font-size: 1rem; }
             .section-title { font-size: 2.2rem; }
             
-            .avenger-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
-            .avenger-card .avenger-name { font-size: 0.8rem; }
+            .avenger-card { width: 90px; }
             .form-grid, .scenarios-grid { grid-template-columns: 1fr; gap: 25px; }
             .allocation-item { grid-template-columns: 80px 1fr 50px; }
         }
     </style>
 </head>
 <body>
-
+    <!-- El resto del HTML y el Javascript se mantienen sin cambios -->
     <header>
         <nav>
             <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
@@ -266,33 +277,21 @@
     
     <footer>
         <div class="container">
-            <!-- SECCIÓN DE CONTACTO (Mantenida) -->
             <div class="footer-contact">
                 Pablo Vidal Vidal<br>
                 Portfolio: <a href="https://pablo2vbng.github.io/portfolio/index.html" target="_blank" rel="noopener noreferrer">Pablo2vbng</a> | Contacto: <a href="mailto:pablo2vbngdaw@gmail.com">pablo2vbngdaw@gmail.com</a>
             </div>
-            
-            <!-- LÍNEA DIVISORIA PARA SEPARAR VISUALMENTE LOS AVISOS LEGALES -->
             <hr style="border: 0; height: 1px; background-color: var(--card-border); margin: 40px auto; max-width: 800px;">
-    
-            <!-- NUEVOS AVISOS LEGALES (MUY IMPORTANTE) -->
             <div class="disclaimers-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                
-                <!-- AVISO SOBRE COPYRIGHT (CLAVE PARA TU CONSULTA) -->
                 <div class="disclaimer">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso sobre Copyright y Fines No Lucrativos</h4>
                     <p>ProInvestingESP es un proyecto personal, no comercial y <strong>sin ánimo de lucro</strong>. Todos los nombres de franquicias, personajes, logotipos y marcas registradas (como Dragon Ball, Star Wars, Marvel, DC Comics, etc.) son propiedad de sus respectivos dueños. Su uso en este sitio es con fines de parodia, comentario y educación, bajo el principio de "uso legítimo" (fair use). Este sitio web no está afiliado, patrocinado ni respaldado por ninguna de estas compañías y no pretende infringir ningún derecho de autor.</p>
                 </div>
-    
-                <!-- AVISO DE RIESGO FINANCIERO (Versión mejorada del que ya tenías) -->
                 <div class="disclaimer" style="margin-top: 30px;">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso de Riesgo y Carácter Educativo</h4>
                     <p>La información y herramientas en ProInvestingESP tienen fines <strong>puramente educativos y de entretenimiento</strong>. No constituyen asesoramiento financiero. Las proyecciones se basan en datos históricos y no garantizan rendimientos futuros. Toda inversión conlleva riesgos. Consulta siempre a un profesional cualificado antes de tomar decisiones financieras.</p>
                 </div>
-    
             </div>
-    
-            <!-- COPYRIGHT DEL SITIO -->
             <div class="footer-copyright" style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
                 © 2025 ProInvestingESP. Todos los derechos reservados sobre el diseño y contenido original.
             </div>

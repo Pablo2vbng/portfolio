@@ -64,9 +64,7 @@
             background-color: var(--container-bg); padding: 40px; border-radius: 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,.1);
             text-align: center; border: 4px solid var(--db-blue);
-            /* --- CAMBIO AQUÍ --- */
-            width: 100%; /* Asegura que ocupe todo el ancho disponible */
-            /* Se eliminaron 'max-width' y 'margin' para que no esté limitado ni centrado */
+            width: 100%;
         }
         h1, .section-title {
             font-family: 'Luckiest Guy', cursive; color: var(--db-orange);
@@ -76,13 +74,24 @@
         h1 { font-size: 3.8rem; margin: 0 0 10px 0; }
         .subtitle { margin-bottom: 40px; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
         strong { color: var(--db-blue); font-weight: 700; }
-        .dragonball-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 15px; margin-bottom: 30px; }
-        .dragonball-card { cursor: pointer; position: relative; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; }
+        
+        /* ===== INICIO DE LA CORRECCIÓN ===== */
+        .dragonball-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        /* ===== FIN DE LA CORRECCIÓN ===== */
+
+        .dragonball-card { cursor: pointer; position: relative; transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease; flex-shrink: 0; width: 80px; } /* Ancho fijo para consistencia */
         .dragonball-card img { width: 100%; border-radius: 50%; display: block;}
         .dragonball-card:hover { transform: scale(1.1); }
         .dragonball-card.selected { animation: pulse-glow 1.5s infinite; transform: scale(1.1); }
         .dragonball-card.dimmed { opacity: 0.6; filter: grayscale(50%); }
-        #dragonball-info-display { width: 100%; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; background-color: rgba(0, 91, 154, 0.05); border: 2px dashed var(--db-blue); border-radius: 18px; opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.4s ease, max-height 0.4s ease, padding 0.4s ease; }
+        #dragonball-info-display { width: 100%; max-width: 600px; margin: 30px auto; padding: 20px; background-color: rgba(0, 91, 154, 0.05); border: 2px dashed var(--db-blue); border-radius: 18px; opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.4s ease, max-height 0.4s ease, padding 0.4s ease; }
         #dragonball-info-display.visible { opacity: 1; max-height: 200px; }
         #dragonball-info-display h3 { font-family: 'Luckiest Guy', cursive; margin: 0 0 5px 0; font-size: 1.8rem; color: var(--db-blue); }
         .form-section { background-color: rgba(0, 91, 154, 0.1); padding: 30px; border-radius: 18px; border: 2px dashed var(--db-blue); }
@@ -130,7 +139,7 @@
             h1 { font-size: 2.5rem; }
             .subtitle { font-size: 1rem; }
             .section-title { font-size: 2rem; }
-            .dragonball-grid { grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 10px; }
+            .dragonball-card { width: 60px; }
             .form-grid { grid-template-columns: 1fr; gap: 25px; }
             .hidden-mobile { display: none; }
             .character-portrait { height: 100px; }
@@ -141,6 +150,7 @@
     </style>
 </head>
 <body>
+    <!-- El resto del HTML y el Javascript se mantienen sin cambios -->
     <header>
         <nav>
             <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
@@ -159,7 +169,6 @@
         </nav>
     </header>
     
-    <!-- El resto del HTML es el que me proporcionaste -->
     <main>
         <div class="container">
             <h1>La Búsqueda de las Bolas de Dragón</h1>
@@ -256,7 +265,7 @@
                 <h2 class="section-title">Guía del Guerrero Z</h2>
                 <h3>El Enemigo Silencioso: la Inflación (Freezer)</h3>
                 <p>
-                    Imagina que <strong>Freezer</strong>, en lugar de destruir planetas, destruye el valor de tu dinero. ¡Eso es la <strong>inflación</strong>! Si dejas tu dinero quieto sin entrenar (en el banco), Freezer lo irá debilitando año tras año. Lo que hoy te compra una armadura Saiyan, en el futuro apenas te comprará unas botas. Por eso, no hacer nada es dejar que Freezer gane.
+                    Imagina que <strong>Freezer</strong>, en lugar de destruir planetas, destruye el valor de tu dinero. ¡Esa es la <strong>inflación</strong>! Si dejas tu dinero quieto sin entrenar (en el banco), Freezer lo irá debilitando año tras año. Lo que hoy te compra una armadura Saiyan, en el futuro apenas te comprará unas botas. Por eso, no hacer nada es dejar que Freezer gane.
                 </p>
                 <h3>Las Bolas de Dragón (Fondos Indexados)</h3>
                 <p>
@@ -268,33 +277,21 @@
 
     <footer>
         <div class="container">
-            <!-- SECCIÓN DE CONTACTO (Mantenida) -->
             <div class="footer-contact">
                 Pablo Vidal Vidal<br>
                 Portfolio: <a href="https://pablo2vbng.github.io/portfolio/index.html" target="_blank" rel="noopener noreferrer">Pablo2vbng</a> | Contacto: <a href="mailto:pablo2vbngdaw@gmail.com">pablo2vbngdaw@gmail.com</a>
             </div>
-            
-            <!-- LÍNEA DIVISORIA PARA SEPARAR VISUALMENTE LOS AVISOS LEGALES -->
             <hr style="border: 0; height: 1px; background-color: var(--card-border); margin: 40px auto; max-width: 800px;">
-    
-            <!-- NUEVOS AVISOS LEGALES (MUY IMPORTANTE) -->
             <div class="disclaimers-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                
-                <!-- AVISO SOBRE COPYRIGHT (CLAVE PARA TU CONSULTA) -->
                 <div class="disclaimer">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso sobre Copyright y Fines No Lucrativos</h4>
                     <p>ProInvestingESP es un proyecto personal, no comercial y <strong>sin ánimo de lucro</strong>. Todos los nombres de franquicias, personajes, logotipos y marcas registradas (como Dragon Ball, Star Wars, Marvel, DC Comics, etc.) son propiedad de sus respectivos dueños. Su uso en este sitio es con fines de parodia, comentario y educación, bajo el principio de "uso legítimo" (fair use). Este sitio web no está afiliado, patrocinado ni respaldado por ninguna de estas compañías y no pretende infringir ningún derecho de autor.</p>
                 </div>
-    
-                <!-- AVISO DE RIESGO FINANCIERO (Versión mejorada del que ya tenías) -->
                 <div class="disclaimer" style="margin-top: 30px;">
                     <h4 style="color: var(--highlight-color); margin-bottom: 10px; font-size: 1rem;">Aviso de Riesgo y Carácter Educativo</h4>
                     <p>La información y herramientas en ProInvestingESP tienen fines <strong>puramente educativos y de entretenimiento</strong>. No constituyen asesoramiento financiero. Las proyecciones se basan en datos históricos y no garantizan rendimientos futuros. Toda inversión conlleva riesgos. Consulta siempre a un profesional cualificado antes de tomar decisiones financieras.</p>
                 </div>
-    
             </div>
-    
-            <!-- COPYRIGHT DEL SITIO -->
             <div class="footer-copyright" style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
                 © 2025 ProInvestingESP. Todos los derechos reservados sobre el diseño y contenido original.
             </div>
@@ -303,8 +300,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Lógica de la calculadora de Dragon Ball
-             try {
+            try {
                 const AVG_INFLATION_RATE = 0.022;
                 let selectedDragonBallIndex = null;
                 const characters = { goku: 'https://www.teleadhesivo.com/es/img/drball027-png/folder/products-detalle-png/vinilos-infantiles-dragon-ball-son-goku-ataque-ii.png', gohan: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMQeXLRJQgmwpgqaBS6PxPw7K7PS65z7XOsg&s', vegeta: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO4oY6_HM8mBiKLGxIRwhnM-KGFU6waUUFVw&s', freezer: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfj4h53-sjnyPZ-P_Btv9T1f8xdN9aBxPeyg&s' };
@@ -357,16 +353,12 @@
             } catch (e) {
                 alert("¡ERROR! Algo ha fallado en la Capsule Corp. Avisa al Dr. Brief. Error: " + e.message);
             }
-
-            // Lógica del menú de hamburguesa
             const navToggle = document.querySelector('.nav-toggle');
             const navLinks = document.querySelector('.nav-links');
-
             navToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('nav-active');
                 navToggle.classList.toggle('toggle');
             });
-
             document.querySelectorAll('.nav-links li a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (navLinks.classList.contains('nav-active')) {
