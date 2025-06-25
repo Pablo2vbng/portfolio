@@ -10,159 +10,101 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --background-color: #0c0a1a;
-            --text-color: #e0e0e0;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --highlight-color: #f9c74f;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        header {
-            position: sticky; top: 0; width: 100%; z-index: 1000;
-            padding: 15px 0; background: rgba(12, 10, 26, 0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border);
-        }
-        nav { display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
-        .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links { list-style: none; display: flex; gap: 25px; }
-        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
-        .nav-links a:hover { color: #fff; }
-        .nav-toggle { display: none; cursor: pointer; z-index: 10; }
-        .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-color); border-radius: 2px; }
-        .hero-section {
-            display: flex; align-items: center; justify-content: center; min-height: 90vh;
-            text-align: center; padding: 100px 20px;
-            background: radial-gradient(circle, rgba(12,10,26,0) 0%, var(--background-color) 70%), url('https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-        }
-        .hero-content h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #fff, #c3c3c3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
-        .hero-content p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px auto; font-weight: 300; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
-        .cta-button { display: inline-block; padding: 15px 35px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .cta-button:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3); }
-        section { padding: 80px 0; }
-        .section-title { text-align: center; font-size: 2.8rem; font-weight: 700; margin-bottom: 60px; }
-        .section-title span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .section-subtitle { text-align: center; font-size: 1.2rem; font-weight: 300; max-width: 800px; margin: -40px auto 40px auto; color: #aab; }
-        
-        .universe-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            perspective: 1000px;
-        }
-        .universe-card {
-            min-height: 280px; background: var(--card-bg); border-radius: 15px; padding: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 0.4s ease-out; transform-style: preserve-3d;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 1px solid var(--card-border);
-            text-decoration: none; color: var(--text-color);
-            width: 250px;
-            flex-shrink: 0;
-        }
-        .universe-card:hover { transform: translateY(-10px) rotateY(5deg) rotateX(3deg) scale(1.03); box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
-        .universe-card img {
-            width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff;
-            background-color: #fff; padding: 15px; object-fit: contain;
-            margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .universe-card .series-name { font-size: 1.4rem; font-weight: 700; text-align: center; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+    :root {
+        --primary-color: #6a11cb;
+        --secondary-color: #2575fc;
+        --background-color: #0c0a1a;
+        --text-color: #e0e0e0;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --highlight-color: #f9c74f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+    body {font-family: 'Poppins', sans-serif; background-color: var(--background-color); color: var(--text-color); line-height: 1.7; overflow-x: hidden;}
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    header {position: sticky; top: 0; width: 100%; z-index: 1000; padding: 15px 0; background: rgba(12, 10, 26, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border);}
+    nav { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; z-index: 10; }
+    .nav-logo span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { list-style: none; display: flex; gap: 25px; }
+    .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 400; transition: color 0.3s ease; }
+    .nav-links a:hover { color: #fff; }
+    .nav-toggle { display: none; cursor: pointer; z-index: 10; }
+    .nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-color); border-radius: 2px; }
+    
+    /* ===== INICIO DE LA MODIFICACIÓN ===== */
+    .hero-section {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        min-height: 90vh; 
+        text-align: center; 
+        padding: 100px 20px; 
+        background: radial-gradient(circle, rgba(12,10,26,0) 0%, var(--background-color) 70%), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+    }
+    /* ===== FIN DE LA MODIFICACIÓN ===== */
 
-        /* ===== INICIO DE LA CORRECCIÓN ===== */
-        .teaser-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        /* ===== FIN DE LA CORRECCIÓN ===== */
-
-        .contact-form { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-        .contact-form input, .contact-form textarea { width: 100%; padding: 15px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-family: 'Poppins', sans-serif; }
-        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--secondary-color); }
-        .contact-form button { width: auto; align-self: center; }
-
-        footer { 
-            padding: 60px 20px 40px; 
-            border-top: 1px solid #222;
-            background-color: #080612;
-        }
-        .footer-content {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 30px;
-            align-items: center;
-            max-width: 900px;
-            margin: 0 auto 40px auto;
-            text-align: left;
-        }
-        .footer-photo img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid var(--primary-color);
-        }
-        .footer-about h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        .footer-about p {
-            color: #bbb;
-            font-size: 0.9rem;
-        }
-        .footer-contact {
-            color: #aaa;
-            line-height: 1.8;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-top: 40px;
-        }
-        .footer-contact a {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-        .disclaimer { 
-            font-size: 0.8rem; 
-            color: #777; 
-            margin-top: 30px; 
-            max-width: 800px; 
-            margin-left: auto; 
-            margin-right: auto;
-            text-align: center;
-        }
-        
-        @media screen and (max-width: 800px) {
-            .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--background-color); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--card-border); }
-            .nav-links.nav-active { right: 0; }
-            .nav-links li { padding: 20px 0; }
-            .nav-links a { font-size: 1.2rem; }
-            .nav-toggle { display: block; }
-            .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
-            .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
-            .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1rem; }
-            .section-title { font-size: 2rem; }
-            .footer-content { grid-template-columns: 1fr; text-align: center; }
-            .universe-card { width: 100%; }
-        }
-    </style>
+    .hero-content h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #fff, #c3c3c3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
+    .hero-content p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px auto; font-weight: 300; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); }
+    .cta-button { display: inline-block; padding: 15px 35px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; transition: transform 0.3s ease, box-shadow 0.3s ease; border: none; cursor: pointer; }
+    .cta-button:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3); }
+    section { padding: 80px 0; }
+    .section-title { text-align: center; font-size: 2.8rem; font-weight: 700; margin-bottom: 60px; }
+    .section-title span { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-subtitle { text-align: center; font-size: 1.2rem; font-weight: 300; max-width: 800px; margin: -40px auto 40px auto; color: #aab; }
+    .universe-grid {display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; perspective: 1000px;}
+    .universe-card {min-height: 280px; background: var(--card-bg); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.4s ease-out; transform-style: preserve-3d; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 1px solid var(--card-border); text-decoration: none; color: var(--text-color); width: 250px; flex-shrink: 0;}
+    .universe-card:hover { transform: translateY(-10px) rotateY(5deg) rotateX(3deg) scale(1.03); box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
+    .universe-card img {width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; background-color: #fff; padding: 15px; object-fit: contain; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+    .universe-card .series-name { font-size: 1.4rem; font-weight: 700; text-align: center; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+    .teaser-grid {display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 500px; margin: 0 auto;}
+    .form-style { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    .form-style input, .form-style textarea { width: 100%; padding: 15px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-family: 'Poppins', sans-serif; }
+    .form-style input:focus, .form-style textarea:focus { outline: none; border-color: var(--secondary-color); }
+    .form-style button { width: auto; align-self: center; }
+    .form-status { margin-top: 20px; text-align: center; font-weight: bold; }
+    footer { padding: 60px 20px 40px; border-top: 1px solid #222; background-color: #080612;}
+    .footer-content {display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: center; max-width: 900px; margin: 0 auto 40px auto; text-align: left;}
+    .footer-photo img {width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary-color);}
+    .footer-about h3 {font-size: 1.5rem; margin-bottom: 5px;}
+    .footer-about p {color: #bbb; font-size: 0.9rem;}
+    .footer-contact {color: #aaa; line-height: 1.8; font-size: 0.9rem; text-align: center; margin-top: 40px;}
+    .footer-contact a {color: var(--secondary-color); text-decoration: none;}
+    .disclaimer { font-size: 0.8rem; color: #777; margin-top: 30px; max-width: 800px; margin-left: auto; margin-right: auto; text-align: center;}
+    #comunidad { background-color: #080612; }
+    .comments-wrapper { background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--card-border); max-width: 900px; margin: 0 auto; }
+    #commentbox-wrapper { display: none; }
+    #comment-list-container { margin-top: 40px; border-top: 1px solid var(--card-border); padding-top: 30px; }
+    .comment { padding: 20px; border-bottom: 1px solid var(--card-border); margin-bottom: 20px; }
+    .comment:last-child { border-bottom: none; margin-bottom: 0; }
+    .comment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;}
+    .comment-author { font-weight: 700; color: var(--highlight-color); }
+    .comment-time { font-size: .8rem; color: var(--text-muted); }
+    .comment-content { line-height: 1.6; word-wrap: break-word; }
+    .comment-actions button { background: transparent; border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: all .3s ease; margin-top: 15px; font-family: 'Poppins', sans-serif;}
+    .comment-actions button:hover { background: var(--secondary-color); color: #fff; }
+    .comment-replies { margin-left: 30px; padding-left: 20px; border-left: 2px solid var(--card-border); margin-top: 20px; }
+    .custom-reply-container { margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--card-border); }
+    .no-comments-message { text-align: center; color: var(--text-muted); padding: 40px 0; }
+    
+    @media screen and (max-width: 800px) {
+        .nav-links { position: fixed; right: -100%; top: 0; gap: 0; flex-direction: column; background: var(--background-color); width: 60%; height: 100vh; text-align: center; transition: right 0.3s ease-in-out; justify-content: center; border-left: 1px solid var(--card-border); z-index: 1001;}
+        .nav-links.nav-active { right: 0; }
+        .nav-links li { padding: 20px 0; }
+        .nav-links a { font-size: 1.2rem; }
+        .nav-toggle { display: block; z-index: 1002;}
+        .nav-toggle.toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+        .nav-toggle.toggle .bar:nth-child(2) { opacity: 0; }
+        .nav-toggle.toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+        .hero-content h1 { font-size: 2.5rem; }
+        .hero-content p { font-size: 1rem; }
+        .section-title { font-size: 2rem; }
+        .footer-content { grid-template-columns: 1fr; text-align: center; }
+        .universe-card { width: 100%; }
+    }
+</style>
 </head>
 <body>
-    <!-- El resto del HTML y Javascript se mantienen sin cambios -->
     <header>
         <nav class="container">
             <a href="index.html" class="nav-logo">ProInvesting<span>ESP</span></a>
@@ -173,6 +115,7 @@
                 <li><a href="#criptomonedas">Criptos</a></li>
                 <li><a href="codice.html">Códice</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <!--<li><a href="#comunidad">Comunidad</a></li>-->
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
             <div class="nav-toggle">
@@ -186,7 +129,7 @@
             <div class="hero-content">
                 <h1>Aprender Finanzas Nunca Fue Tan Épico</h1>
                 <p>Descubre los secretos del interés compuesto y la inversión a largo plazo a través de los mundos que ya amas. ¡Tu aventura financiera comienza ahora!</p>
-                <a href="#plan-inversion" class="cta-button">Crear mi Plan ahora</a>
+                <a href="planinversion.html" class="cta-button">Crear mi Plan ahora</a>
             </div>
         </section>
 
@@ -246,24 +189,49 @@
                 <a href="codice.html" class="cta-button">Explorar el Códice</a>
             </div>
         </section>
-
+<!--
+        <section id="comunidad">
+            <div class="container">
+                <h2 class="section-title"><span>Únete</span> a la Conversación</h2>
+                <p class="section-subtitle">Comparte tus ideas, haz preguntas y conecta con otros entusiastas del mundo de la inversión.</p>
+                <div class="comments-wrapper">
+                    <form id="custom-comment-form" class="form-style">
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <input type="text" name="name" placeholder="Tu nombre" required style="flex: 1; min-width: 200px;">
+                            <input type="email" name="email" placeholder="Email (opcional)" style="flex: 1; min-width: 200px;">
+                        </div>
+                        <textarea name="comment" rows="5" placeholder="Escribe tu comentario aquí..." required></textarea>
+                        <div style="text-align:right;">
+                            <button type="submit" class="cta-button">Enviar Comentario</button>
+                        </div>
+                    </form>
+                
+                </div>
+                <div id="commentbox-wrapper">
+                    <div class="commentbox"></div>
+                </div>
+            </div>
+        </section>
+ -->
         <section id="contacto">
             <div class="container">
                 <h2 class="section-title"><span>Contacta</span> con el Equipo</h2>
-                <form id="contact-form" class="contact-form">
-                    <input type="text" id="contact-name" name="name" placeholder="Tu nombre" required>
-                    <input type="email" id="contact-email" name="email" placeholder="Tu correo electrónico" required>
-                    <textarea id="contact-message" name="message" rows="5" placeholder="Tu mensaje..." required></textarea>
+                <form action="https://formspree.io/f/xovwpnnr" method="POST" id="contact-form" class="form-style">
+                    <input type="text" name="name" placeholder="Tu nombre" required>
+                    <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                    <textarea name="message" rows="5" placeholder="Tu mensaje..." required></textarea>
                     <button type="submit" class="cta-button">Enviar Mensaje</button>
+                    <p class="form-status"></p>
                 </form>
             </div>
         </section>
     </main>
+
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-photo">
-                    <img src="..\..\img\\Pablo Vidal.png" alt="Foto de Pablo Vidal Vidal">
+                    <img src="../../img/Pablo Vidal.png" alt="Foto de Pablo Vidal Vidal">
                 </div>
                 <div class="footer-about">
                     <h3>Sobre el Creador</h3>
@@ -291,26 +259,21 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
     <script>
+        // Inicializamos CommentBox con tu ID de proyecto
+        commentBox('5680769993277440-proj');
+
         document.addEventListener('DOMContentLoaded', () => {
-            const contactForm = document.getElementById('contact-form');
-            if(contactForm) {
-                contactForm.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const name = document.getElementById('contact-name').value;
-                    const email = document.getElementById('contact-email').value;
-                    const message = document.getElementById('contact-message').value;
-                    const subject = encodeURIComponent(`Mensaje de ${name} desde ProInvestingESP`);
-                    const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`);
-                    window.location.href = `mailto:pablo2vbngdaw@gmail.com?subject=${subject}&body=${body}`;
-                });
-            }
+            // Script para el menú móvil
             const navToggle = document.querySelector('.nav-toggle');
             const navLinks = document.querySelector('.nav-links');
-            navToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('nav-active');
-                navToggle.classList.toggle('toggle');
-            });
+            if(navToggle) {
+                navToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('nav-active');
+                    navToggle.classList.toggle('toggle');
+                });
+            }
             document.querySelectorAll('.nav-links li a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (navLinks.classList.contains('nav-active')) {
@@ -319,6 +282,195 @@
                     }
                 });
             });
+
+            // Script para manejar el envío del formulario de Formspree con AJAX
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                const formStatus = contactForm.querySelector('.form-status');
+                contactForm.addEventListener("submit", async function(e) {
+                    e.preventDefault();
+                    const form = e.target;
+                    const data = new FormData(form);
+                    try {
+                        formStatus.textContent = "Enviando..."; formStatus.style.color = "#aab";
+                        const response = await fetch(form.action, {method: form.method, body: data, headers: {'Accept': 'application/json'}});
+                        if (response.ok) {
+                            formStatus.textContent = "¡Gracias! Tu mensaje ha sido enviado."; formStatus.style.color = "#4caf50";
+                            form.reset();
+                        } else {
+                            const responseData = await response.json();
+                            formStatus.textContent = responseData.errors ? responseData.errors.map(error => error.message).join(", ") : "Oops! Hubo un problema al enviar tu formulario."; formStatus.style.color = "#f44336";
+                        }
+                    } catch (error) {
+                        formStatus.textContent = "Oops! Hubo un problema de conexión."; formStatus.style.color = "#f44336";
+                    }
+                });
+            }
+            
+            // --- INICIO DEL SCRIPT DE FACHADA PARA COMMENTBOX ---
+            function initializeCommentBoxFacade() {
+                const realCommentBoxContainer = document.querySelector('#commentbox-wrapper .commentbox');
+                const customForm = document.getElementById('custom-comment-form');
+                const commentListContainer = document.getElementById('comment-list-container');
+                
+                if (!realCommentBoxContainer || !customForm) return;
+
+                const observer = new MutationObserver(mutations => {
+                    for(const mutation of mutations) {
+                        if (mutation.target.querySelector && mutation.target.querySelector('form')) {
+                            const realForm = mutation.target.querySelector('form');
+                            if (realForm && !realForm.hasAttribute('data-proxied')) {
+                                realForm.setAttribute('data-proxied', 'true');
+                                setupFacade(realForm);
+                            }
+                            break; 
+                        }
+                    }
+                });
+                observer.observe(realCommentBoxContainer, { childList: true, subtree: true });
+
+                function setupFacade(realForm) {
+                    const threadContainer = realCommentBoxContainer.querySelector('.comment-thread-container');
+                    if (threadContainer) {
+                        const syncObserver = new MutationObserver(() => syncComments(threadContainer, commentListContainer));
+                        syncComments(threadContainer, commentListContainer);
+                        syncObserver.observe(threadContainer, { childList: true, subtree: true });
+                    }
+                    
+                    customForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        const nameInput = realForm.querySelector('input[name="name"]');
+                        const emailInput = realForm.querySelector('input[name="email"]');
+                        const commentTextarea = realForm.querySelector('textarea[name="comment"]');
+                        const submitButton = realForm.querySelector('button[type="submit"]');
+
+                        if (nameInput) nameInput.value = customForm.querySelector('input[name="name"]').value;
+                        if (emailInput) emailInput.value = customForm.querySelector('input[name="email"]').value;
+                        if (commentTextarea) commentTextarea.value = customForm.querySelector('textarea[name="comment"]').value;
+
+                        if (submitButton) {
+                            submitButton.click();
+                            customForm.reset();
+                        }
+                    });
+                }
+
+                function syncComments(source, destination) {
+                    destination.innerHTML = ''; 
+                    const comments = source.querySelectorAll('.comment');
+                    if (comments.length === 0 && !source.querySelector('.spinner')) {
+                        destination.innerHTML = '<div class="no-comments-message">Aún no hay comentarios. ¡Sé el primero!</div>';
+                        return;
+                    }
+                    
+                    comments.forEach(comment => {
+                        const clonedComment = createStyledClone(comment);
+                        destination.appendChild(clonedComment);
+                        
+                        const repliesContainer = comment.querySelector('.comment-replies');
+                        if (repliesContainer) {
+                            const clonedRepliesContainer = clonedComment.querySelector('.comment-replies');
+                            syncComments(repliesContainer, clonedRepliesContainer);
+                        }
+                    });
+                }
+                
+                function createStyledClone(originalComment) {
+                    const clone = document.createElement('div');
+                    clone.className = 'comment';
+                    
+                    const originalHeader = originalComment.querySelector('.comment-header');
+                    const originalContent = originalComment.querySelector('.comment-content');
+                    const originalActions = originalComment.querySelector('.actions');
+                    const originalReplies = originalComment.querySelector('.comment-replies');
+
+                    if (originalHeader) {
+                        const header = document.createElement('div');
+                        header.className = 'comment-header';
+                        const author = originalHeader.querySelector('.name');
+                        const time = originalHeader.querySelector('time');
+                        if(author) header.innerHTML += `<span class="comment-author">${author.textContent}</span>`;
+                        if(time) header.innerHTML += `<span class="comment-time">${time.textContent}</span>`;
+                        clone.appendChild(header);
+                    }
+                    
+                    if (originalContent) {
+                        const content = document.createElement('div');
+                        content.className = 'comment-content';
+                        content.innerHTML = originalContent.innerHTML;
+                        clone.appendChild(content);
+                    }
+                    
+                    if (originalActions) {
+                        const actions = document.createElement('div');
+                        actions.className = 'comment-actions';
+                        const replyButton = document.createElement('button');
+                        replyButton.textContent = 'Responder';
+                        replyButton.onclick = () => {
+                            const existingReplyForm = clone.querySelector('.custom-reply-container');
+                            if(existingReplyForm) {
+                                existingReplyForm.remove();
+                                return;
+                            }
+                            const originalReplyButton = originalActions.querySelector('.reply-button');
+                            if(originalReplyButton) originalReplyButton.click();
+                            handleReplyForm(originalComment, clone);
+                        };
+                        actions.appendChild(replyButton);
+                        clone.appendChild(actions);
+                    }
+                    
+                    if (originalReplies) {
+                        const repliesContainer = document.createElement('div');
+                        repliesContainer.className = 'comment-replies';
+                        clone.appendChild(repliesContainer);
+                    }
+
+                    return clone;
+                }
+                
+                function handleReplyForm(originalComment, clonedComment) {
+                     const replyObserver = new MutationObserver(() => {
+                        const realReplyFormContainer = originalComment.querySelector('.reply-form-container');
+                        if(realReplyFormContainer) {
+                            replyObserver.disconnect();
+                            const realReplyForm = realReplyFormContainer.querySelector('form');
+                            if(realReplyForm && !clonedComment.querySelector('.custom-reply-container')) {
+                                const customReplyContainer = document.createElement('div');
+                                customReplyContainer.className = 'custom-reply-container';
+                                customReplyContainer.innerHTML = `
+                                    <form class="form-style custom-reply-form">
+                                        <textarea name="comment" rows="3" placeholder="Escribe tu respuesta..." required></textarea>
+                                        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                            <button type="button" class="cta-button cancel-reply" style="background: #555; padding: 8px 20px; font-size: 0.9rem;">Cancelar</button>
+                                            <button type="submit" class="cta-button" style="padding: 8px 20px; font-size: 0.9rem;">Responder</button>
+                                        </div>
+                                    </form>
+                                `;
+                                clonedComment.appendChild(customReplyContainer);
+                                
+                                const customReplyForm = customReplyContainer.querySelector('form');
+                                customReplyForm.addEventListener('submit', (e) => {
+                                    e.preventDefault();
+                                    const commentTextarea = realReplyForm.querySelector('textarea[name="comment"]');
+                                    const submitButton = realReplyForm.querySelector('button[type="submit"]');
+                                    if(commentTextarea) commentTextarea.value = customReplyForm.querySelector('textarea[name="comment"]').value;
+                                    if(submitButton) submitButton.click();
+                                });
+
+                                customReplyForm.querySelector('.cancel-reply').addEventListener('click', () => {
+                                    const cancelButton = realReplyFormContainer.querySelector('button.cancel');
+                                    if(cancelButton) cancelButton.click();
+                                    customReplyContainer.remove();
+                                });
+                            }
+                        }
+                     });
+                     replyObserver.observe(originalComment, { childList: true, subtree: true });
+                }
+            }
+            initializeCommentBoxFacade();
+            // --- FIN DEL SCRIPT DE FACHADA ---
         });
     </script>
 </body>
